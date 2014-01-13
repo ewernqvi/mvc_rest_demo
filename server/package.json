@@ -1,0 +1,31 @@
+{
+  "name": "express",
+  "version": "0.0.1",
+  "description": "A demo api",
+  "main": "express.js",
+  "dependencies": {
+    "mongoskin": "~0.6.1",
+    "expect.js": "~0.2.0",
+    "express": "~3.4.7",
+    "superagent": "~0.15.7"
+  },
+  "devDependencies": {
+    "mocha": "~1.16.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ewernqvi/mvc_rest_demo.git"
+  },
+  "keywords": [
+    "rest",
+    "express"
+  ],
+  "author": "Erik Wernqvist",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/ewernqvi/mvc_rest_demo/issues"
+  }
+}
