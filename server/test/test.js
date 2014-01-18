@@ -5,24 +5,27 @@ describe('express rest api server for demo', function(){
   var id;
   var host='http://localhost:3000/';
   var app='api';
+  var login_resource=host + app +'/users/';
   var user_resource=host+app+'/users';
   var image_resource=host+app+'/images';
   var advertisment_resource=host+app+'/advertisments';
   var user_token='';
 
-  var test_user={name: 'Erik Wernqvist', email: 'erik@wernqvist.eu', phone: '0761-284285', _id: '', password: 'pokoloko'};
+  var test_user={name: 'Erik Wernqvist', email: 'erik@wernqvist.eu', phone: '0761-284285', _id: 'erik@wernqvist.eu', password: 'password', userToken: ''};
 
   //
   // Verify that it is possible to create a new user in the system
   //
-  if('user registration', function(done){
-     superagent.post(user_resource).send(test_user)
+  it('user registration', function(done){
+     console.log('testing user registration against ' + user_resource  + ' : ' + JSON.stringify(test_user));
+     superagent.post(user_resource )
+      //.accept('application/json')
+      .send(test_user)
       .end(function(e, res){
-	 console.log(res.body);
+	 console.log('apa: '+res.text);
 	 expect(e).to.eql(null);
-	 expect(res.body.length).to.eql(1);
-	 expect(res.body[0]._id.length).to.eql(24);
-	 test_user._id = res.body[0]._id;
+	 //expect(res.body.length).to.eql(1);
+	 //expect(res.body[0]._id).to.eql(test_user._id);
 	 user_token = res.body[0].userToken;
 	 done();
     });
@@ -33,70 +36,49 @@ describe('express rest api server for demo', function(){
   // service should be secured by https, but in this simple demo we use http, we use post not to expose the password
   // in the url
   //
-  if('user login', function(done){
-     superagent.post(user_resource+ '/' + test_user.email).send(test_user.password)
+  it('user login', function(done){
+     console.log('testing user login against ' + login_resource + test_user.email);
+     superagent.get(login_resource + test_user.email).send()
+      .auth(test_user.email, test_user.password)
       .end(function(e, res){
-	 console.log(res.body);
+	 console.log('auth result: ' + e);
+	 //console.log('***'+res.text);
+	 //console.log('***'+JSON.stringify(res.body));
 	 expect(e).to.eql(null);
-	 expect(res.body.length).to.eql(1);
-	 expect(res.body[0]).to.eql(test_user);
+	 //expect(res.body.length).to.eql(1);
+	 //expect(res.body[0]).to.eql(test_user);
+	 expect(res.body._id).to.eql(test_user._id);
+	 expect(res.body).to.eql(test_user);
 	 done();
     });
   });
 
 
-  it('post object', function(done){
-    superagent.post('http://localhost:3000/collections/test')
-      .send({ name: 'John'
-        , email: 'john@rpjs.co'
-      })
-      .end(function(e,res){
-        // console.log(res.body)
-        expect(e).to.eql(null)
-        expect(res.body.length).to.eql(1)
-        expect(res.body[0]._id.length).to.eql(24)
-        id = res.body[0]._id
-        done()
-      })    
+  //
+  // Update our test user, by updating the password, ensure that a proper user token is required
+  // to perform the update, shall fail
+  //
+  it('ensure that a  user object can not be updated without a token', function(done){
+    test_user.password='password';
+    delete test_user._id;
+    console.log('no-token: update using: ' + login_resource + test_user.email);
+    superagent.put(login_resource + test_user.email)
+      .send(test_user)
+      .end(function(e, res){
+	      console.log('**update..');
+	      for(p in res){
+		      console.log('% '+ p);
+	      }
+	      console.log(res.statusCode);
+	      expect(e).to.eql(null);
+	      expect(res.statusCode).to.eql(406);
+        //expect(typeof res.body).to.eql('object')
+        //expect(res.body.msg).to.eql('success')        
+	done();
+      });
   });
 
-  it('retrieves an object', function(done){
-    superagent.get('http://localhost:3000/collections/test/'+id)
-      .end(function(e, res){
-        // console.log(res.body)
-        expect(e).to.eql(null)
-        expect(typeof res.body).to.eql('object')
-        expect(res.body._id.length).to.eql(24)        
-        expect(res.body._id).to.eql(id)        
-        done()
-      })
-  })
-
-  it('retrieves a collection', function(done){
-    superagent.get('http://localhost:3000/collections/test')
-      .end(function(e, res){
-        // console.log(res.body)
-        expect(e).to.eql(null)
-        expect(res.body.length).to.be.above(0)
-        expect(res.body.map(function (item){return item._id})).to.contain(id)        
-        done()
-      })
-  })
-
-  it('updates an object', function(done){
-    superagent.put('http://localhost:3000/collections/test/'+id)
-      .send({name: 'Peter'
-        , email: 'peter@yahoo.com'})
-      .end(function(e, res){
-        // console.log(res.body)
-        expect(e).to.eql(null)
-        expect(typeof res.body).to.eql('object')
-        expect(res.body.msg).to.eql('success')        
-        done()
-      })
-  })
-
-  it('checks an updated object', function(done){
+  if('checks an updated object', function(done){
     superagent.get('http://localhost:3000/collections/test/'+id)
       .end(function(e, res){
         // console.log(res.body)
@@ -109,13 +91,13 @@ describe('express rest api server for demo', function(){
       })
   })    
   it('removes an object', function(done){
-    superagent.del('http://localhost:3000/collections/test/'+id)
+    superagent.del(user_resource +'/'+test_user.email)
       .end(function(e, res){
-        // console.log(res.body)
+        console.log(res.body)
         expect(e).to.eql(null)
         expect(typeof res.body).to.eql('object')
         expect(res.body.msg).to.eql('success')    
         done()
       }) 
   })      
-})
+});
