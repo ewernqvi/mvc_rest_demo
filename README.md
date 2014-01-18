@@ -23,7 +23,10 @@ Supported resource scenarious are
 
 * Delete advertisment -> login required, you may only delete your own unless the user is administrator
 
-* Advertisment details -> api/advertisments/:id, get, logged in users will get links to edit and delete. A typical link is sent in json in the following format {rel:'PUT', desc:'Update advertisment, requires user token', href:'/api/advertisment/123435'}
+* Advertisment details -> api/advertisments/:id, get, logged in users will get links to edit and delete. A typical link is sent in json in the following format 
+```javascript
+{rel:'PUT', desc:'Update advertisment, requires user token', href:'/api/advertisment/123435'}
+```
 
 * Upload image -> Post
 
