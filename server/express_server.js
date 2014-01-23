@@ -60,19 +60,29 @@ function accessDenied(req, res){
   res.send(406, '{error: "Access Denied"}');
 }
 
+function handleResult(req, res){
+                var filter=null;
+		if(req.query.filter) filter=JSON.parse(req.query.filter);
+		req.collection.find({},{limit:10, sort: [['_id',-1]]}).toArray(function(e, results){
+			if (e) return next(e);
+                        if(filter){
+                          var resx=[];
+                          resx.push(results[0]);
+                          console.log('TODO: FixME!!!');
+                          res.send(resx);
+                        }else{
+			  res.send(results);
+                        }
+			});
+
+}
+
 // This route is used to authenticate a user, it is protected with basic auth and returns a user object
 // including a user_token that can be used for upcoming actions
 app.get('/api/users/:id', auth, handleLogin);
 app.get('/api/users', accessDenied);
 
-app.get('/api/:collectionName', function(req, res) {
-		console.log('calling api with header: ');
-                for(h in req.headers) console.log(h + ':' + req.headers[h]);
-		req.collection.find({},{limit:10, sort: [['_id',-1]]}).toArray(function(e, results){
-			if (e) return next(e);
-			res.send(results);
-			});
-		});
+app.get('/api/:collectionName', handleResult);
 
 app.post('/api/:collectionName', function(req, res) {
 		req.collection.insert(req.body, {}, function(e, results){
