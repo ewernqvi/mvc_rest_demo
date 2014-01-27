@@ -32,4 +32,10 @@ Supported resource scenarious are
 
 * Delete image -> requires login
 
+The small REST-server has a mocha test-suite provided in test/test.js, after installing mocha (npm -g install mocha) 
+simply run mocha after the rest server has been started with ( node express_server.js ) in another terminal
+
+Before you can start the server please install node.js and issue a npm install in the root of the server directory 
+to fetch all dependencies
+
 
