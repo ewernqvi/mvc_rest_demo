@@ -14,7 +14,7 @@ function getClientIP(req){
 }
 
 function log(msg){
-  console.log(msg);
+  //console.log(msg);
 }
 
 var app = express();

@@ -10,10 +10,10 @@ var image_resource=host+app+'/images';
 var advertisment_resource=host+app+'/advertisments';
 var user_token='';
 
-var img_mac   = 'test/img/mac_bild.jpg';
-var img_bike  = 'test/img/cykel.jpg';
-var img_board = 'test/img/slalom_skate.jpg';
-var img_wax   = 'test/img/zoggs.jpg';
+var img_mac   = 'test-data/img/mac_bild.jpg';
+var img_bike  = 'test-data/img/cykel.jpg';
+var img_board = 'test-data/img/slalom_skate.jpg';
+var img_wax   = 'test-data/img/zoggs.jpg';
 
 var img_id1, img_id2;
 
@@ -26,6 +26,7 @@ function genericCB(e, res){
 }
 
 function addImage2Add(img, adId){
+   if(!adId){throw 'You must supply an ad id when adding an image';}
    var testImg = fs.realpathSync(img);
    superagent.post(image_resource)
    .attach('file', testImg)
@@ -66,8 +67,9 @@ login(test_user1).then(function (res){
     };
 
     addTestData(test_adv1).then(function (res){
-      console.log('**** ' + res.text + ' *** ' + res.body._id);
-      addImage2Add(img_mac,res.body._id);
+      var id = res.body._id;
+      console.log('**** ' + res.text + ' *** ' + id);
+      addImage2Add(img_mac,id);
     });
     var test_adv2={
        price:'23',
