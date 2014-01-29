@@ -67,8 +67,7 @@ login(test_user1).then(function (res){
     };
 
     addTestData(test_adv1).then(function (res){
-      var id = res.body._id;
-      console.log('**** ' + res.text + ' *** ' + id);
+      var id = res.body[0]._id;
       addImage2Add(img_mac,id);
     });
     var test_adv2={
@@ -79,7 +78,8 @@ login(test_user1).then(function (res){
     };
 
     addTestData(test_adv2).then(function (res){
-      addImage2Add(img_wax,res.body._id);
+      var id = res.body[0]._id;
+      addImage2Add(img_wax,id);
     });
 });
 
