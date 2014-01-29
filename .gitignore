@@ -16,4 +16,5 @@ build
 
 .DS_Store
 
+ignore
 node_modules
