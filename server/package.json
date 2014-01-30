@@ -7,7 +7,8 @@
     "mongoskin": "~0.6.1",
     "expect.js": "~0.2.0",
     "express": "~3.4.7",
-    "superagent": "~0.15.7"
+    "superagent": "~0.15.7",
+    "q": "~1.0.0"
   },
   "devDependencies": {
     "mocha": "~1.16.1"
