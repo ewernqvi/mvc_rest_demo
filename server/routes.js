@@ -138,6 +138,24 @@ function accessDenied(req, res){
     res.send(406, '{error: "Access Denied"}');
 }
 
+function setupSearchFilter(query, collection){
+  // The query record are all records sent in the request, these are plain
+  // strings and must be converted to regular expressions or an id
+  // object if we will search for id
+  var res={};
+  for(key in query){
+    if(key === '_id'){
+      res[key] = collection.id(query[key]);
+    }else if(key.toString().match(/escription/)){
+      res[key] = new RegExp(query[key])
+    }else{
+      // exact match
+      res[key] = query[key];
+    }
+  }
+  return res;
+}
+
 /**
  * Generic function to handle list retreival from mongod
  * @param req, input, note that filter can be passed in body or as q-params
@@ -154,21 +172,13 @@ function handleListResult(req, res){
             return;
         }
     }
-    var filter=null;
-    if(req.query.filter) filter=JSON.parse(req.query.filter);
-    req.collection.find({}).toArray(function(e, results){
-                                    if (e) { console.log('#### Mongo err: ' + e); res.send(500, e)};
-                                    if (req.params.collectionName)
-                                    appendLinks2Result(results, user, req.params.collectionName);
-                                    if(filter){
-                                    var resx=[];
-                                    resx.push(results[0]);
-                                    console.log('TODO: FixME!!!');
-                                    res.send(resx);
-                                    }else{
-                                    res.send(results);
-                                    }
-                                    });
+    var filter=setupSearchFilter(req.query, req.collection);
+    req.collection.find(filter).toArray(function(e, results){
+             if (e) { console.log('#### Mongo err: ' + e); res.send(500, e)};
+             if (req.params.collectionName)
+                 appendLinks2Result(results, user, req.params.collectionName);
+             res.send(results);
+    });
 }
 
 

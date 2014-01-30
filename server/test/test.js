@@ -142,9 +142,9 @@ it('retreive advertisment', function(done){
 // Verify that it is possible to retreive a filtered list by supplying a filter record
 it('retreive advertisment with filter', function(done){
   console.log('testing retreiving advertisments ' + advertisment_resource );
-  var filter = {};
+  var filter={};
   filter._id = ad_id;
-  var res = advertisment_resource + '?filter=' + JSON.stringify(filter);
+  var res = advertisment_resource + '?_id=' + ad_id;
   console.log('xx res: '+ res);
   superagent.get(res)
   .send(filter)
@@ -152,7 +152,7 @@ it('retreive advertisment with filter', function(done){
     console.log('apverts: '+res.text);
     expect(e).to.eql(null);
     expect(res.body.length).to.eql(1);
-    console.log('TODO: check that we only get back one advert with _id: ' + ad_id);
+    console.log('check that we only get back one advert with _id: ' + ad_id);
     done();
   });
 });
