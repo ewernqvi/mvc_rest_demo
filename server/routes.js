@@ -228,6 +228,7 @@ function handlePost(req, res) {
         }
         req.body.owner=user;
     }
+    req.body.created = new Date();
     req.collection.insert(req.body, {}, function(e, results){
                           if (e) { res.send(JSON.stringify(e));}else{
                           res.send(results);
@@ -250,6 +251,7 @@ function handlePut(req, res) {
     }
     // In a real server we should offcourse check that the userToken is valid
     delete req.body._id; // In order to update the record, the _id field may not exist in mongo
+    req.body.modified=new Date();
     req.collection.update({_id: req.collection.id(req.params.id)}, {$set:req.body},
                           {safe:true, multi:false}, function(e, result){
                           if (e) res.send(500, e);
