@@ -243,22 +243,28 @@ curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
 
 #### Images
 1. Delete an Image
+
    ```
 curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
    ```
+
    Set the _token_ and the :id to the image you want to delete, deleting an image also removes the link to the the image from the advertisment.
 
 ####  Advertisments
 1. Update an advertisment text
+
    ```
 curl - X PUT -d '{"price": "200", "category":"Phone", "description": "Brand new Ericsson Phone"}' \
    -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
+
    Set the _token_ and the :id of the advertisment you want to update, note that the JSON record shall be complete in a put
 2. Delete an advertisment
+
    ```
 curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
+
    Set the _token_ and the :id of the advertisment you want to delete
 
 
