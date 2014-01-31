@@ -213,7 +213,7 @@ We get back a list of advertisments, since we have only created one, the list on
 
 ```
 curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
-  -d '{"category": "Phone", "description": "Samsumg S3 -  Perfect Condtition", "price": "$200"}' \ 
+  -d '{"category": "Phone", "description": "Samsung S3 -  Perfect Condtition", "price": "$200"}' \
   http://localhost:3000/api/advertisments
 ```
 
@@ -228,7 +228,7 @@ We will only get back the Samsung Phone
 #### Users
 1. Delete User
    ```
-   curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
+curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
    ```
    Set the _token_ and the :id to whatever you want to delete
 
@@ -239,23 +239,26 @@ We will only get back the Samsung Phone
 curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
   -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/users/:id 
    ```
-   Set the _token_ and the :id of the useer you want to update, note that you may only update yourself unless you have the administer role. The content passed is a JSON record all the fields of the user. Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the passed record, even the ones you don't change.
+   Set the _token_ and the :id of the user you want to update, note that you may only update yourself unless you have the administer role. The content passed is a JSON record all the fields of the user. Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the passed record, even the ones you don't change.
 
 #### Images
 1. Delete an Image
    ```
-   curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
+curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
    ```
    Set the _token_ and the :id to the image you want to delete, deleting an image also removes the link to the the image from the advertisment.
 
 ####  Advertisments
 1. Update an advertisment text
    ```
-   curl
+curl - X PUT -d '{"price": "200", "category":"Phone", "description": "Brand new Ericsson Phone"}' \
+   -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
-
+   Set the _token_ and the :id of the advertisment you want to update, note that the JSON record shall be complete in a put
 2. Delete an advertisment
    ```
-   curl
+curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
+   Set the _token_ and the :id of the advertisment you want to delete
+
 
