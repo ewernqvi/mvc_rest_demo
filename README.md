@@ -29,7 +29,7 @@ node -version
 
 When you installed node you also get the node package manager called NPM which we will utlize to get additional node dependencies
 
-2. Mongo DB [http://docs.mongodb.org/manual/installation/], follow the instruction for your platform
+2. Mongo DB (http://docs.mongodb.org/manual/installation/), follow the instruction for your platform
 
 3. git [http://git-scm.com/downloads], follow the instructuions for your platform
 
@@ -43,6 +43,7 @@ Change direcectory to the server of your downloaded
 cd mvc_rest_demo/server
 npm install -g mocha
 npm install
+```
 
 6. Start mongo db
 ```
