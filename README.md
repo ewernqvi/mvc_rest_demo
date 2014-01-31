@@ -268,9 +268,12 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    Set the _token_ and the :id of the advertisment you want to delete
 
 # Client
-This section will cover the actal tutorial of creating a rest client using the [AngularJS](http://www.angularjs.org)
+This section will cover the actual tutorial of creating a rest client using the [AngularJS](http://www.angularjs.org) framework
 
 ## A Static Client
+To get an idea what we try to accomplish we startout with a mockup, a static HTML client of our demo. It will be much easier to reason what we want to build if we have seen a prototype.
+
+<iframe src="http://www.google.se"></iframe>
 
 ## Background on Angular JS
 
