@@ -1,13 +1,13 @@
 MVC REST Demo
 =============
 
-##Purpose
+#Purpose
 The purpose of this repository is to work as a RESTful backend for an MVC style architecure tutorial. The application consists of two parts.
 
-* REST Server
-* MVC Client
+* [REST Server](#server)
+* [MVC Client](#client)
 
-## Server
+# Server
 The REST server part of the application has three resources
 
 1. Users
@@ -16,7 +16,7 @@ The REST server part of the application has three resources
 
 I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this for input for the XHR-requests from the browser.
 
-### Installation
+## Installation
 To get the server to run on your local system you must install some dependencies
 
 1. Node JS http://nodejs.org/, click on install
@@ -60,15 +60,15 @@ npm install
    ```
 9. You are done
 
-### Typical Flows
-#### User Registration
+## Typical Flows
+### User Registration
 ```
 curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \ 
   -H "Content-Type: application/json" http://localhost:3000/api/users
 ```
 If successful, this will return a new user in JSON format, note that depending on where and how you installed your server the URL may differ
 
-#### User Logon
+### User Logon
 Once you have a user in the system, you can use this user to login, which is a requirement for adding new advertisments.
 ```
 curl -X GET -u 'mrx@gmail.com:loko' http://localhost:3000/api/users/mrx@gmail.com
@@ -89,7 +89,7 @@ The important bit, which we must utilize later is the userToken, which we will s
 
 For now remember your token
 
-#### Add a new advertisment
+### Add a new advertisment
 To add a new advertisment, we issue a post, now we need to supply the userToken in the HTTP header for our identification
 
 ```
@@ -111,7 +111,7 @@ If successful we get the following JSON back, the important bit is the created _
 ]
 ```
 
-#### Add an image to our advertisment
+### Add an image to our advertisment
 To make our advertisment more appealing we want to upload an image to the server. Image uploading can be performed in many ways, but when using a http-browser [multi-part form](http://www.ietf.org/rfc/rfc2388.txt) is the norm and the browser handles content-type, size headers etc for you.
 
 When using curl we must include the -F option to tell curl we want to post a file, in this case our image. Since we want to add the image to our advertisment we must also include the advertimenentId as a form parameter
@@ -158,7 +158,7 @@ We see that the server has updated the advertisment with a link to the added pic
 }
 ```
 
-#### Browse advertisments in the system
+### Browse advertisments in the system
 Now we have added an advertisment so we browse it in the system, we will start by not supplying a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved with a normal web browser, just click on the link or modify it if you run your server on a different location
 
 [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments)
@@ -224,8 +224,8 @@ the API also let's us provide a query, so lets say we only want to search for ph
 
 We will only get back the Samsung Phone
 
-### Additional Resource Methods
-#### Users
+## Additional Resource Methods
+### Users
 1. Delete User
    ```
 curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
@@ -241,7 +241,7 @@ curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
    ```
    Set the _token_ and the :id of the user you want to update, note that you may only update yourself unless you have the administer role. The content passed is a JSON record all the fields of the user. Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the passed record, even the ones you don't change.
 
-#### Images
+### Images
 1. Delete an Image
 
    ```
@@ -250,7 +250,7 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
 
    Set the _token_ and the :id to the image you want to delete, deleting an image also removes the link to the the image from the advertisment.
 
-####  Advertisments
+###  Advertisments
 1. Update an advertisment text
 
    ```
@@ -267,4 +267,28 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
 
    Set the _token_ and the :id of the advertisment you want to delete
 
+# Client
+This section will cover the actal tutorial of creating a rest client using the [AngularJS](http://www.angularjs.org)
 
+## A Static Client
+
+## Background on Angular JS
+
+## Developing the Angular JS Client
+### Hooking up Angular JS with the REST backend
+
+### Browse Advertisments
+
+### Advertisment Details
+
+### Logging In
+
+### Edit Advertisment Text
+
+### Adding new Advertisments
+
+### Adding Images to Advertisments
+
+## Client Summary
+
+### Adding Images to
