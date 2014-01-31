@@ -19,7 +19,7 @@ I will demonstrate typical flows using CURL, it is then up to the MVC client dev
 ### Installation
 To get the server to run on your local system you must install some dependencies
 
-1. Node JS [http://nodejs.org/], click on install
+1. Node JS http://nodejs.org/, click on install
 
 Once installed open a terminal to see if node is working
 
@@ -29,9 +29,9 @@ node -version
 
 When you installed node you also get the node package manager called NPM which we will utlize to get additional node dependencies
 
-2. Mongo DB (http://docs.mongodb.org/manual/installation/), follow the instruction for your platform
+2. Mongo DB http://docs.mongodb.org/manual/installation/, follow the instructions for your platform
 
-3. git [http://git-scm.com/downloads], follow the instructuions for your platform
+3. git http://git-scm.com/downloads, follow the instructions for your platform
 
 4. Get the code
 ```
@@ -45,7 +45,7 @@ npm install -g mocha
 npm install
 ```
 
-6. Start mongo db
+6. Start mongo db in a separate terminal window
 ```
 mongod
 ```
@@ -54,7 +54,7 @@ mongod
 node express_server
 ```
 
-8. Run the test to see if everything is working
+8. Run the test to see if everything is working, this must be done in a separate teminal window
 ```
 mocha
 ```
