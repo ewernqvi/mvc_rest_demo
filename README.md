@@ -217,10 +217,10 @@ curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:app
   http://localhost:3000/api/advertisments
 ```
 
-When we look for advertisments now, [http://localhost:3000/api/advertisments] we get two phone backs, but
+When we look for advertisments now, http://localhost:3000/api/advertisments we get two phone backs, but
 the API also let's us provide a query, so lets say we only want to search for phones with Samsung in the description we would add the following query parameters to our query
 
-[http://localhost:3000/api/advertisments?category=Phone&description=Samsung]
+http://localhost:3000/api/advertisments?category=Phone&description=Samsung
 
 We will only get back the Samsung Phone
 
