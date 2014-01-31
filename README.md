@@ -217,45 +217,45 @@ curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:app
   http://localhost:3000/api/advertisments
 ```
 
-When we look for advertisments now, http://localhost:3000/api/advertisments we get two phone backs, but
+When we look for advertisments now, [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments) we get two phone backs, but
 the API also let's us provide a query, so lets say we only want to search for phones with Samsung in the description we would add the following query parameters to our query
 
-http://localhost:3000/api/advertisments?category=Phone&description=Samsung
+[http://localhost:3000/api/advertisments?category=Phone&description=Samsung](http://localhost:3000/api/advertisments?category=Phone&description=Samsung)
 
 We will only get back the Samsung Phone
 
 ### Additional Resource Methods
 #### Users
 1. Delete User
-```
-curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
-```
-Set the _token_ and the :id to whatever you want to delete
+   ```
+   curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
+   ```
+   Set the _token_ and the :id to whatever you want to delete
 
-Deleting a user also recursively removes all the advertisments added by the user
+   Deleting a user also recursively removes all the advertisments added by the user
 
 2. Update User
-```
+   ```
 curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
   -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/users/:id 
-```
-Set the _token_ and the :id of the useer you want to update, note that you may only update yourself unless you have the administer role. The content passed is a JSON record all the fields of the user. Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the passed record, even the ones you don't change.
+   ```
+   Set the _token_ and the :id of the useer you want to update, note that you may only update yourself unless you have the administer role. The content passed is a JSON record all the fields of the user. Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the passed record, even the ones you don't change.
 
 #### Images
 1. Delete an Image
-```
-curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
-```
-Set the _token_ and the :id to the image you want to delete, deleting an image also removes the link to the the image from the advertisment.
+   ```
+   curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
+   ```
+   Set the _token_ and the :id to the image you want to delete, deleting an image also removes the link to the the image from the advertisment.
 
 ####  Advertisments
 1. Update an advertisment text
-```
-curl
-```
+   ```
+   curl
+   ```
 
 2. Delete an advertisment
-```
-curl
-```
+   ```
+   curl
+   ```
 
