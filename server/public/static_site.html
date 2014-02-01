@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+    <meta charset="utf-8">
+    <title>Buy and Sell Stuff.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" type="text/css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="/bootstrap/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+    <!-- CSS code from Bootply.com editor -->
+
+    <style type="text/css">
+      .navbar-header{
+        margin-left:30px;
+        margin-right:10px;
+        width:96%;
+      }
+
+      .img-thumbnail{
+        width: 160px;
+        height: 160px;
+      }
+
+      .brand{
+        color: blue;
+        font-size: 200%;
+      }
+    </style>
+  </head>
+
+  <!-- HTML code from Bootply.com editor -->
+
+  <body  >
+
+    <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <form class="form-inline" role="form">
+        <span class="brand">Buy and Sell Stuff.com</span>
+
+        <span><i class="glyphicon glyphicon-eye-open"></i></span>
+
+        <div class="form-group">
+          <span><select class="form-control">
+              <!-- Dynamic section begin -->
+              <option>All Categories</option>
+              <option>Computer and Games</option>
+              <option>TV and Music</option>
+              <option>Hobbies</option>
+              <option>Cycles</option>
+              <option>Cars</option>
+              <option>Motor Cycles</option>
+              <!-- Dynamic section end -->
+          </select></span>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Free Text Search">
+        </div>
+        <span>Sort By:</span>
+        <div class="form-group">
+          <span><select class="form-control">
+              <option>Price Lowest</option>
+              <option>Price Highest</option>
+              <option>Most Recent</option>
+          </select></span>
+        </div>
+        <a href="#" type="button" class="btn btn-default navbar-btn pull-right">
+          <span class="glyphicon glyphicon-user"></span>Login
+        </a>
+      </form>
+    </div>
+    </nav>
+
+    <div class="container">
+      <table class="table">
+        <tbody>
+          <!-- dyn content begin -->
+          <tr><td class="thumbnail" ><div>
+                <img src="https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/surfboard.jpg" class="img-thumbnail" alt="Responsive image">
+            </div></td>
+            <td class="advertisment" >
+              <div>Today 11:14</div>
+              <div><h2>Premium Surf Board</h2></div>
+              <div><h3>Price: 110 $</h3></div>
+            </td>
+          </tr>
+          <tr><td><div><img src="https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/longboard.jpg" class="img-thumbnail" alt="Responsive image">
+            </div></td>
+            <td>
+              <div>Today 10:14</div>
+              <div><h2>Premium Long Board</h2></div>
+              <div><h3>Price: 220 $</h3></div>
+            </td>
+          </tr>
+          <tr><td>
+              <div><img src="https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/zoggs.jpg" class="img-thumbnail" alt="Responsive image">
+            </div></td>
+            <td>
+              <div>Today 09:11</div>
+              <div><h2>Dr Zoggs Sex Wax</h2></div>
+              <div><h3>Price: 11 $</h3></div>
+            </td>
+          </tr>
+          <!-- end dyn content -->
+        </tbody>
+      </table>
+
+    </div> <!-- /container -->
+  </body>
+</html>
