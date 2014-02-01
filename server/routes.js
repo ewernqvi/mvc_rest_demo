@@ -128,9 +128,13 @@ function handleLogin(req, res){
     var id = req.collection.id(req.params.id);
     req.collection.findOne({_id: id}, function(e, result){
                            if (e) return next(e);
-                           userTokens[id] = token();
-                           result.userToken = userTokens[id];
-                           res.send(result);
+                           if(result){
+                             userTokens[id] = token();
+                             result.userToken = userTokens[id];
+                             res.send(result);
+                           }else{
+                             res.send(406, '{error: "Access Denied"}');
+                           }
                            });
 }
 
@@ -227,6 +231,11 @@ function handlePost(req, res) {
             return;
         }
         req.body.owner=user;
+    }else{
+      if(!req.body.email || !req.body.password){
+        res.send(401, '{error: "You must supply a valid email and password in order to register a new user"}');
+      }
+      if(!req.body._id){req.body._id=req.body.email;}
     }
     req.body.created = new Date();
     req.collection.insert(req.body, {}, function(e, results){
