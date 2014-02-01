@@ -273,7 +273,7 @@ This section will cover the actual tutorial of creating a rest client using the 
 ## A Static Client
 To get an idea what we try to accomplish we startout with a mockup, a static HTML client of our demo. It will be much easier to reason what we want to build if we have seen a prototype.
 
-<iframe src="http://www.google.se"></iframe>
+[static site](http://htmlpreview.github.io/?https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html)
 
 ## Background on Angular JS
 
