@@ -2,10 +2,62 @@
 
 /* Controllers */
 
-angular.module('buyAndSellApp.controllers', []).
-  controller('MyCtrl1', [function() {
+var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
+ buyAndSellApp.controller('AdvertismentsCtrl', function($scope) {
+       // We leave this blank for now
+     $scope.advertisments= [
+   {
+     _id: "dummy-client-id1",
+     category: "Hobbies",
+     created: "2014-02-14T09:27:34.825Z",
+     description: "Premium Surf Board",
+     images: [
+      {
+        contentType: "image/jpg",
+        advertismentId: "dummy-client-id1",
+        href: "/test-data/img/surfboard.jpg"
+      }
+     ],
+    owner: "mrx@gmail.com",
+    price: "$110"
+   },
+   {
+    _id: "dummy-client-id2",
+    category: "Hobbies",
+    created: "2014-02-14T09:27:34.825Z",
+    description: "Premium Long Board",
+    images: [
+      {
+        contentType: "image/jpg",
+        advertismentId: "dummy-client-idr2",
+        href: "/test-data/img/longboard.jpg"
+      }
+    ],
+    owner: "mrx@gmail.com",
+    price: "$110"
+   },
+   {
+    _id: "dummy-client-id3",
+    category: "Hobbies",
+    created: "2014-02-14T09:27:34.825Z",
+    description: "Dr Zoggs Sex Wax",
+    images: [
+      {
+        contentType: "image/jpg",
+        advertismentId: "dummy-client-id3",
+        href: "/test-data/img/zoggs.jpg"
+      }
+    ],
+    owner: "mrx@gmail.com",
+    price: "$11"
+   }
+  ];
+
+  });
+
+  buyAndSellApp.controller('MyCtrl1', [function() {
 
   }])
-  .controller('MyCtrl2', [function() {
+  buyAndSellApp.controller('MyCtrl2', [function() {
 
   }]);
