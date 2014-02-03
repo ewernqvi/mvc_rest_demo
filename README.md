@@ -509,7 +509,7 @@ Ensure that the test fails, we have not fixed our controller yet remember!
 OK, lets fix the controller
 ```javascript
 angular.module('buyAndSellApp.controllers', []).
-  controller('AdvertismentsCtrl', [function() {
+  controller('AdvertismentsCtrl', ['$scope', function($scope) {
   $scope.advertisments= [
    {
      _id: "dummy-client-id1",
@@ -560,10 +560,27 @@ angular.module('buyAndSellApp.controllers', []).
 
   }])
 ```
+Note that we use an array to define the function body, this is to ensure that the code can be minified with the angular dependency injection still working, see also [angular minification](http://docs.angularjs.org/guide/di)
 
 Rerun our tests, it shall pass now, if it doesn't check your code.
 
 ### Adding our Presentation Logic
+Before we add the presentation logic, I will try to explain what actually happens within our Angular application, this is probably best done with a picture.
+
+![alt Angular Image](https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/angular-overview.png)
+
+Angualar applications consist of a Model View and Controller architecutre, but what actually happens in our application is that in index.html the ng-app directive is loaded which basically tells Angular to take control.
+
+Witin our application, which is a Single Page Application, we have the ability to present partials within the page, these will be swapped in and out depending on our actions.
+
+In our first example we load the partial advertisments.html which will contain a div with a controller, which is responsible for the scope. In our case we loop over the advertisments array with a [ng-repeat](http://docs.angularjs.org/api/ng.directive:ngRepeat) directive. This let us create rows in our table.The image has a special [ng-src](http://docs.angularjs.org/api/ng.directive:ngSrc) directive since we want databining later on, e.g. if we switch images it should be automatically reflected in the view through angulars two-way data binding.
+
+Now lets edit our partial and add the following html-code
+
+```HTML
+<partial>insert content here once tested</partial>
+```
+
 
 ### Hooking up Angular JS with the REST backend
 
