@@ -3,7 +3,9 @@
 /* Controllers */
 
 var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
- buyAndSellApp.controller('AdvertismentsCtrl', function($scope) {
+ // To ensure that minification works we must declare injection
+ // in an array like manner, get use to it to avoid minification bugs
+ buyAndSellApp.controller('AdvertismentsCtrl',['$scope', function($scope) {
        // We leave this blank for now
      $scope.advertisments= [
    {
@@ -53,7 +55,7 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
    }
   ];
 
-  });
+  }]);
 
   buyAndSellApp.controller('MyCtrl1', [function() {
 
