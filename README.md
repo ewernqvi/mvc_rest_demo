@@ -291,8 +291,8 @@ Angular is what HTML would have been had it been designed for applications.
 
 The impedance mismatch between dynamic applications and static documents is often solved with:
 
-a library - a collection of functions which are useful when writing web apps. Your code is in charge and it calls into the library when it sees fit. E.g., jQuery.
-frameworks - a particular implementation of a web application, where your code fills in the details. The framework is in charge and it calls into your code when it needs something app specific. E.g., knockout, ember, etc.
+* a library - a collection of functions which are useful when writing web apps. Your code is in charge and it calls into the library when it sees fit. E.g., jQuery.
+* frameworks - a particular implementation of a web application, where your code fills in the details. The framework is in charge and it calls into your code when it needs something app specific. E.g., knockout, ember, etc.
 
 Angular takes another approach. It attempts to minimize the impedance mismatch between document centric HTML and what an application needs by creating new HTML constructs. Angular teaches the browser new syntax through a construct we call directives. Examples include:
 
@@ -312,8 +312,12 @@ Everything you need to build a CRUD app in a cohesive set:
 * reusable components
 * dependency injection
 
-Testability story: unit-testing, end-to-end testing, mocks, test harnesses.
-Seed application with directory layout and test scripts as a starting point.
+Testability story: 
+* unit-testing
+* end-to-end testing
+* mocks
+* test harnesses.
+
 ###Angular Sweet Spot
 Angular simplifies application development by presenting a higher level of abstraction to the developer. Like any abstraction, it comes at a cost of flexibility. In other words not every app is a good fit for Angular. Angular was built with the CRUD application in mind. Luckily CRUD applications represent the majority of web applications. To understand what Angular is good at, though, it helps to understand when an app is not a good fit for Angular.
 
@@ -323,15 +327,18 @@ Angular is built around the belief that declarative code is better than imperati
 * It is a very good idea to decouple DOM manipulation from app logic. This dramatically improves the testability of the code.
 * It is a really, really good idea to regard app testing as equal in importance to app writing. Testing difficulty is dramatically affected by the way the code is structured.
 * It is an excellent idea to decouple the client side of an app from the server side. This allows development work to progress in parallel, and allows for reuse of both sides.
-* It is very helpful indeed if the framework guides developers through the entire journey of building an app: from designing the UI, through writing the business logic, to testing.
+* It is very helpful indeed if the framework guides developers through the entire journey of building an app: 
+  * from designing the UI
+  * through writing the business logic
+  * to testing.
 * It is always good to make common tasks trivial and difficult tasks possible.
 
-###Angular frees you from the following pains:
+###Angular frees you from the following pains
 
-Registering callbacks
-Manipulating HTML DOM programmatically
-Marshaling data to and from the UI- Data Bindingin
-Writing tons of initialization code just to get started
+* Registering callbacks
+* Manipulating HTML DOM programmatically
+* Marshaling data to and from the UI- Data Bindingin
+* Writing tons of initialization code just to get started
 
 for further information please see http://docs.angularjs.org/guide/introduction
 
@@ -351,14 +358,14 @@ node express_server.js
 
 Once the server has been started it shall be possible to navigate to
 
-http://localhost:3000/app/index.html
+[app/index.html](http://localhost:3000/app/index.html)
 
 And you shall see our Angular JS skeleton app with the text Angulars is working 4-ever at the button. If you view the code of [index.html](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html) we can see that angular js libaries are loaded and the {{2+2}} at the button is evaluated to a 4 which indicates that it's up and running.
 
 To run the [test](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md) please follow the linked [instructions](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md).
 
 ### Migrating our Static Client to Angular JS - Model and Controller
-Now when we have been introduced to the starter application, it's time to get useful and migrate our static application to dynamic angular application. We leave the rest parts behind for now, but create a local mockup repository of our initial data. To do this we first take a look at the JSON format returned by our REST-server
+Now when we have been introduced to the starter application, it's time to get useful and migrate our static application to a dynamic angular application. We leave the rest parts behind for now, but create a local mockup repository of our initial data. To do this we first take a look at the JSON format returned by our REST-server
 
 ```javascript
 {
@@ -383,7 +390,7 @@ Now when we have been introduced to the starter application, it's time to get us
 
 if we take this as template input, and the data from our [static page](https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html) we could convert the 3 advertisments on the static page to the following JSON
 
-```
+```javascript
 [
  {
   _id: "dummy-client-id1",
@@ -435,7 +442,7 @@ if we take this as template input, and the data from our [static page](https://g
 ```
 Let us create a new partial for our list of advertisments, the HTML code for this would be
 
-```html
+```HTML
 <h2>This is where our list of advertisments shall be displayed</h2>
 ```
 advertisments.html
