@@ -1,6 +1,6 @@
 There are two suites of tests configured both unit and end2end
 
-You must install karma and the dev dependencies before you start, this is done by
+You must install [karma](http://karma-runner.github.io/0.10/index.html) and the dev dependencies before you start, this is done by
 
 ```
 npm install -g karma
