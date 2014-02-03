@@ -456,7 +456,7 @@ Now we must modify the router so it will be aware of our partial
   $routeProvider.when('/advertisments', {templateUrl: 'partials/advertisments.html', 
       controller: 'AdvertismentsCtrl'});
   // Default route
-  $routeProvider.otherwise({redirectTo: '/advertisments'})
+  $routeProvider.otherwise({redirectTo: '/advertisments'});
 ```
 [app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/app.js)
 
@@ -482,12 +482,11 @@ We deliberity added no code in the controller, since we are test-driven we shall
 describe('controllers', function(){
   beforeEach(module('buyAndSellApp.controllers'));
 
-  it('should create advertisment model with 3 advertisments', inject(function() {
+  it('should create advertisment model with 3 advertisments', inject(function($controller) {
+    var scope = {},
+        ctrl = $controller('AdvertismmentsCtrl', {$scope:scope});
     //Check that the controller has a list of three advertisments
-      var scope = {},
-          ctrl = $controller('AdvertismentsCtrl', { $scope: scope });
- 
-      expect(scope.advertisments.length).toBe(3);
+    expect(scope.advertisments.length).toBe(3);
   }));
 
   it('should ....', inject(function() {
