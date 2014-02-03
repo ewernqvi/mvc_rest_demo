@@ -2,8 +2,12 @@ MVC REST Demo
 =============
 
 #Purpose
-The purpose of this repository is to work as a RESTful backend for an MVC style architecure tutorial. The application consists of two parts.
+The purpose of this repository is to work as a RESTful backend for an MVC style architecure tutorial. 
 
+The purpose of the full application is to serve as a buy and sell site. A customer browse for advertisments, if he/she finds one intresting he/she contacts the owner of the advertisment through the server.
+A user may also register, which gives the user the ability to add advertisments, edit and delete his/her added advertisments.
+
+The application consists of two parts. 
 * [REST Server](#server)
 * [MVC Client](#client)
 
@@ -15,6 +19,8 @@ The REST server part of the application has three resources
 3. Images
 
 I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this for input for the XHR-requests from the browser.
+
+Please note that windows user need to install a git client with curl built-in, since curl is not natively available in windows.
 
 ## Installation
 To get the server to run on your local system you must install some dependencies
@@ -31,7 +37,7 @@ node -version
 
 2. Mongo DB http://docs.mongodb.org/manual/installation/, follow the instructions for your platform
 
-3. git http://git-scm.com/downloads, follow the instructions for your platform
+3. git http://git-scm.com/downloads, follow the instructions for your platform, note that windows users shall use a version where curl also is included [windows installation with curl included](https://msysgit.googlecode.com/files/Git-1.8.5.2-preview20131230.exe)
 
 4. Get the code
    ```
@@ -119,7 +125,7 @@ When using curl we must include the -F option to tell curl we want to post a fil
 ```
 curl -F "file=@./iphone.gif" -F "advertismentId=52eb6c860e5f433f24000003" http://localhost:3000/api/images
 ```
-We get back a JSON from the server indicating that our file was sucesfully updated, the important
+We get back a JSON from the server indicating that our file was successfully updated, the important
 bit in this JSON is the href to the server generated name of the image
 
 ```javascript
@@ -160,13 +166,13 @@ We see that the server has updated the advertisment with a link to the added pic
 ```
 
 ### Browse advertisments in the system
-Now we have added an advertisment so we browse it in the system, we will start by not supplying a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved with a normal web browser, just click on the link or modify it if you run your server on a different location
+Now we have added an advertisment so we can browse it in the system, we will start by not supplying a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved with a normal web browser, just click on the link or modify it if you run your server on a different location
 
 [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments)
 
 You will see the JSON formatted as text in the browser window, at least if you run in google Chrome
 
-But there is more, if you supply a user-token in the header, we go back to curl to do this, we now get back links, which are shortcuts for edit, delete and details actions of the resource. These links are typically utlized by a dynamic client, in rest terms we call this [HATEOS](http://en.wikipedia.org/wiki/HATEOAS), which stand for **Hypermedia as the Engine of Application State**. From a REST API perspective this is important, since the linked parts of the API can be considred private, and changes to these parts of the API can be made without having to inform users of the API, that is if they utilized the provided links in their clients and not hardcoding paths.
+But there is more, if you supply a user-token in the header, we go back to curl to do this, we now get back links, which are shortcuts for edit, delete and details actions of the resource. These links are typically utlized by a dynamic client, in rest terms we call this [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS), which stand for **Hypermedia as the Engine of Application State**. From a REST API perspective this is important, since the linked parts of the API can be considered private, and changes to these parts of the API can be made without having to inform users of the API, that is if they utilized the provided links in their clients and not hardcoding paths.
 
 ```
 curl http://localhost:3000/api/advertisments -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi
@@ -484,7 +490,7 @@ describe('controllers', function(){
 
   it('should create advertisment model with 3 advertisments', inject(function($controller) {
     var scope = {},
-        ctrl = $controller('AdvertismmentsCtrl', {$scope:scope});
+        ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
     //Check that the controller has a list of three advertisments
     expect(scope.advertisments.length).toBe(3);
   }));
