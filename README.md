@@ -4,8 +4,11 @@ MVC REST Demo
 #Purpose
 The purpose of this repository is to work as a RESTful backend for an MVC style architecure tutorial. 
 
-The purpose of the full application is to serve as a buy and sell site. A customer browse for advertisments, if he/she finds one intresting he/she contacts the owner of the advertisment through the server.
-A user may also register, which gives the user the ability to add advertisments, edit and delete his/her added advertisments.
+The purpose of the full application is to serve as a buy and sell site. A customer browse for 
+advertisments, if he/she finds one intresting he/she contacts the owner of the advertisment 
+through the server.
+A user may also register, which gives the user the ability to add advertisments, edit and delete 
+his/her added advertisments.
 
 The application consists of two parts. 
 * [REST Server](#server)
@@ -18,9 +21,11 @@ The REST server part of the application has three resources
 2. Advertisments
 3. Images
 
-I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this for input for the XHR-requests from the browser.
+I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this 
+for input for the XHR-requests from the browser.
 
-Please note that windows user need to install a git client with curl built-in, since curl is not natively available in windows.
+Please note that windows user need to install a git client with curl built-in, since curl is not 
+natively available in windows.
 
 ## Installation
 To get the server to run on your local system you must install some dependencies
@@ -33,11 +38,14 @@ To get the server to run on your local system you must install some dependencies
 node -version
    ```
 
-   When you installed node you also get the node package manager called NPM which we will utlize to get additional node dependencies
+   When you installed node you also get the node package manager called NPM which we will utlize to 
+   get additional node dependencies
 
 2. Mongo DB http://docs.mongodb.org/manual/installation/, follow the instructions for your platform
 
-3. git http://git-scm.com/downloads, follow the instructions for your platform, note that windows users shall use a version where curl also is included [windows installation with curl included](https://msysgit.googlecode.com/files/Git-1.8.5.2-preview20131230.exe)
+3. git http://git-scm.com/downloads, follow the instructions for your platform, note that windows 
+   users shall use a version where curl also is included 
+   [windows installation with curl included](https://msysgit.googlecode.com/files/Git-1.8.5.2-preview20131230.exe)
 
 4. Get the code
    ```
@@ -72,14 +80,18 @@ npm install
 curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \ 
   -H "Content-Type: application/json" http://localhost:3000/api/users
 ```
-If successful, this will return a new user in JSON format, note that depending on where and how you installed your server the URL may differ
+If successful, this will return a new user in JSON format, note that depending on where and how you 
+installed your server the URL may differ
 
 ### User Logon
-Once you have a user in the system, you can use this user to login, which is a requirement for adding new advertisments.
+Once you have a user in the system, you can use this user to login, which is a requirement for 
+adding new advertisments.
 ```
 curl -X GET -u 'mrx@gmail.com:loko' http://localhost:3000/api/users/mrx@gmail.com
 ```
-Note that the password and username is what you supplied during user registration, we use basic authentication. In a real-world application this resource should be protected by https since we send the password over the wire i base64 encoding. 
+Note that the password and username is what you supplied during user registration, we use basic 
+authentication. In a real-world application this resource should be protected by https since we 
+send the password over the wire in base64 encoding. 
 
 If we manage to login we get the following JSON back
 ```javascript
@@ -91,19 +103,24 @@ If we manage to login we get the following JSON back
   userToken: "ovxptw7z8rveipb9eqc04tjsoky5jyvi"
 }
 ```
-The important bit, which we must utilize later is the userToken, which we will stick to our http-header to identify ourselves. You may wonder why the server doesn't make this stick by putting it in a cookie, the easy answer is because it isn't restful and since this training is about REST we shall apply the stateless nature of the server.
+The important bit, which we must utilize later is the userToken, which we will stick to our 
+http-header to identify ourselves. You may wonder why the server doesn't make this stick by putting 
+it in a cookie, the easy answer is because it isn't restful and since this training is about REST 
+we shall apply the stateless nature of the server.
 
 For now remember your token
 
 ### Add a new advertisment
-To add a new advertisment, we issue a post, now we need to supply the userToken in the HTTP header for our identification
+To add a new advertisment, we issue a post, now we need to supply the userToken in the HTTP header 
+for our identification
 
 ```
 curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
   -d '{"category": "Phone", "description": "IPhone5 - Mint Condtition", "price": "$200"}' \ 
   http://localhost:3000/api/advertisments
 ```
-If successful we get the following JSON back, the important bit is the created _id which we will use later on
+If successful we get the following JSON back, the important bit is the created _id which we will 
+use later on
 ```javascript
 [
   {
@@ -118,9 +135,14 @@ If successful we get the following JSON back, the important bit is the created _
 ```
 
 ### Add an image to our advertisment
-To make our advertisment more appealing we want to upload an image to the server. Image uploading can be performed in many ways, but when using a http-browser [multi-part form](http://www.ietf.org/rfc/rfc2388.txt) is the norm and the browser handles content-type, size headers etc for you.
+To make our advertisment more appealing we want to upload an image to the server. Image uploading 
+can be performed in many ways, but when using a http-browser 
+[multi-part form](http://www.ietf.org/rfc/rfc2388.txt) is the norm and the browser handles 
+content-type, size headers etc for you.
 
-When using curl we must include the -F option to tell curl we want to post a file, in this case our image. Since we want to add the image to our advertisment we must also include the advertimenentId as a form parameter
+When using curl we must include the -F option to tell curl we want to post a file, in this case our 
+image. Since we want to add the image to our advertisment we must also include the advertimenentId 
+as a form parameter
 
 ```
 curl -F "file=@./iphone.gif" -F "advertismentId=52eb6c860e5f433f24000003" http://localhost:3000/api/images
@@ -166,13 +188,23 @@ We see that the server has updated the advertisment with a link to the added pic
 ```
 
 ### Browse advertisments in the system
-Now we have added an advertisment so we can browse it in the system, we will start by not supplying a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved with a normal web browser, just click on the link or modify it if you run your server on a different location
+Now we have added an advertisment so we can browse it in the system, we will start by not supplying 
+a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved 
+with a normal web browser, just click on the link or modify it if you run your server on a different 
+location
 
 [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments)
 
 You will see the JSON formatted as text in the browser window, at least if you run in google Chrome
 
-But there is more, if you supply a user-token in the header, we go back to curl to do this, we now get back links, which are shortcuts for edit, delete and details actions of the resource. These links are typically utlized by a dynamic client, in rest terms we call this [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS), which stand for **Hypermedia as the Engine of Application State**. From a REST API perspective this is important, since the linked parts of the API can be considered private, and changes to these parts of the API can be made without having to inform users of the API, that is if they utilized the provided links in their clients and not hardcoding paths.
+But there is more, if you supply a user-token in the header, we go back to curl to do this, we now 
+get back links, which are shortcuts for edit, delete and details actions of the resource. These 
+links are typically utlized by a dynamic client, in rest terms we call this 
+[HATEOAS](http://en.wikipedia.org/wiki/HATEOAS), which stand for **Hypermedia as the Engine of 
+Application State**. From a REST API perspective this is important, since the linked parts of the 
+API can be considered private, and changes to these parts of the API can be made without having to 
+inform users of the API, that is if they utilized the provided links in their clients and not 
+hardcoding paths.
 
 ```
 curl http://localhost:3000/api/advertisments -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi
@@ -216,7 +248,9 @@ JSON output with links
 ]
 ```
 
-We get back a list of advertisments, since we have only created one, the list only contains one advertisment. Let's create another advertisment in the system to make it a bit more intresting, for simplicity we will add another phone
+We get back a list of advertisments, since we have only created one, the list only contains one 
+advertisment. Let's create another advertisment in the system to make it a bit more intresting, 
+for simplicity we will add another phone
 
 ```
 curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
@@ -224,8 +258,10 @@ curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:app
   http://localhost:3000/api/advertisments
 ```
 
-When we look for advertisments now, [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments) we get two phone backs, but
-the API also let's us provide a query, so lets say we only want to search for phones with Samsung in the description we would add the following query parameters to our query
+When we look for advertisments now, [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments) 
+we get two phone backs, but the API also let's us provide a query, so lets say we only want to 
+search for phones with Samsung in the description we would add the following query parameters to 
+our query
 
 [http://localhost:3000/api/advertisments?category=Phone&description=Samsung](http://localhost:3000/api/advertisments?category=Phone&description=Samsung)
 
@@ -246,7 +282,10 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
 curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
   -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/users/:id 
    ```
-   Set the _token_ and the :id of the user you want to update, note that you may only update yourself unless you have the administer role. The content passed is a JSON record all the fields of the user. Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the passed record, even the ones you don't change.
+   Set the _token_ and the :id of the user you want to update, note that you may only update yourself 
+   unless you have the administer role. The content passed is a JSON record all the fields of the user. 
+   Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the 
+   passed record, even the ones you don't change.
 
 ### Images
 1. Delete an Image
@@ -255,7 +294,8 @@ curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
 curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
    ```
 
-   Set the _token_ and the :id to the image you want to delete, deleting an image also removes the link to the the image from the advertisment.
+   Set the _token_ and the :id to the image you want to delete, deleting an image also removes the 
+   link to the the image from the advertisment.
 
 ###  Advertisments
 1. Update an advertisment text
@@ -265,7 +305,8 @@ curl - X PUT -d '{"price": "200", "category":"Phone", "description": "Brand new 
    -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
 
-   Set the _token_ and the :id of the advertisment you want to update, note that the JSON record shall be complete in a put
+   Set the _token_ and the :id of the advertisment you want to update, note that the JSON record 
+   shall be complete in a put
 2. Delete an advertisment
 
    ```
@@ -275,32 +316,50 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    Set the _token_ and the :id of the advertisment you want to delete
 
 # Client
-This section will cover the actual tutorial of creating a rest client using the [AngularJS](http://www.angularjs.org) framework
+This section will cover the actual tutorial of creating a rest client using the 
+[AngularJS](http://www.angularjs.org) framework
 
 ## A Static Client
-To get an idea what we try to accomplish we startout with a mockup, a static HTML client of our demo. It will be much easier to reason what we want to build if we have seen a prototype.
+To get an idea what we try to accomplish we startout with a mockup, a static HTML client of our demo. 
+It will be much easier to reason what we want to build if we have seen a prototype.
 
 [static site](http://htmlpreview.github.io/?https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html)
 
-In the static client we see that we have a rather simple application to display advertisments, it shall also be possible to login and register, once logged in it shall be possible to add new advertisments, and edit and delete these. 
-We will convert the application to a dynamic angularjs application step by step, but before we do this just a short intro to the andular JS framework
+In the static client we see that we have a rather simple application to display advertisments, 
+it shall also be possible to login and register, once logged in it shall be possible to add new 
+advertisments, and edit and delete these. 
+We will convert the application to a dynamic angularjs application step by step, but before we do 
+this just a short intro to the andular JS framework
 
 ## Background on Angular JS
-The [Angular JS](http://angularjs.org) was created internally within Google in 2009, an engineer named Miško Hevery, he claimed that he could re-write 17 000 lines of front-end code into pure js within two weeks. He almost made the timeline but the amazing effect was that the application now was down to 1500 lines of code, they then knew that they where on to something.
+The [Angular JS](http://angularjs.org) was created internally within Google in 2009, an engineer 
+named Miško Hevery, he claimed that he could re-write 17 000 lines of front-end code into pure js 
+within two weeks. He almost made the timeline but the amazing effect was that the application now 
+was down to 1500 lines of code, they then knew that they where on to something.
 
-Since 2009 the Angular JS framework has been stabilized and used within several thousand web-sites around the world.
+Since 2009 the Angular JS framework has been stabilized and is used within several thousand web-sites 
+around the world.
 
 ### What is Angular
-AngularJS is a structural framework for dynamic web apps. It lets you use HTML as your template language and lets you extend HTML's syntax to express your application's components clearly and succinctly. Out of the box, it eliminates much of the code you currently write through data binding and dependency injection. And it all happens in JavaScript within the browser, making it an ideal partner with any server-side technology.
+AngularJS is a structural framework for dynamic web apps. It lets you use HTML as your template 
+language and lets you extend HTML's syntax to express your application's components clearly and 
+succinctly. Out of the box, it eliminates much of the code you currently write through data binding 
+and dependency injection. And it all happens in JavaScript within the browser, making it an ideal 
+partner with any server-side technology.
 
 Angular is what HTML would have been had it been designed for applications. 
 
 The impedance mismatch between dynamic applications and static documents is often solved with:
 
-* a library - a collection of functions which are useful when writing web apps. Your code is in charge and it calls into the library when it sees fit. E.g., jQuery.
-* frameworks - a particular implementation of a web application, where your code fills in the details. The framework is in charge and it calls into your code when it needs something app specific. E.g., knockout, ember, etc.
+* A library - a collection of functions which are useful when writing web apps. Your code is in 
+  charge and it calls into the library when it sees fit. E.g., jQuery.
+* Frameworks - a particular implementation of a web application, where your code fills in the details. 
+  The framework is in charge and it calls into your code when it needs something app specific. 
+  E.g., knockout, ember, etc.
 
-Angular takes another approach. It attempts to minimize the impedance mismatch between document centric HTML and what an application needs by creating new HTML constructs. Angular teaches the browser new syntax through a construct we call directives. Examples include:
+Angular takes another approach. It attempts to minimize the impedance mismatch between document 
+centric HTML and what an application needs by creating new HTML constructs. Angular teaches the 
+browser new syntax through a construct we call directives. Examples include:
 
 * Data binding, as in {{}}.
 * DOM control structures for repeating/hiding DOM fragments.
@@ -325,14 +384,23 @@ Testability story:
 * test harnesses.
 
 ###Angular Sweet Spot
-Angular simplifies application development by presenting a higher level of abstraction to the developer. Like any abstraction, it comes at a cost of flexibility. In other words not every app is a good fit for Angular. Angular was built with the CRUD application in mind. Luckily CRUD applications represent the majority of web applications. To understand what Angular is good at, though, it helps to understand when an app is not a good fit for Angular.
+Angular simplifies application development by presenting a higher level of abstraction to the developer. 
+Like any abstraction, it comes at a cost of flexibility. In other words not every app is a good fit 
+for Angular. Angular was built with the CRUD application in mind. Luckily CRUD applications represent 
+the majority of web applications. To understand what Angular is good at, though, it helps to 
+understand when an app is not a good fit for Angular.
 
 ###The Zen of Angular
-Angular is built around the belief that declarative code is better than imperative when it comes to building UIs and wiring software components together, while imperative code is excellent for expressing business logic.
+Angular is built around the belief that declarative code is better than imperative when it comes to 
+building UIs and wiring software components together, while imperative code is excellent for 
+expressing business logic.
 
-* It is a very good idea to decouple DOM manipulation from app logic. This dramatically improves the testability of the code.
-* It is a really, really good idea to regard app testing as equal in importance to app writing. Testing difficulty is dramatically affected by the way the code is structured.
-* It is an excellent idea to decouple the client side of an app from the server side. This allows development work to progress in parallel, and allows for reuse of both sides.
+* It is a very good idea to decouple DOM manipulation from app logic. This dramatically improves 
+  the testability of the code.
+* It is a really, really good idea to regard app testing as equal in importance to app writing. 
+  Testing difficulty is dramatically affected by the way the code is structured.
+* It is an excellent idea to decouple the client side of an app from the server side. This allows 
+  development work to progress in parallel, and allows for reuse of both sides.
 * It is very helpful indeed if the framework guides developers through the entire journey of building an app: 
   * from designing the UI
   * through writing the business logic
@@ -346,16 +414,22 @@ Angular is built around the belief that declarative code is better than imperati
 * Marshaling data to and from the UI- Data Bindingin
 * Writing tons of initialization code just to get started
 
-for further information please see http://docs.angularjs.org/guide/introduction
+for further information please see 
+* [Angular JS Introduction](http://docs.angularjs.org/guide/introduction)
+* [Angular JS API](http://docs.angularjs.org/api)
+* [Ten Top Reasons Why to use Angular JS](http://www.sitepoint.com/10-reasons-use-angularjs/)
 
 ## Developing the Angular JS Client
-Now that we have a very brief understanding what Angular JS is all about it's time to see it in action. Angular comes with a starter template, I have prepared this template for our demo application. We will utilze git to fetch the latest version of our code
+Now that we have a very brief understanding what Angular JS is all about it's time to see it in 
+action. Angular comes with a starter template, I have prepared this template for our demo application. 
+We will utilze git to fetch the latest version of our code
 
 ```
 git checkout -f client-angular1
 ```
 
-We know get a new set of files, but most importantly a working skeleton application that is fully testable and prepared for the tasks to come.
+We know get a new set of files, but most importantly a working skeleton application that is fully 
+testable and prepared for the tasks to come.
 
 If your node server is not running start it with
 ```
@@ -366,12 +440,19 @@ Once the server has been started it shall be possible to navigate to
 
 [app/index.html](http://localhost:3000/app/index.html)
 
-And you shall see our Angular JS skeleton app with the text Angulars is working 4-ever at the button. If you view the code of [index.html](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html) we can see that angular js libaries are loaded and the {{2+2}} at the button is evaluated to a 4 which indicates that it's up and running.
+And you shall see our Angular JS skeleton app with the text Angulars is working 4-ever at the button. 
+If you view the code of [index.html](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html) 
+we can see that angular js libaries are loaded and the {{2+2}} at the button is evaluated to a 4 
+which indicates that it's up and running.
 
-To run the [test](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md) please follow the linked [instructions](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md).
+To run the [test](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md) 
+please follow the linked [instructions](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md).
 
 ### Migrating our Static Client to Angular JS - Model and Controller
-Now when we have been introduced to the starter application, it's time to get useful and migrate our static application to a dynamic angular application. We leave the rest parts behind for now, but create a local mockup repository of our initial data. To do this we first take a look at the JSON format returned by our REST-server
+Now when we have been introduced to the starter application, it's time to get useful and migrate our 
+static application to a dynamic angular application. We leave the rest parts behind for now, but 
+create a local mockup repository of our initial data. To do this we first take a look at the JSON 
+format returned by our REST-server
 
 ```javascript
 {
@@ -394,7 +475,9 @@ Now when we have been introduced to the starter application, it's time to get us
 
 ```
 
-if we take this as template input, and the data from our [static page](https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html) we could convert the 3 advertisments on the static page to the following JSON
+if we take this as template input, and the data from our 
+[static page](https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html) 
+we could convert the 3 advertisments on the static page to the following JSON
 
 ```javascript
 [
@@ -466,7 +549,8 @@ Now we must modify the router so it will be aware of our partial
 ```
 [app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/app.js)
 
-As you probably spotted, we reference a new controller called advertismentsCtrl, lets open up the controllers.js file and add our controller
+As you probably spotted, we reference a new controller called advertismentsCtrl, lets open up the 
+controllers.js file and add our controller
 
 ```javascript
 angular.module('buyAndSellApp.controllers', []).
@@ -482,7 +566,9 @@ angular.module('buyAndSellApp.controllers', []).
 ```
 [controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/controllers.js)
 
-We deliberity added no code in the controller, since we are test-driven we shall now modify our test to include the new controllerand in the test we shall state the wanted behaviour of our controller, so open up controllersSpec.js to add our new test
+We deliberity added no code in the controller, since we are test-driven we shall now modify our 
+test to include the new controllerand in the test we shall state the wanted behaviour of our 
+controller, so open up controllersSpec.js to add our new test
 
 ```javascript
 describe('controllers', function(){
@@ -560,21 +646,109 @@ angular.module('buyAndSellApp.controllers', []).
 
   }])
 ```
-Note that we use an array to define the function body, this is to ensure that the code can be minified with the angular dependency injection still working, see also [angular minification](http://docs.angularjs.org/guide/di)
+Note that we use an array to define the function body, this is to ensure that the code can be 
+minified with the angular dependency injection still working, 
+see also [angular minification](http://docs.angularjs.org/guide/di)
 
 Rerun our tests, it shall pass now, if it doesn't check your code.
 
 ### Adding our Presentation Logic
-Before we add the presentation logic, I will try to explain what actually happens within our Angular application, this is probably best done with a picture.
+Before we add the presentation logic, I will try to explain what actually happens within our 
+Angular application, this is probably best done with a picture.
 
 ![alt Angular Image](https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/angular-overview.png)
 
-Angualar applications consist of a Model View and Controller architecutre, but what actually happens in our application is that in index.html the ng-app directive is loaded which basically tells Angular to take control.
+Angualar applications consist of a Model View and Controller architecutre, but what actually happens 
+in our application is that in index.html the ng-app directive is loaded which basically tells Angular 
+to take control.
 
-Witin our application, which is a Single Page Application, we have the ability to present partials within the page, these will be swapped in and out depending on our actions.
+Witin our application, which is a Single Page Application, we have the ability to present partials 
+within the page, these will be swapped in and out depending on our actions.
 
-In our first example we load the partial advertisments.html which will contain a div with a controller, which is responsible for the scope. In our case we loop over the advertisments array with a [ng-repeat](http://docs.angularjs.org/api/ng.directive:ngRepeat) directive. This let us create rows in our table.The image has a special [ng-src](http://docs.angularjs.org/api/ng.directive:ngSrc) directive since we want databining later on, e.g. if we switch images it should be automatically reflected in the view through angulars two-way data binding.
+In our first example we load the partial advertisments.html which will contain a div with a 
+controller, which is responsible for the scope. In our case we loop over the advertisments array 
+with a [ng-repeat](http://docs.angularjs.org/api/ng.directive:ngRepeat) directive. This let us create 
+rows in our table.The image has a special [ng-src](http://docs.angularjs.org/api/ng.directive:ngSrc) 
+directive since we want databining later on, e.g. if we switch images it should be automatically 
+reflected in the view through angulars two-way data binding.
 
+Before we dive into our presentation logic a small refactoring of our application is needed, 
+remember that we put an array of test-data directly into our controller, this is poor design so we 
+will introduce a new angular feauture called a 
+[service](http://docs.angularjs.org/guide/dev_guide.services.understanding_services) where we will 
+place this logic.
+
+#### Angular JS Service
+If you managed to get the code working in the previous section, you can continue with that code-base
+if not you can check out a working version from the previous section
+
+```
+git checkout -f client-angular2
+```
+
+We start out by modifying our test and then implement a simple stub for our servicer. 
+
+```javascript
+  // add the following test
+  describe('advertisment', function() {
+    it('should return the advertisment service', inject(function(advertisment) {
+      expect(advertisment.list().length).toEqual(3);
+    }));
+  });
+```
+test/unit/servicesSpec.js
+
+Then we must inform Angular DI that we have a new service available for the application
+
+```javascript
+// Demonstrate how to register services
+// In this case it is a simple value service.
+angular.module('buyAndSellApp.services', []).
+  value('version', '0.1')
+  .value('advertisment', new advertisment());
+
+function advertisment(){
+  return{
+    list: function(){
+            return [];
+          }
+  }
+}
+```
+app/js/services.js
+
+Running the test now shall result in a failure, since we havnt't moved the array contents yet.
+
+Now modify our AdvertimentCtrl to call the service, move the array to our advertisment service.
+
+```javascript
+var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
+ // To ensure that minification works we must declare injection
+ // in an array like manner, get use to it to avoid minification bugs
+ buyAndSellApp.controller('AdvertismentsCtrl',['$scope', 'advertisment',
+                                               function($scope, advertisment) {
+        $scope.advertisments = advertisment.list();
+  }]);
+
+  buyAndSellApp.controller('MyCtrl1', [function() {
+
+  }])
+  buyAndSellApp.controller('MyCtrl2', [function() {
+
+  }]);
+```
+app/js/controllers.js
+
+Note that we added our service as an injection parameter, then we simply delegate to the service to
+set our scope variable. Did you remember to move the array into the service?
+
+run the test if it's not started, it shall pass now
+
+```
+karma start config/karma.conf.js --single-run
+```
+
+#### Partial HTML Code
 Now lets edit our partial and add the following html-code
 
 ```HTML
