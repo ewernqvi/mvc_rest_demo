@@ -606,7 +606,7 @@ angular.module('buyAndSellApp.controllers', []).
       {
         contentType: "image/jpg",
         advertismentId: "dummy-client-id1",
-        href: "/test-data/img/surfboard.jpg"
+        href: "https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/surfboard.jpg"
       }
      ],
     owner: "mrx@gmail.com",
@@ -621,7 +621,7 @@ angular.module('buyAndSellApp.controllers', []).
       {
         contentType: "image/jpg",
         advertismentId: "dummy-client-idr2",
-        href: "/test-data/img/longboard.jpg"
+        href: "https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/longboard.jpg"
       }
     ],
     owner: "mrx@gmail.com",
@@ -636,7 +636,7 @@ angular.module('buyAndSellApp.controllers', []).
       {
         contentType: "image/jpg",
         advertismentId: "dummy-client-id3",
-        href: "/test-data/img/zoggs.jpg"
+        href: "https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/zoggs.jpg"
       }
     ],
     owner: "mrx@gmail.com",
@@ -748,28 +748,184 @@ run the test if it's not started, it shall pass now
 karma start config/karma.conf.js --single-run
 ```
 
-#### Partial HTML Code
+#### Partial HTML Code -- Advertisments
 Now lets edit our partial and add the following html-code
 
 ```HTML
-<partial>insert content here once tested</partial>
+<div class="container">
+  <table class="table">
+    <tbody>
+      <!-- dyn content begin -->
+      <tr ng-repeat="ad in advertisments">
+         <td>
+            <a href="#/advertisment/{{ad._id}}"><img ng-src="{{ad.images[0].href}}" class="img-thumbnail"></a>
+         </td>
+         <td>
+            <div>{{formatDate(ad.created)}}</div>
+            <div><a href="#/advertisment/{{ad._id}}"><h2>{{ad.description}}</h2></a></div>
+            <div><h3>{{ad.price}}</h3></div>
+         </td>
+      </tr>
+    </tbody>
+  </table>
+</div> <!-- /container -->
 ```
+
+As you may see we create links to render details in a separate view, we will implement this later,
+for now the links will not work. We also added reference to a function
 
 
 ### Hooking up Angular JS with the REST backend
 
-### Browse Advertisments
+#### Advertisment Details
 
-### Advertisment Details
+Create a new advertismentDetails partial
+
+```HTML
+<h1>Advertisment Details</h1>
+```
+partials/advertismentDetails.html
+
+Nothing fancy here, just a simple HTML page displaying all the images for the advertisment and the
+detailded description of the advertisment.
+
+```javascript
+TODO: insert js code
+```
+js/app.js
+
+Here we just add the routing logic, the route is triggered by in the adverisments.html partial, which
+we have already completed. The new route refers to a new controller which we must implement.
+
+```javascript
+TODO: insert js code
+```
+test/unit/controllersSpec.js
+
+Our new advertismentDetail controller test, at this stage the test will fail, since we have not 
+created the controller yet.
+
+```javascript
+TODO: insert js code
+```
+js/controllers.js
+
+When adding the controller logic, we realize that we need a new method in our advertisment service 
+to communicate with the advertisment-resource on the server-side. Since we at this instance do not
+have more details when getting a single resource, we simply pick out the correct resource from the
+exisitng list method.
+
+```javascript
+TODO: insert js code
+```
+js/services.js
+
+Now we have created a working detail page, but as an exercise for you modify the advertisment.get 
+method to communicate with the backend.
 
 ### Logging In
 
-### Edit Advertisment Text
+Create a new login partial, set a variable in the root scope or local storage holding the user-token
 
-### Adding new Advertisments
+```HTML
+<h1>Login</h1>
+```
+partials/login.html
 
-### Adding Images to Advertisments
+Nothing fancy here, just a simple form divided into a login section and a register new user section.
+Submitting the form will trigger a controller and if successful login the user will be transferred
+back to the advertisments overview. When an existing user has checked in, the loaded list of 
+advertisments are checked against the owner-id, if one matches the data is re-loaded.
+
+```javascript
+TODO: insert js code
+```
+js/app.js
+
+Here we just add the routing logic, the route is triggered by the login button on the index.html page.
+
+```javascript
+TODO: insert js code
+```
+test/unit/controllersSpec.js
+
+Our new login controller test at this stage the test will fail, since we have not created the controller
+yet.
+
+```javascript
+TODO: insert js code
+```
+js/controllers.js
+
+When adding the controller logic, we realize that we need a login service to communicate with the 
+user-resource on the server-side. We mock this service in our test to make it work without depending
+on the backend.
+
+```javascript
+TODO: insert js code
+```
+js/services.js
+
+When we have added our service we shall be able to login, we still have not handled login-errors
+and registration errors in a good way, we leave this as an exercise for you!.
 
 ## Client Summary
+We have now completed part of our application, now it's just a matter of applying the same technique
+to finish the reminder of the application or start a new project of your own.
+# Extras 
+## Server
+Modify the server to support CORS, this is rather simple just follow the linked 
+[instructions](https://npmjs.org/package/cors)
 
-### Adding Images to
+Make sure you configures the Access-Control-Allow-Headers CORS property to allow our user-token header.
+
+Modify the port of the  server and start an additional instance, let the first server serve your 
+HTML-pages this way the REST-API is on a different domain from a web-browser perspective.
+
+e.g. access the client on http://localhost:3333/app
+
+and the server-rest-api on http://localhost:3000/api/advertisments
+
+## Client
+### Adding Images in Angular JS
+Adding an image to an advertisment is not that hard if we post a form, but in our single page application
+we do not want to do this, so instead we must rely on posting FormData in our advertisment service.
+
+see [Simple Example](http://jsfiddle.net/JeJenny/ZG9re/)
+
+There are many more advanced plugins available for Angular if you prefer drag and drop, preview etc.
+
+### Adding new Advertisments
+If the user is logged in, just:
+
+1. Add a link at buttom of the page to trigger this route 
+2. Update js/app.js with the new route and a controller
+3. Add a test and the new controller
+4. Add an addAdvertisment.html partial where you display the information in a form, use what you learned
+   in the [Adding Images in Angular JS](#Adding Images in Angular JS) to enable adding images, 
+   removing an image is just a matter of calling the DELETE method on the image resource. Note that
+   you must add a placeholder advertisment to be able to add an image.
+5. Add methods in our advertisment service to communicate with
+   * POST /api/images - Add image
+   * POST /api/advertisments - Add a advertisment
+
+Good Luck!
+
+### Edit Advertisment Text
+If the user is logged in, just:
+
+1. Add an edit icon on the left of an advertisment with an edit link
+2. Clicking on the icon shall trigger the edit route
+3. Update js/app.js with the new route and a controller
+4. Add a test and the new controller
+5. Add a editAdvertisment.html partial where you display the information in a form
+   Removing an image is just a matter of calling the DELETE method on the image resource.
+6. Add methods in our advertisment service to communicate with
+   * DELETE /api/images:id - Remove an image
+   * PUT /api/advertisments - Update the text of the advertisment
+
+Good Luck!
+### Removing Advertisments from the Client
+Add a wast-bin right of the advertisment, if a delete link exist for the advertisment. When clicked
+use the verb and href provided in the link to perform a delete on the server-side.
+
