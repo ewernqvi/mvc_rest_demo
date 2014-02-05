@@ -869,6 +869,9 @@ js/services.js
 When we have added our service we shall be able to login, we still have not handled login-errors
 and registration errors in a good way, we leave this as an exercise for you!.
 
+### Ordering our displayed advertisments
+[Order By](http://docs.angularjs.org/api/ng.filter:orderBy)
+
 ## Client Summary
 We have now completed part of our application, now it's just a matter of applying the same technique
 to finish the reminder of the application or start a new project of your own.
@@ -929,3 +932,14 @@ Good Luck!
 Add a wast-bin right of the advertisment, if a delete link exist for the advertisment. When clicked
 use the verb and href provided in the link to perform a delete on the server-side.
 
+### Add filtering for Advertiments both on text in description and category
+You can do this in two ways, either on the client-side only, then angular does this for you, but this
+requires that you have a site with a limited number of advertisments, for show you may try it out it
+is barely no coding required
+
+[Angular Search Filter](http://docs.angularjs.org/api/ng.filter:filter)
+
+Add the filter attributes to ng-repeat
+
+If you want to do this properly you shall forward the filter to REST-API on the server, this is just
+a matter of adding query parameters to the url for the list service
