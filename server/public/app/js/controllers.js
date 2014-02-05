@@ -25,7 +25,34 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
         var text=JSON.stringify(advertisment.list()[0]);
         $scope.advertisment = text;
         $scope.formatDate = function(d){return "today 11:21";};
-  }]);  
+  }]); 
+  
+  buyAndSellApp.controller('LoginController', ['$scope', 'user',
+     function($scope, user){
+        $scope.login = {};
+        $scope.login.user = null;
+         
+        $scope.login.connect = function() {
+          user.connect($scope.login.login, $scope.login.password, function(res){
+            if(res.error) alert(err);
+            $scope.login.user = res;
+          });
+        }
+         
+        $scope.login.register = function() {
+          var newUser = {email: $scope.login.new.user,
+                         password: $scope.login.new.password};
+          user.register(newUser, function(res) {
+            if(res.error) alert(err);
+            $scope.login.user = res;
+          });
+         };
+    
+         $scope.login.disconnect = function() {
+           $scope.login.user = null;
+           user.logout();
+         };
+     }]);
 
   buyAndSellApp.controller('MyCtrl1', [function() {
 
