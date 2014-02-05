@@ -42,7 +42,8 @@ module.exports.routes = function (pdb, plog){
        user_db.findOne({_id: user}, function(e, result){ 
          if (e) return next(e); 
          var authenticated = ( result && result.password && pass === result.password);
-         callback(null /* error */, authenticated);
+         //callback(null /* error */, authenticated);
+         callback(authenticated);
       });
     },
     /**

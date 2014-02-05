@@ -16,10 +16,45 @@ app.use(express.urlencoded());
 var db = mongoskin.db('localhost:27017/test_db2', {safe:true});;
 var routes = routeFactory.routes(db, log);
 
-var auth = express.basicAuth(function(user, pass, callback) {
-  routes.auth(user, pass, callback);
+app.use(function(err, req, res, next) {
+  // only handle `next(err)` calls
+  console.log('Error: ' + err);
+  if(err.status){
+    res.send(err.status);
+  }
+  else{
+    res.send(500, 'Houston we have a problem!');
+  }
 });
 
+var auth = express.basicAuth(function(user, pass, callback) {
+  routes.auth(user, pass, function(result){
+    //console.log('result: '+ result);
+    callback(null, result);
+  });
+});
+
+/**
+ * Custom authentication solution, needed to get rid of user pop-up in browser if 401 is returned
+ * the browser displays a login dialog
+ */
+auth = function(req, res, next) {
+  var authorization = req.headers.authorization;
+  var parts = authorization.split(' ');
+  if (parts.length !== 2) {res.send(400, 'error: not a proper header'); return};
+  var scheme = parts[0]
+    , credentials = new Buffer(parts[1], 'base64').toString()
+    , index = credentials.indexOf(':');
+  if ('Basic' != scheme || index < 0) {res.send(400, 'error: not a proper header'); return};
+  var user = credentials.slice(0, index)
+    , pass = credentials.slice(index + 1);
+  //console.log('user: '+ user + ' pass: ' + pass);
+  routes.auth(user, pass, function(result){
+    //console.log('result: '+ result);
+    if(result) next();
+    else res.send(418,  'invalid credentials supplied!');
+  });
+};
 app.param('collectionName', function(req, res, next, collectionName){
   req.collection = db.collection(collectionName);
   return next();
