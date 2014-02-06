@@ -1,0 +1,17 @@
+<div class="container">
+  <table class="table">
+    <tbody>
+      <!-- dyn content begin -->
+      <tr ng-repeat="ad in advertisments">
+         <td>
+            <a href="#/advertisment/{{ad._id}}"><img ng-src="{{ad.images[0].href}}" class="img-thumbnail"></a>
+         </td>
+         <td>
+            <div>{{formatDate(ad.created)}}</div>
+            <div><a href="#/advertisment/{{ad._id}}"><h2>{{ad.description}}</h2></a></div>
+            <div><h3>{{ad.price}}</h3></div>
+         </td>
+      </tr>
+    </tbody>
+  </table>
+</div> <!-- /container -->
