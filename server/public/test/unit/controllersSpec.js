@@ -5,19 +5,20 @@
 describe('controllers', function(){
   // our controller
   describe('AdvertismentsCtrl', function(){
-    var scope, ctrl, advertismentMock;
+    var scope, ctrl, httpMock;
     beforeEach(module('buyAndSellApp'));
 
-    beforeEach(inject(function($controller, advertisment) {
+    beforeEach(inject(function($controller, $httpBackend) {
       scope = {};
-      
-      console.log('apa: '+advertisment);
+      httpMock = $httpBackend;
+      httpMock.expectGET("/api/advertisments").respond([1,3,4]);
       ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
     })); 
 
     it('should create advertisment model with 3 advertisments', function($controller, advertisment) {
       //Check that the controller has a list of three advertisments
-      //expect(scope.advertisments.length).toBe(3);
+      httpMock.flush();
+      expect(scope.advertisments.length).toBe(3);
     })
   });
 
