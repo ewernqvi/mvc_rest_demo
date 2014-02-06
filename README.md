@@ -2,13 +2,13 @@ MVC REST Demo
 =============
 
 #Purpose
-The purpose of this repository is to work as a RESTful backend for an MVC style architecure tutorial. 
+The purpose of this repository is to work as a RESTful backend for an MVC style architecture tutorial. 
 
 The purpose of the full application is to serve as a buy and sell site. A customer browse for 
-advertisments, if he/she finds one intresting he/she contacts the owner of the advertisment 
+advertisements, if he/she finds one interesting he/she contacts the owner of the advertisement 
 through the server.
-A user may also register, which gives the user the ability to add advertisments, edit and delete 
-his/her added advertisments.
+A user may also register, which gives the user the ability to add advertisements, edit and delete 
+his/her added advertisements.
 
 The application consists of two parts. 
 * [REST Server](#server)
@@ -18,7 +18,7 @@ The application consists of two parts.
 The REST server part of the application has three resources
 
 1. Users
-2. Advertisments
+2. Advertisements
 3. Images
 
 I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this 
@@ -68,7 +68,7 @@ npm install
    node express_server
    ```
 
-8. Run the test to see if everything is working, this must be done in a separate teminal window
+8. Run the test to see if everything is working, this must be done in a separate terminal window
    ```
    mocha
    ```
@@ -85,7 +85,7 @@ installed your server the URL may differ
 
 ### User Logon
 Once you have a user in the system, you can use this user to login, which is a requirement for 
-adding new advertisments.
+adding new advertisements.
 ```
 curl -X GET -u 'mrx@gmail.com:loko' http://localhost:3000/api/users/mrx@gmail.com
 ```
@@ -110,13 +110,13 @@ we shall apply the stateless nature of the server.
 
 For now remember your token
 
-### Add a new advertisment
-To add a new advertisment, we issue a post, now we need to supply the userToken in the HTTP header 
+### Add a new advertisement
+To add a new advertisement, we issue a post, now we need to supply the userToken in the HTTP header 
 for our identification
 
 ```
 curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
-  -d '{"category": "Phone", "description": "IPhone5 - Mint Condtition", "price": "$200"}' \ 
+  -d '{"category": "Phone", "description": "iPhone 5 - Mint Condition", "price": "$200"}' \ 
   http://localhost:3000/api/advertisments
 ```
 If successful we get the following JSON back, the important bit is the created _id which we will 
@@ -125,7 +125,7 @@ use later on
 [
   {
     category: "Phone",
-    description: "IPhone5 - Mint Condtition",
+    description: "iPhone 5 - Mint Condition",
     price: "$200",
     owner: "mrx@gmail.com",
     created: "2014-01-31T09:27:34.825Z",
@@ -134,14 +134,14 @@ use later on
 ]
 ```
 
-### Add an image to our advertisment
-To make our advertisment more appealing we want to upload an image to the server. Image uploading 
+### Add an image to our advertisement
+To make our advertisement more appealing we want to upload an image to the server. Image uploading 
 can be performed in many ways, but when using a http-browser 
 [multi-part form](http://www.ietf.org/rfc/rfc2388.txt) is the norm and the browser handles 
 content-type, size headers etc for you.
 
 When using curl we must include the -F option to tell curl we want to post a file, in this case our 
-image. Since we want to add the image to our advertisment we must also include the advertimenentId 
+image. Since we want to add the image to our advertisement we must also include the advertisement Id 
 as a form parameter
 
 ```
@@ -159,19 +159,19 @@ bit in this JSON is the href to the server generated name of the image
     href: "/img/9279-1vopx7g.gif"
 }
 ```
-We can add multiple images to our advertisment, if we ask the server for the advertisment now
+We can add multiple images to our advertisement, if we ask the server for the advertisement now
 
 ```
 curl http://localhost:3000/api/advertisments/52eb6c860e5f433f24000003
 ```
-We see that the server has updated the advertisment with a link to the added picture
+We see that the server has updated the advertisement with a link to the added picture
 
 ```javascript
 {
   _id: "52eb6c860e5f433f24000003",
   category: "Phone",
   created: "2014-01-31T09:27:34.825Z",
-  description: "IPhone5 - Mint Condtition",
+  description: "iPhone 5 - Mint Condition",
   images: [
     {
       contentType: "image/gif",
@@ -187,8 +187,8 @@ We see that the server has updated the advertisment with a link to the added pic
 
 ```
 
-### Browse advertisments in the system
-Now we have added an advertisment so we can browse it in the system, we will start by not supplying 
+### Browse advertisements in the system
+Now we have added an advertisement so we can browse it in the system, we will start by not supplying 
 a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved 
 with a normal web browser, just click on the link or modify it if you run your server on a different 
 location
@@ -199,7 +199,7 @@ You will see the JSON formatted as text in the browser window, at least if you r
 
 But there is more, if you supply a user-token in the header, we go back to curl to do this, we now 
 get back links, which are shortcuts for edit, delete and details actions of the resource. These 
-links are typically utlized by a dynamic client, in rest terms we call this 
+links are typically utilized by a dynamic client, in rest terms we call this 
 [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS), which stand for **Hypermedia as the Engine of 
 Application State**. From a REST API perspective this is important, since the linked parts of the 
 API can be considered private, and changes to these parts of the API can be made without having to 
@@ -217,7 +217,7 @@ JSON output with links
     _id: "52eb6c860e5f433f24000003",
     category: "Phone",
     created: "2014-01-31T09:27:34.825Z",
-    description: "IPhone5 - Mint Condtition",
+    description: "iPhone 5 - Mint Condition",
     images: [
       {
         contentType: "image/gif",
@@ -231,34 +231,34 @@ JSON output with links
     price: "$200",
     update: {
       verb: "PUT",
-      description: "Update for resource advertisments with id 52eb6c860e5f433f24000003",
+      description: "Update for resource advertisements with id 52eb6c860e5f433f24000003",
       href: "/api/advertisments/52eb6c860e5f433f24000003"
     },
     remove: {
       verb: "DELETE",
       href: "/api/advertisments/52eb6c860e5f433f24000003",
-      description: "Delete for resource advertisments with id 52eb6c860e5f433f24000003"
+      description: "Delete for resource advertisement with id 52eb6c860e5f433f24000003"
     },
     details: {
       verb: "GET",
-      description: "Details for resource advertisments with id 52eb6c860e5f433f24000003",
+      description: "Details for resource advertisements with id 52eb6c860e5f433f24000003",
       href: "/api/advertisments/52eb6c860e5f433f24000003"
     }
   }
 ]
 ```
 
-We get back a list of advertisments, since we have only created one, the list only contains one 
-advertisment. Let's create another advertisment in the system to make it a bit more intresting, 
+We get back a list of advertisements, since we have only created one, the list only contains one 
+advertisement. Let's create another advertisement in the system to make it a bit more interesting, 
 for simplicity we will add another phone
 
 ```
 curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
-  -d '{"category": "Phone", "description": "Samsung S3 -  Perfect Condtition", "price": "$200"}' \
+  -d '{"category": "Phone", "description": "Samsung S3 -  Perfect Condition", "price": "$200"}' \
   http://localhost:3000/api/advertisments
 ```
 
-When we look for advertisments now, [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments) 
+When we look for advertisements now, [http://localhost:3000/api/advertisments](http://localhost:3000/api/advertisments) 
 we get two phone backs, but the API also let's us provide a query, so lets say we only want to 
 search for phones with Samsung in the description we would add the following query parameters to 
 our query
@@ -275,7 +275,7 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
    ```
    Set the _token_ and the :id to whatever you want to delete
 
-   Deleting a user also recursively removes all the advertisments added by the user
+   Deleting a user also recursively removes all the advertisements added by the user
 
 2. Update User
    ```
@@ -284,7 +284,7 @@ curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
    ```
    Set the _token_ and the :id of the user you want to update, note that you may only update yourself 
    unless you have the administer role. The content passed is a JSON record all the fields of the user. 
-   Please note that a HTTP PUT overwrites the entiere record, so all fields must be supplied in the 
+   Please note that a HTTP PUT overwrites the entire record, so all fields must be supplied in the 
    passed record, even the ones you don't change.
 
 ### Images
@@ -295,41 +295,41 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
    ```
 
    Set the _token_ and the :id to the image you want to delete, deleting an image also removes the 
-   link to the the image from the advertisment.
+   link to the the image from the advertisement.
 
-###  Advertisments
-1. Update an advertisment text
+###  Advertisements
+1. Update an advertisement text
 
    ```
 curl - X PUT -d '{"price": "200", "category":"Phone", "description": "Brand new Ericsson Phone"}' \
    -H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
 
-   Set the _token_ and the :id of the advertisment you want to update, note that the JSON record 
+   Set the _token_ and the :id of the advertisement you want to update, note that the JSON record 
    shall be complete in a put
-2. Delete an advertisment
+2. Delete an advertisement
 
    ```
 curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
    ```
 
-   Set the _token_ and the :id of the advertisment you want to delete
+   Set the _token_ and the :id of the advertisement you want to delete
 
 # Client
 This section will cover the actual tutorial of creating a rest client using the 
 [AngularJS](http://www.angularjs.org) framework
 
 ## A Static Client
-To get an idea what we try to accomplish we startout with a mockup, a static HTML client of our demo. 
+To get an idea what we try to accomplish we start out with a mockup, a static HTML client of our demo. 
 It will be much easier to reason what we want to build if we have seen a prototype.
 
 [static site](http://htmlpreview.github.io/?https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html)
 
-In the static client we see that we have a rather simple application to display advertisments, 
+In the static client we see that we have a rather simple application to display advertisements, 
 it shall also be possible to login and register, once logged in it shall be possible to add new 
-advertisments, and edit and delete these. 
-We will convert the application to a dynamic angularjs application step by step, but before we do 
-this just a short intro to the andular JS framework
+advertisements, and edit and delete these. 
+We will convert the application to a dynamic Angular JS application step by step, but before we do 
+this just a short intro to the Angular JS framework
 
 ## Background on Angular JS
 The [Angular JS](http://angularjs.org) was created internally within Google in 2009, an engineer 
@@ -349,46 +349,30 @@ partner with any server-side technology.
 
 Angular is what HTML would have been had it been designed for applications. 
 
-The impedance mismatch between dynamic applications and static documents is often solved with:
+The mismatch between dynamic applications and static documents is often solved with:
 
-* A library - a collection of functions which are useful when writing web apps. Your code is in 
-  charge and it calls into the library when it sees fit. E.g., jQuery.
+* A library - Your code is in charge and it calls into the library when it sees fit to assist in altering 
+  the dom. E.g., jQuery.
 * Frameworks - a particular implementation of a web application, where your code fills in the details. 
-  The framework is in charge and it calls into your code when it needs something app specific. 
+  The framework is in charge and it calls into your code when it needs something application specific. 
   E.g., knockout, ember, etc.
 
 Angular takes another approach. It attempts to minimize the impedance mismatch between document 
 centric HTML and what an application needs by creating new HTML constructs. Angular teaches the 
-browser new syntax through a construct we call directives. Examples include:
+browser new syntax through a construct called [directives](http://docs.angularjs.org/guide/directive). 
 
-* Data binding, as in {{}}.
-* DOM control structures for repeating/hiding DOM fragments.
-* Support for forms and form validation.
-* A complete client-side solution
+Angular comes with the following out-of-the-box to assist you with creating an MVC style application
+* [data-binding](http://docs.angularjs.org/guide/databinding)
+* [basic templating directives](http://docs.angularjs.org/guide/templates)
+* [form validation](http://www.ng-newsletter.com/posts/validations.html)
+* [routing and deep-linking](http://docs.angularjs.org/api/ngRoute.directive:ngView)
+* [dependency injection](http://docs.angularjs.org/guide/di)
 
-Angular comes with the following out-of-the-box:
-
-Everything you need to build a CRUD app in a cohesive set: 
-* data-binding
-* basic templating directives
-* form validation
-* routing
-* deep-linking
-* reusable components
-* dependency injection
-
-Testability story: 
-* unit-testing
-* end-to-end testing
-* mocks
-* test harnesses.
-
-###Angular Sweet Spot
-Angular simplifies application development by presenting a higher level of abstraction to the developer. 
-Like any abstraction, it comes at a cost of flexibility. In other words not every app is a good fit 
-for Angular. Angular was built with the CRUD application in mind. Luckily CRUD applications represent 
-the majority of web applications. To understand what Angular is good at, though, it helps to 
-understand when an app is not a good fit for Angular.
+Testability
+* [unit-testing](http://docs.angularjs.org/guide/dev_guide.unit-testing)
+* [end-to-end testing](http://docs.angularjs.org/guide/dev_guide.e2e-testing)
+* [mocks](http://docs.angularjs.org/api/ngMock)
+* [Karma test harnesses](http://karma-runner.github.io/0.10/index.html)
 
 ###The Zen of Angular
 Angular is built around the belief that declarative code is better than imperative when it comes to 
@@ -411,7 +395,7 @@ expressing business logic.
 
 * Registering callbacks
 * Manipulating HTML DOM programmatically
-* Marshaling data to and from the UI- Data Bindingin
+* Marshaling data to and from the UI- Data Binding
 * Writing tons of initialization code just to get started
 
 for further information please see 
@@ -422,10 +406,20 @@ for further information please see
 ## Developing the Angular JS Client
 Now that we have a very brief understanding what Angular JS is all about it's time to see it in 
 action. Angular comes with a starter template, I have prepared this template for our demo application. 
-We will utilze git to fetch the latest version of our code
+We will utilize git to fetch the latest version of our code
 
 ```
 git checkout -f client-angular1
+```
+
+Once checked out we need to install bower, which is a dependency manager for javascript
+```
+cd $APP_HOME/server/public
+npm install -g bower
+```
+Where APP_HOME is the root of the application, e.g. the mvc_rest_demo directory. We will now let bower fetch our application dependencies
+````
+bower install
 ```
 
 We know get a new set of files, but most importantly a working skeleton application that is fully 
@@ -440,9 +434,9 @@ Once the server has been started it shall be possible to navigate to
 
 [app/index.html](http://localhost:3000/app/index.html)
 
-And you shall see our Angular JS skeleton app with the text Angulars is working 4-ever at the button. 
+And you shall see our Angular JS skeleton app with the text Angular JS is working 4-ever at the button. 
 If you view the code of [index.html](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html) 
-we can see that angular js libaries are loaded and the {{2+2}} at the button is evaluated to a 4 
+we can see that angular js libraries are loaded and the {{2+2}} at the button is evaluated to a 4 
 which indicates that it's up and running.
 
 To run the [test](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md) 
@@ -459,7 +453,7 @@ format returned by our REST-server
   _id: "52eb6c860e5f433f24000003",
   category: "Phone",
   created: "2014-01-31T09:27:34.825Z",
-  description: "IPhone5 - Mint Condtition",
+  description: "i Phone5 - Mint Condition",
   images: [
     {
       contentType: "image/gif",
@@ -477,7 +471,7 @@ format returned by our REST-server
 
 if we take this as template input, and the data from our 
 [static page](https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html) 
-we could convert the 3 advertisments on the static page to the following JSON
+we could convert the 3 advertisements on the static page to the following JSON
 
 ```javascript
 [
@@ -529,14 +523,14 @@ we could convert the 3 advertisments on the static page to the following JSON
 ]
 
 ```
-Let us create a new partial for our list of advertisments, the HTML code for this would be
+Let us create a new partial for our list of advertisements, the HTML code for this would be
 
 ```HTML
-<h2>This is where our list of advertisments shall be displayed</h2>
+<h2>This is where our list of advertisements shall be displayed</h2>
 ```
 advertisments.html
 
-let us save the file as partials/advertiments.html
+let us save the file as partials/advertisments.html
 
 Now we must modify the router so it will be aware of our partial
 ```javascript
@@ -566,18 +560,18 @@ angular.module('buyAndSellApp.controllers', []).
 ```
 [controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/controllers.js)
 
-We deliberity added no code in the controller, since we are test-driven we shall now modify our 
-test to include the new controllerand in the test we shall state the wanted behaviour of our 
+We deliberately added no code in the controller, since we are test-driven we shall now modify our 
+test to include the new controller and in the test we shall state the wanted behavior of our 
 controller, so open up controllersSpec.js to add our new test
 
 ```javascript
 describe('controllers', function(){
   beforeEach(module('buyAndSellApp.controllers'));
 
-  it('should create advertisment model with 3 advertisments', inject(function($controller) {
+  it('should create advertisement model with 3 advertisements', inject(function($controller) {
     var scope = {},
         ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
-    //Check that the controller has a list of three advertisments
+    //Check that the controller has a list of three advertisements
     expect(scope.advertisments.length).toBe(3);
   }));
 
@@ -658,23 +652,23 @@ Angular application, this is probably best done with a picture.
 
 ![alt Angular Image](https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/angular-overview.png)
 
-Angualar applications consist of a Model View and Controller architecutre, but what actually happens 
+Angular applications consist of a Model View and Controller architecture, but what actually happens 
 in our application is that in index.html the ng-app directive is loaded which basically tells Angular 
 to take control.
 
-Witin our application, which is a Single Page Application, we have the ability to present partials 
+Within our application, which is a Single Page Application, we have the ability to present partials 
 within the page, these will be swapped in and out depending on our actions.
 
 In our first example we load the partial advertisments.html which will contain a div with a 
-controller, which is responsible for the scope. In our case we loop over the advertisments array 
+controller, which is responsible for the scope. In our case we loop over the advertisements array 
 with a [ng-repeat](http://docs.angularjs.org/api/ng.directive:ngRepeat) directive. This let us create 
 rows in our table.The image has a special [ng-src](http://docs.angularjs.org/api/ng.directive:ngSrc) 
-directive since we want databining later on, e.g. if we switch images it should be automatically 
-reflected in the view through angulars two-way data binding.
+directive since we want data binding later on, e.g. if we switch images it should be automatically 
+reflected in the view through Angular's two-way data binding.
 
 Before we dive into our presentation logic a small refactoring of our application is needed, 
 remember that we put an array of test-data directly into our controller, this is poor design so we 
-will introduce a new angular feauture called a 
+will introduce a new angular feature called a 
 [service](http://docs.angularjs.org/guide/dev_guide.services.understanding_services) where we will 
 place this logic.
 
@@ -717,9 +711,9 @@ function advertisment(){
 ```
 app/js/services.js
 
-Running the test now shall result in a failure, since we havnt't moved the array contents yet.
+Running the test now shall result in a failure, since we haven't moved the array contents yet.
 
-Now modify our AdvertimentCtrl to call the service, move the array to our advertisment service.
+Now modify our AdvertimentCtrl to call the service, move the array to our advertisement service.
 
 ```javascript
 var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
@@ -748,7 +742,7 @@ run the test if it's not started, it shall pass now
 karma start config/karma.conf.js --single-run
 ```
 
-#### Partial HTML Code -- Advertisments
+#### Partial HTML Code -- Advertisements
 Now lets edit our partial and add the following html-code
 
 ```HTML
@@ -774,23 +768,49 @@ Now lets edit our partial and add the following html-code
 As you may see we create links to render details in a separate view, we will implement this later,
 for now the links will not work. We also added reference to a function
 
-
-### Hooking up Angular JS with the REST backend
-
 #### Advertisment Details
 
 Create a new advertismentDetails partial
 
 ```HTML
-<h1>Advertisment Details</h1>
+<div class="container">
+  <hr>
+  <h1>{{advertisment.description}}</h1>
+  sold by {{advertisment.owner}}
+  <div class="large-image" ><img ng-src="{{currentImage.href}}" style="max-height: 600px" ></div>
+  <div style="background: grey;">TODO: Thumbnails goes here if several images</div>
+  <h2>Price: {{advertisment.price}}</h2>
+
+  <div>{{advertisment.longDescription}}</div>
+</div>
 ```
 partials/advertismentDetails.html
 
-Nothing fancy here, just a simple HTML page displaying all the images for the advertisment and the
-detailded description of the advertisment.
+Nothing fancy here, just a simple HTML page displaying all the images for the advertisement and the
+detailed description of the advertisement. We have left the small Thumbnails, if we have several picture as an exercise for you. The simplest way to accomplish this is probably to perform an ng-repeat over the image array and add an [ng-click](http://docs.angularjs.org/api/ng.directive:ngClick) handler for each thumbnail which calls the scope and sets $scope.currentImage, which will change the image.
 
 ```javascript
-TODO: insert js code
+'use strict';
+
+// Declare app level module which depends on filters, and services
+angular.module('buyAndSellApp', [
+  'ngRoute',
+  'buyAndSellApp.filters',
+  'buyAndSellApp.services',
+  'buyAndSellApp.directives',
+  'buyAndSellApp.controllers'
+]).
+config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
+  $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
+  $routeProvider.when('/advertisment/:id', {templateUrl: 'partials/advertismentDetails.html',
+      controller: 'AdvertismentDetailCtrl'});
+  $routeProvider.when('/advertisments', {templateUrl: 'partials/advertisments.html', 
+      controller: 'AdvertismentsCtrl'});
+  // Default route
+
+  $routeProvider.otherwise({redirectTo: '/advertisments'});
+}]);
 ```
 js/app.js
 
@@ -806,63 +826,324 @@ Our new advertismentDetail controller test, at this stage the test will fail, si
 created the controller yet.
 
 ```javascript
-TODO: insert js code
+ buyAndSellApp.controller('AdvertismentDetailCtrl',['$scope', '$routeParams', 'advertisment',
+                                               function($scope, $routeParams, advertisment) {
+        $scope.adId = $routeParams.id;
+                $scope.adId = $routeParams.id;
+        $scope.advertisment = {};
+        // Note that we utilize a promise here, since this will be asyncronous when we later
+        // will communicate with the server
+        advertisment.get($scope.adId).then(function(res){
+           $scope.advertisment = res;
+           $scope.currentImage = res.images[0];
+        }, function(err){console.log('error: '+ err)});
+        
+        $scope.formatDate = formatDate;
+  }]); 
 ```
 js/controllers.js
 
-When adding the controller logic, we realize that we need a new method in our advertisment service 
-to communicate with the advertisment-resource on the server-side. Since we at this instance do not
+When adding the controller logic, we realize that we need a new method in our advertisement service 
+to communicate with the advertisement on the server-side. Since we at this instance do not
 have more details when getting a single resource, we simply pick out the correct resource from the
-exisitng list method.
+existing list method. We also introduced a new concept called promises or futures in java. 
+
+In an asynchronous word promises are as important as try and catch in the synchronous world. The promise let us manage dependencies between shared resources in a nice way, I found the following [blog post](http://andyshora.com/promises-angularjs-explained-as-cartoon.html) about promises really good, please have a look.
+
+In Angular a stripped variant of the Q library is used, is is called [$q](http://docs.angularjs.org/api/ng.$q) and should be injected as a dependency.
 
 ```javascript
-TODO: insert js code
+// inject service dependencies, while we are at it we inject the $http service
+angular.module('buyAndSellApp.services', [], function($provide) {
+  $provide.factory('version', [ function() {
+    return '0.1';
+  }]);
+  $provide.factory('advertisment', ['$http', '$q', function(httpSvc, q){return new advertisment(httpSvc, q);}]);  
+
+function advertisment($http, $q){
+  function list(){
+        return [
+                {
+                _id: "dummy-client-id1",
+                category: "Hobbies",
+                created: "2014-02-04T09:27:34.825Z",
+                description: "Premium Surf Board",
+                images: [
+                         {
+                      contentType: "image/jpg",
+                      advertismentId: "dummy-client-id1",
+                      href: "https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/surfboard.jpg"
+                         }
+                         ],
+                owner: "mrx@gmail.com",
+                price: "$110"
+                },
+                {
+                _id: "dummy-client-id2",
+                category: "Hobbies",
+                created: "2014-02-11T09:27:34.825Z",
+                description: "Premium Long Board",
+                images: [
+                         {
+                     contentType: "image/jpg",
+                      advertismentId: "dummy-client-idr2",
+                      href: "https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/longboard.jpg"
+                         }
+                         ],
+                owner: "mrx@gmail.com",
+                price: "$220"
+                },
+                {
+                _id: "dummy-client-id3",
+                category: "Hobbies",
+                created: "2014-02-10T09:27:34.825Z",
+                description: "Dr Zoggs Sex Wax",
+                images: [
+                         {
+                         contentType: "image/jpg",
+                         advertismentId: "dummy-client-id3",
+                         href: "https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/zoggs.jpg"
+                         }
+                         ],
+                owner: "mrx@gmail.com",
+                price: "$11"
+                }
+                ];
+  }
+  return{
+    get: function(adId){
+      var deferred = $q.defer();
+      var res=null;
+      // Dummy implementation for now, we shall call the server
+      var l=list();
+      for(var i=0; i < l.length; i++){
+        if(l[i]._id === adId){
+          res = l[i];
+          break;
+        }
+      }
+      if(res)
+        deferred.resolve(res); 
+      else 
+        deferred.reject('Advertisment with id: ' + adId + ' not found!'); 
+      
+      return deferred.promise;
+      
+    },
+    list: list
+  }
+}
+}); 
 ```
 js/services.js
 
-Now we have created a working detail page, but as an exercise for you modify the advertisment.get 
-method to communicate with the backend.
+Now we have created a working detail page, and all the tests run it's time to communicate with our back-end server
+
+### Hooking up Angular JS with the REST backend
+Our get service is well prepared for backend communication, since we implemented it using a promise it is now just a matter of 
+
+But before we begin, let's check out the latest code
+```
+git checkout -f client-angular4
+```
+Lets start to modify the list service, it will return a promise, since $http does so by default. This means we have to make some small adjustments in the controller following the same pattern as we did for the AdvertismentsDetailCtrl
+
+```javascript
+// the $http API is based on the deferred/promise APIs exposed by the $q service
+// so it returns a promise for us by default
+return $http.get('/api/advertisments')
+  .then(function(response) {
+    if (typeof response.data === 'object') {
+      return response.data;
+    } else {
+      // invalid response
+      return $q.reject(response.data);
+    }
+  }, function(err) {
+      // something went wrong
+      return $q.reject(err.data);
+});
+```
+app/services.js
+
+The little modification in the controller
+```javascript
+ buyAndSellApp.controller('AdvertismentsCtrl',['$scope', 'advertisment',
+                                               function($scope, advertisment) {
+        advertisment.list().then(function(result){
+          $scope.advertisments=result
+        }, function(err){console.log('error: '+ err);});
+        $scope.formatDate = formatDate;
+  }]);
+```
+Now we shall be able to see advertisements from the server, that is if we loaded some using CURL earlier. If we click and advertisment loading details will fail now, since we call the list service, which is a promise now, so let's adjust the advertisment.get method so it communicates with the backend.
+
+```javascript
+  return{
+    get: function(adId){
+     return $http.get('/api/advertisments/' + adId).then(function(response) {
+      if (typeof response.data === 'object') {
+        return response.data;
+      }else{
+        // invalid response
+        return $q.reject(response.data);
+      }
+    }, function(err) {
+      // something went wrong
+      return $q.reject(err.data);
+    });
+      
+    },
+    list: list
+  }
+```
+app/services.js
+
+We know have an application that works as expected. We could add some more end-2-end tests, but I will leave that as an exercise for you.
 
 ### Logging In
 
 Create a new login partial, set a variable in the root scope or local storage holding the user-token
 
 ```HTML
-<h1>Login</h1>
+<div class="container">
+  <div class="row">
+  <div ng-hide="login.user" class="col-md-6">
+    <form action="" ng-submit="login.connect()">
+      <fieldset>
+        <legend>Login</legend>
+        <p><input ng-model="login.login" name="email" type="text" placeholder="Login" required /></p>
+        <p><input ng-model="login.password" name="password" type="password" placeholder="Password" required /></p>
+        <p><button type="submit">Login</button></p>
+      </fieldset>
+    </form>
+  </div>
+  <div ng-hide="login.user" div class="col-md-6">
+      <form action="" ng-submit="login.register()">
+      <fieldset>
+        <legend>Register new User</legend>
+        <p><input ng-model="login.new.user" name="email" type="text" placeholder="your email" required /></p>
+        <p><input ng-model="login.new.password" name="password" type="password" placeholder="Password" required /></p>
+        <p><button type="submit">Register</button></p>
+      </fieldset>
+    </form>
+  </div>
+  
+  </div>
+
+  <div ng-show="login.user">
+    <p>Welcome, {{login.user._id}} : token {{login.user.userToken}}!</p>
+    <p><button ng-click="login.disconnect()">Logout</button></p>
+  </div>
+</div>
 ```
 partials/login.html
 
 Nothing fancy here, just a simple form divided into a login section and a register new user section.
 Submitting the form will trigger a controller and if successful login the user will be transferred
-back to the advertisments overview. When an existing user has checked in, the loaded list of 
-advertisments are checked against the owner-id, if one matches the data is re-loaded.
+back to the advertisements overview. When an existing user has checked in, the loaded list of 
+advertisements are checked against the owner-id, if one matches the data is re-loaded.
 
 ```javascript
-TODO: insert js code
+'use strict';
+
+// Declare app level module which depends on filters, and services
+angular.module('buyAndSellApp', [
+  'ngRoute',
+  'buyAndSellApp.filters',
+  'buyAndSellApp.services',
+  'buyAndSellApp.directives',
+  'buyAndSellApp.controllers'
+]).
+config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
+  $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
+  $routeProvider.when('/loginRegister', {templateUrl: 'partials/login.html', controller: 'LoginController'});
+  $routeProvider.when('/advertisment/:id', {templateUrl: 'partials/advertismentDetails.html',
+      controller: 'AdvertismentDetailCtrl'});
+  $routeProvider.when('/advertisments', {templateUrl: 'partials/advertisments.html', 
+      controller: 'AdvertismentsCtrl'});
+  // Default route
+
+  $routeProvider.otherwise({redirectTo: '/advertisments'});
+}]);
 ```
 js/app.js
 
 Here we just add the routing logic, the route is triggered by the login button on the index.html page.
 
 ```javascript
-TODO: insert js code
-```
-test/unit/controllersSpec.js
-
-Our new login controller test at this stage the test will fail, since we have not created the controller
-yet.
-
-```javascript
-TODO: insert js code
+ buyAndSellApp.controller('LoginController', ['$scope', 'user',
+     function($scope, user){
+        $scope.login = {};
+        $scope.login.user = null;
+         
+        $scope.login.connect = function() {
+          user.connect($scope.login.login, $scope.login.password, function(res){
+            if(res.error) alert(err);
+            $scope.login.user = res;
+          });
+        }
+         
+        $scope.login.register = function() {
+          var newUser = {email: $scope.login.new.user,
+                         password: $scope.login.new.password};
+          user.register(newUser, function(res) {
+            if(res.error) alert(err);
+            $scope.login.user = res;
+          });
+         };
+    
+         $scope.login.disconnect = function() {
+           $scope.login.user = null;
+           user.logout();
+         };
+     }]);
 ```
 js/controllers.js
 
 When adding the controller logic, we realize that we need a login service to communicate with the 
-user-resource on the server-side. We mock this service in our test to make it work without depending
+user-resource on the server-side. We can mock this service in our test to make it work without depending
 on the backend.
 
 ```javascript
-TODO: insert js code
+ $provide.factory('user', ['$http', function(httpSvc){return new user(httpSvc);}]);  
+
+function user($http){
+  var _user={};
+  var connFn = function(username, password, res){
+      function utf8_to_b64( str ) {return window.btoa(unescape(encodeURIComponent( str )));}
+      $http.defaults.headers.common['Authorization'] = 'Basic ' + utf8_to_b64(username + ':' + password);
+      $http.get('/api/users/'+ username).success(function(data, status) {
+            if (status < 200 || status >= 300)
+                return;
+            _user = data;
+            $http.defaults.headers.common['user-token'] = _user.userToken;
+            res(_user);
+        }).error(function(err, status, headers, config) {
+          if(status == 418){
+            res( {error: err});
+          }
+        });
+        delete $http.defaults.headers.common.Authorization;
+        
+  };
+  return{
+    register: function(newUser, res) {
+        $http.post('/api/users/', newUser).success(function(data, status) {
+            _user = data[0];
+            // Now we have to call get, to get our token
+            connFn(_user.email, _user.password, res);
+        }).error(function(err, status, headers, config) {
+            return {error: err};
+        });
+    },
+    connect: connFn,
+    logout: function(){
+      delete $http.defaults.headers.common['user-token'];
+    }
+  };
+}  
 ```
 js/services.js
 
@@ -888,44 +1169,43 @@ and the server-rest-api on http://localhost:3000/api/advertisments
 
 ## Client
 ### Adding Images in Angular JS
-Adding an image to an advertisment is not that hard if we post a form, but in our single page application
-we do not want to do this, so instead we must rely on posting FormData in our advertisment service.
+Adding an image to an advertisement is not that hard if we post a form, but in our single page application
+we do not want to do this, so instead we must rely on posting FormData in our advertisement service.
 
 see [Simple Example](http://jsfiddle.net/JeJenny/ZG9re/)
 
 There are many more advanced plugins available for Angular if you prefer drag and drop, preview etc.
 
-### Adding new Advertisments
+### Adding new Advertisements
 If the user is logged in, just:
 
-1. Add a link at buttom of the page to trigger this route 
+1. Add a link at button of the page to trigger this route 
 2. Update js/app.js with the new route and a controller
 3. Add a test and the new controller
-4. Add an addAdvertisment.html partial where you display the information in a form, use what you learned
+4. Add an addAdvertisement.html partial where you display the information in a form, use what you learned
    in the [Adding Images in Angular JS](#Adding Images in Angular JS) to enable adding images, 
    removing an image is just a matter of calling the DELETE method on the image resource. Note that
-   you must add a placeholder advertisment to be able to add an image.
-5. Add methods in our advertisment service to communicate with
+   you must add a placeholder advertisement to be able to add an image.
+5. Add methods in our advertisement service to communicate with
    * POST /api/images - Add image
-   * POST /api/advertisments - Add a advertisment
+   * POST /api/advertisments - Add an advertisement
 
 Good Luck!
 
-### Edit Advertisment Text
+### Edit Advertisement Text
 If the user is logged in, just:
 
-1. Add an edit icon on the left of an advertisment with an edit link
+1. Add an edit icon on the left of an advertisement with an edit link
 2. Clicking on the icon shall trigger the edit route
 3. Update js/app.js with the new route and a controller
 4. Add a test and the new controller
-5. Add a editAdvertisment.html partial where you display the information in a form
+5. Add a editAdvertisement.html partial where you display the information in a form
    Removing an image is just a matter of calling the DELETE method on the image resource.
-6. Add methods in our advertisment service to communicate with
+6. Add methods in our advertisement service to communicate with
    * DELETE /api/images:id - Remove an image
-   * PUT /api/advertisments - Update the text of the advertisment
+   * PUT /api/advertisments - Update the text of the advertisement
 
 Good Luck!
-### Removing Advertisments from the Client
-Add a wast-bin right of the advertisment, if a delete link exist for the advertisment. When clicked
+### Removing Advertisements from the Client
+Add a wast-bin right of the advertisement, if a delete link exist for the advertisement. When clicked
 use the verb and href provided in the link to perform a delete on the server-side.
-
