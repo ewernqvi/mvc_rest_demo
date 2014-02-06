@@ -18,4 +18,5 @@ build
 
 ignore
 node_modules
+bower_components
 

@@ -1,0 +1,30 @@
+{
+  "name": "REST MVC Demo Application",
+  "version": "0.1",
+  "homepage": "https://github.com/ewernqvi/mvc_rest_demo",
+  "authors": [
+    "Erik Wernqvist <erik@wernqvist.eu>"
+  ],
+  "description": "A rather simple client application using Angular JS against a Express JS REST backend",
+  "main": "index.html",
+  "keywords": [
+    "express",
+    "angular",
+    "javascript",
+    "html5"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "~1.2.11",
+    "bootstrap-css": "~3.0.0",
+    "jquery": ">= 1.9.0"
+  }
+}

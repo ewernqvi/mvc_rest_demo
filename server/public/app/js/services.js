@@ -9,15 +9,11 @@ angular.module('buyAndSellApp.services', [], function($provide) {
   $provide.factory('version', [ function() {
     return '0.1';
   }]);
-  $provide.factory('advertisment', ['$http', function(httpSvc){return new advertisment(httpSvc);}]);  
+  $provide.factory('advertisment', ['$http', '$q', function(httpSvc, q){return new advertisment(httpSvc, q);}]);  
   $provide.factory('user', ['$http', function(httpSvc){return new user(httpSvc);}]);  
-});
 
-/*)
-  .value('version', '0.1')
-  .value('advertisment', new advertisment())
-  .value('user', new user());
-*/
+
+
 
 function user($http){
   var _user={};
@@ -55,9 +51,8 @@ function user($http){
   };
 }  
 
-function advertisment($http){
-  return{
-    list: function(){
+function advertisment($http, $q){
+  function list(){
         return [
                 {
                 _id: "dummy-client-id1",
@@ -105,6 +100,29 @@ function advertisment($http){
                 price: "$11"
                 }
                 ];
-          }
+  }
+  return{
+    get: function(adId){
+      var deferred = $q.defer();
+      var res=null;
+      // Dummy implementation for now, we shall call the server
+      var l=list();
+      for(var i=0; i < l.length; i++){
+        if(l[i]._id === adId){
+          res = l[i];
+          break;
+        }
+      }
+      if(res)
+        deferred.resolve(res); 
+      else 
+        deferred.reject('Advertisment with id: ' + adId + ' not found!'); 
+      
+      return deferred.promise;
+      
+    },
+    list: list
   }
 }
+
+});

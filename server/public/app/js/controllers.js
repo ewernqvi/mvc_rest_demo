@@ -1,5 +1,14 @@
 'use strict';
 
+/*Utility functions */
+function formatDate(ds){
+          var d = new Date(ds);
+          var now = new Date();
+          var dstr = d.toDateString();
+          if(now.toDateString() === dstr) dstr = 'today '+d.toTimeString().split(' ')[0];
+          return dstr;
+        };
+
 /* Controllers */
 
 var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
@@ -8,23 +17,27 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
  buyAndSellApp.controller('AdvertismentsCtrl',['$scope', 'advertisment',
                                                function($scope, advertisment) {
         $scope.advertisments = advertisment.list();
-        $scope.formatDate = function(ds){
-          var d = new Date(ds);
-          var now = new Date();
-          var dstr = d.toDateString();
-          if(now.toDateString() === dstr) dstr = 'today '+d.toTimeString().split(' ')[0];
-          return dstr;
-        };
+        $scope.formatDate = formatDate;
   }]);
   
   
  buyAndSellApp.controller('AdvertismentDetailCtrl',['$scope', '$routeParams', 'advertisment',
                                                function($scope, $routeParams, advertisment) {
         $scope.adId = $routeParams.id;
-        //$scope.advertisment = advertisment.get($scope.adId);
-        var text=JSON.stringify(advertisment.list()[0]);
-        $scope.advertisment = text;
-        $scope.formatDate = function(d){return "today 11:21";};
+                $scope.adId = $routeParams.id;
+        $scope.advertisment = {};
+        // Note that we utilize a promise here, since this will be asyncronous when we later
+        // will communicate with the server
+        advertisment.get($scope.adId).then(function(res){
+           $scope.advertisment = res;
+           $scope.currentImage = res.images[0];
+        }, function(err){console.log('error: '+ err)});
+        
+        
+        $scope.formatDate = formatDate;
+        if(!$scope.advertisment.longDescription)
+          $scope.advertisment.longDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus magna, consectetur ac dui at, pellentesque adipiscing felis. Nullam consectetur eros lacus, quis sagittis elit molestie eget. Aliquam suscipit malesuada felis et eleifend. Aliquam erat volutpat. Sed ut leo ut felis feugiat sodales imperdiet nec enim. Nunc non placerat odio, sit amet interdum augue. In et laoreet justo.";
+        
   }]); 
   
   buyAndSellApp.controller('LoginController', ['$scope', 'user',
