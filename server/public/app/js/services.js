@@ -12,9 +12,6 @@ angular.module('buyAndSellApp.services', [], function($provide) {
   $provide.factory('advertisment', ['$http', '$q', function(httpSvc, q){return new advertisment(httpSvc, q);}]);  
   $provide.factory('user', ['$http', function(httpSvc){return new user(httpSvc);}]);  
 
-
-
-
 function user($http){
   var _user={};
   var connFn = function(username, password, res){

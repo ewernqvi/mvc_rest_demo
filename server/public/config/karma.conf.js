@@ -3,17 +3,17 @@ module.exports = function(config){
     basePath : '../',
 
     files : [
-      'lib/angular/angular.js',
-      'lib/angular/angular-*.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-*/angular-*.js',
       'test/lib/angular/angular-mocks.js',
       'app/js/**/*.js',
       'test/unit/**/*.js'
     ],
 
     exclude : [
-      'lib/angular/angular-loader.js',
-      'lib/angular/*.min.js',
-      'lib/angular/angular-scenario.js'
+      'bower_components/angular/angular-loader.js',
+      'bower_components/angular/*.min.js',
+      'bower_components/angular/angular-scenario.js'
     ],
 
     autoWatch : true,
