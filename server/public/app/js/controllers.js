@@ -16,7 +16,9 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
  // in an array like manner, get use to it to avoid minification bugs
  buyAndSellApp.controller('AdvertismentsCtrl',['$scope', 'advertisment',
                                                function($scope, advertisment) {
-        $scope.advertisments = advertisment.list();
+        advertisment.list().then(function(result){
+          $scope.advertisments=result
+        }, function(err){console.log('error: '+ err);});
         $scope.formatDate = formatDate;
   }]);
   
@@ -26,18 +28,16 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
         $scope.adId = $routeParams.id;
                 $scope.adId = $routeParams.id;
         $scope.advertisment = {};
-        // Note that we utilize a promise here, since this will be asyncronous when we later
-        // will communicate with the server
+        // Note that we utilize a promise here, since communicate with the REST server
         advertisment.get($scope.adId).then(function(res){
            $scope.advertisment = res;
-           $scope.currentImage = res.images[0];
-        }, function(err){console.log('error: '+ err)});
+           if(res.images){
+             $scope.currentImage = res.images[0];
+           }
+        }, function(err){console.log('error getting advertisment: '+ err)});
         
         
         $scope.formatDate = formatDate;
-        if(!$scope.advertisment.longDescription)
-          $scope.advertisment.longDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus magna, consectetur ac dui at, pellentesque adipiscing felis. Nullam consectetur eros lacus, quis sagittis elit molestie eget. Aliquam suscipit malesuada felis et eleifend. Aliquam erat volutpat. Sed ut leo ut felis feugiat sodales imperdiet nec enim. Nunc non placerat odio, sit amet interdum augue. In et laoreet justo.";
-        
   }]); 
   
   buyAndSellApp.controller('LoginController', ['$scope', 'user',

@@ -2,17 +2,60 @@
 <html lang="en" ng-app="buyAndSellApp">
 <head>
   <meta charset="utf-8">
-  <title>My AngularJS App</title>
+  <title>Buy and Sell Stuff.com</title>
   <link rel="stylesheet" href="/css/app.css"/>
   <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap.css"/>
 </head>
 <body>
+  <!-- Application Navbar-->
+   <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <form class="form-inline" role="form">
+        <span class="brand">Buy and Sell Stuff.com</span>
+
+        <span><i class="glyphicon glyphicon-eye-open"></i></span>
+
+        <div class="form-group">
+          <span><select class="form-control">
+              <!-- Dynamic section begin -->
+              <option>All Categories</option>
+              <option>Computer and Games</option>
+              <option>TV and Music</option>
+              <option>Hobbies</option>
+              <option>Cycles</option>
+              <option>Cars</option>
+              <option>Motor Cycles</option>
+              <!-- Dynamic section end -->
+          </select></span>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Free Text Search">
+        </div>
+        <span>Sort By:</span>
+        <div class="form-group">
+          <span><select class="form-control">
+              <option>Price Lowest</option>
+              <option>Price Highest</option>
+              <option>Most Recent</option>
+          </select></span>
+        </div>
+        <div class="form-group">
+        <a href="#/loginRegister" type="button" class="btn btn-default navbar-btn pull-right">
+          <span class="glyphicon glyphicon-user"></span>Login
+        </a>
+        </div>
+      </form>
+    </div>
+    </nav>
+  <!-- End of Navbar -->
+  <!--
   <ul class="menu">
     <li><a href="#/view1">view1</a></li>
     <li><a href="#/view2">view2</a></li>
     <li><a href="#/advertisments">advertisments</a></li>
     <li><a href="#/loginRegister">login or register</a></li>
   </ul>
+  -->
 
   <div ng-view></div>
 
