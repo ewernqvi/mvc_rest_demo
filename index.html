@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Mvc rest demo by ewernqvi</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/ewernqvi/mvc_rest_demo">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Mvc rest demo</h1>
+            <h2>A repo for an mvc rest demo held internally at Altran, the company where I work</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/ewernqvi/mvc_rest_demo/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/ewernqvi/mvc_rest_demo/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a name="mvc-rest-demo" class="anchor" href="#mvc-rest-demo"><span class="octicon octicon-link"></span></a>MVC REST Demo</h1>
+
+<h1>
+<a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose</h1>
+
+<p>The purpose of this repository is to work as a RESTful backend for an MVC style architecture tutorial. </p>
+
+<p>The purpose of the full application is to serve as a buy and sell site. A customer browse for 
+advertisements, if he/she finds one interesting he/she contacts the owner of the advertisement 
+through the server.
+A user may also register, which gives the user the ability to add advertisements, edit and delete 
+his/her added advertisements.</p>
+
+<p>The application consists of two parts. </p>
+
+<ul>
+<li><a href="#server">REST Server</a></li>
+<li><a href="#client">MVC Client</a></li>
+</ul><h1>
+<a name="server" class="anchor" href="#server"><span class="octicon octicon-link"></span></a>Server</h1>
+
+<p>The REST server part of the application has three resources</p>
+
+<ol>
+<li>Users</li>
+<li>Advertisements</li>
+<li>Images</li>
+</ol><p>I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this 
+for input for the XHR-requests from the browser.</p>
+
+<p>Please note that windows user need to install a git client with curl built-in, since curl is not 
+natively available in windows.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>To get the server to run on your local system you must install some dependencies</p>
+
+<ol>
+<li>
+<p>Node JS <a href="http://nodejs.org/">http://nodejs.org/</a>, click on install</p>
+
+<p>Once installed open a terminal to see if node is working</p>
+
+<pre><code>node -version
+</code></pre>
+
+<p>When you installed node you also get the node package manager called NPM which we will utlize to 
+get additional node dependencies</p>
+</li>
+<li><p>Mongo DB <a href="http://docs.mongodb.org/manual/installation/">http://docs.mongodb.org/manual/installation/</a>, follow the instructions for your platform</p></li>
+<li><p>git <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a>, follow the instructions for your platform, note that windows 
+users shall use a version where curl also is included 
+<a href="https://msysgit.googlecode.com/files/Git-1.8.5.2-preview20131230.exe">windows installation with curl included</a></p></li>
+<li>
+<p>Get the code</p>
+
+<pre><code>git clone https://github.com/ewernqvi/mvc_rest_demo.git
+</code></pre>
+</li>
+<li>
+<p>Install dependencies
+Change direcectory to the server of your downloaded </p>
+
+<pre><code>cd mvc_rest_demo/server
+npm install -g mocha
+npm install
+</code></pre>
+</li>
+<li>
+<p>Start mongo db in a separate terminal window</p>
+
+<pre><code>mongod
+</code></pre>
+</li>
+<li>
+<p>Start the server</p>
+
+<pre><code>node express_server
+</code></pre>
+</li>
+<li>
+<p>Run the test to see if everything is working, this must be done in a separate terminal window</p>
+
+<pre><code>mocha
+</code></pre>
+</li>
+<li>You are done</li>
+</ol><h2>
+<a name="typical-flows" class="anchor" href="#typical-flows"><span class="octicon octicon-link"></span></a>Typical Flows</h2>
+
+<h3>
+<a name="user-registration" class="anchor" href="#user-registration"><span class="octicon octicon-link"></span></a>User Registration</h3>
+
+<pre><code>curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \ 
+  -H "Content-Type: application/json" http://localhost:3000/api/users
+</code></pre>
+
+<p>If successful, this will return a new user in JSON format, note that depending on where and how you 
+installed your server the URL may differ</p>
+
+<h3>
+<a name="user-logon" class="anchor" href="#user-logon"><span class="octicon octicon-link"></span></a>User Logon</h3>
+
+<p>Once you have a user in the system, you can use this user to login, which is a requirement for 
+adding new advertisements.</p>
+
+<pre><code>curl -X GET -u 'mrx@gmail.com:loko' http://localhost:3000/api/users/mrx@gmail.com
+</code></pre>
+
+<p>Note that the password and username is what you supplied during user registration, we use basic 
+authentication. In a real-world application this resource should be protected by https since we 
+send the password over the wire in base64 encoding. </p>
+
+<p>If we manage to login we get the following JSON back</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="nx">email</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">password</span><span class="o">:</span> <span class="s2">"loko"</span><span class="p">,</span>
+  <span class="nx">_id</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-01-31T08:24:11.066Z"</span><span class="p">,</span>
+  <span class="nx">userToken</span><span class="o">:</span> <span class="s2">"ovxptw7z8rveipb9eqc04tjsoky5jyvi"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The important bit, which we must utilize later is the userToken, which we will stick to our 
+http-header to identify ourselves. You may wonder why the server doesn't make this stick by putting 
+it in a cookie, the easy answer is because it isn't restful and since this training is about REST 
+we shall apply the stateless nature of the server.</p>
+
+<p>For now remember your token</p>
+
+<h3>
+<a name="add-a-new-advertisement" class="anchor" href="#add-a-new-advertisement"><span class="octicon octicon-link"></span></a>Add a new advertisement</h3>
+
+<p>To add a new advertisement, we issue a post, now we need to supply the userToken in the HTTP header 
+for our identification</p>
+
+<pre><code>curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
+  -d '{"category": "Phone", "description": "iPhone 5 - Mint Condition", "price": "$200"}' \ 
+  http://localhost:3000/api/advertisments
+</code></pre>
+
+<p>If successful we get the following JSON back, the important bit is the created _id which we will 
+use later on</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nx">category</span><span class="o">:</span> <span class="s2">"Phone"</span><span class="p">,</span>
+    <span class="nx">description</span><span class="o">:</span> <span class="s2">"iPhone 5 - Mint Condition"</span><span class="p">,</span>
+    <span class="nx">price</span><span class="o">:</span> <span class="s2">"$200"</span><span class="p">,</span>
+    <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+    <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-01-31T09:27:34.825Z"</span><span class="p">,</span>
+    <span class="nx">_id</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+
+<h3>
+<a name="add-an-image-to-our-advertisement" class="anchor" href="#add-an-image-to-our-advertisement"><span class="octicon octicon-link"></span></a>Add an image to our advertisement</h3>
+
+<p>To make our advertisement more appealing we want to upload an image to the server. Image uploading 
+can be performed in many ways, but when using a http-browser 
+<a href="http://www.ietf.org/rfc/rfc2388.txt">multi-part form</a> is the norm and the browser handles 
+content-type, size headers etc for you.</p>
+
+<p>When using curl we must include the -F option to tell curl we want to post a file, in this case our 
+image. Since we want to add the image to our advertisement we must also include the advertisement Id 
+as a form parameter</p>
+
+<pre><code>curl -F "file=@./iphone.gif" -F "advertismentId=52eb6c860e5f433f24000003" http://localhost:3000/api/images
+</code></pre>
+
+<p>We get back a JSON from the server indicating that our file was successfully updated, the important
+bit in this JSON is the href to the server generated name of the image</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+    <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/gif"</span><span class="p">,</span>
+    <span class="nx">orgName</span><span class="o">:</span> <span class="s2">"iphone.gif"</span><span class="p">,</span>
+    <span class="nx">imageId</span><span class="o">:</span> <span class="s2">"9279-1vopx7g.gif"</span><span class="p">,</span>
+    <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+    <span class="nx">href</span><span class="o">:</span> <span class="s2">"/img/9279-1vopx7g.gif"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>We can add multiple images to our advertisement, if we ask the server for the advertisement now</p>
+
+<pre><code>curl http://localhost:3000/api/advertisments/52eb6c860e5f433f24000003
+</code></pre>
+
+<p>We see that the server has updated the advertisement with a link to the added picture</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="nx">_id</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+  <span class="nx">category</span><span class="o">:</span> <span class="s2">"Phone"</span><span class="p">,</span>
+  <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-01-31T09:27:34.825Z"</span><span class="p">,</span>
+  <span class="nx">description</span><span class="o">:</span> <span class="s2">"iPhone 5 - Mint Condition"</span><span class="p">,</span>
+  <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/gif"</span><span class="p">,</span>
+      <span class="nx">orgName</span><span class="o">:</span> <span class="s2">"iphone.gif"</span><span class="p">,</span>
+      <span class="nx">imageId</span><span class="o">:</span> <span class="s2">"9279-1vopx7g.gif"</span><span class="p">,</span>
+      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/img/9279-1vopx7g.gif"</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">price</span><span class="o">:</span> <span class="s2">"$200"</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<h3>
+<a name="browse-advertisements-in-the-system" class="anchor" href="#browse-advertisements-in-the-system"><span class="octicon octicon-link"></span></a>Browse advertisements in the system</h3>
+
+<p>Now we have added an advertisement so we can browse it in the system, we will start by not supplying 
+a user-token, e.g. act as a new user who just wants to buy something, this can easily be achieved 
+with a normal web browser, just click on the link or modify it if you run your server on a different 
+location</p>
+
+<p><a href="http://localhost:3000/api/advertisments">http://localhost:3000/api/advertisments</a></p>
+
+<p>You will see the JSON formatted as text in the browser window, at least if you run in google Chrome</p>
+
+<p>But there is more, if you supply a user-token in the header, we go back to curl to do this, we now 
+get back links, which are shortcuts for edit, delete and details actions of the resource. These 
+links are typically utilized by a dynamic client, in rest terms we call this 
+<a href="http://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a>, which stand for <strong>Hypermedia as the Engine of 
+Application State</strong>. From a REST API perspective this is important, since the linked parts of the 
+API can be considered private, and changes to these parts of the API can be made without having to 
+inform users of the API, that is if they utilized the provided links in their clients and not 
+hardcoding paths.</p>
+
+<pre><code>curl http://localhost:3000/api/advertisments -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi
+</code></pre>
+
+<p>JSON output with links</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">[</span>
+<span class="p">{</span>
+    <span class="nx">_id</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+    <span class="nx">category</span><span class="o">:</span> <span class="s2">"Phone"</span><span class="p">,</span>
+    <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-01-31T09:27:34.825Z"</span><span class="p">,</span>
+    <span class="nx">description</span><span class="o">:</span> <span class="s2">"iPhone 5 - Mint Condition"</span><span class="p">,</span>
+    <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/gif"</span><span class="p">,</span>
+        <span class="nx">orgName</span><span class="o">:</span> <span class="s2">"iphone.gif"</span><span class="p">,</span>
+        <span class="nx">imageId</span><span class="o">:</span> <span class="s2">"9279-1vopx7g.gif"</span><span class="p">,</span>
+        <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+        <span class="nx">href</span><span class="o">:</span> <span class="s2">"/img/9279-1vopx7g.gif"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+    <span class="nx">price</span><span class="o">:</span> <span class="s2">"$200"</span><span class="p">,</span>
+    <span class="nx">update</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">verb</span><span class="o">:</span> <span class="s2">"PUT"</span><span class="p">,</span>
+      <span class="nx">description</span><span class="o">:</span> <span class="s2">"Update for resource advertisements with id 52eb6c860e5f433f24000003"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/api/advertisments/52eb6c860e5f433f24000003"</span>
+    <span class="p">},</span>
+    <span class="nx">remove</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">verb</span><span class="o">:</span> <span class="s2">"DELETE"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/api/advertisments/52eb6c860e5f433f24000003"</span><span class="p">,</span>
+      <span class="nx">description</span><span class="o">:</span> <span class="s2">"Delete for resource advertisement with id 52eb6c860e5f433f24000003"</span>
+    <span class="p">},</span>
+    <span class="nx">details</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">verb</span><span class="o">:</span> <span class="s2">"GET"</span><span class="p">,</span>
+      <span class="nx">description</span><span class="o">:</span> <span class="s2">"Details for resource advertisements with id 52eb6c860e5f433f24000003"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/api/advertisments/52eb6c860e5f433f24000003"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+
+<p>We get back a list of advertisements, since we have only created one, the list only contains one 
+advertisement. Let's create another advertisement in the system to make it a bit more interesting, 
+for simplicity we will add another phone</p>
+
+<pre><code>curl -X POST -H user-token:ovxptw7z8rveipb9eqc04tjsoky5jyvi -H "Content-Type:application/json" \
+  -d '{"category": "Phone", "description": "Samsung S3 -  Perfect Condition", "price": "$200"}' \
+  http://localhost:3000/api/advertisments
+</code></pre>
+
+<p>When we look for advertisements now, <a href="http://localhost:3000/api/advertisments">http://localhost:3000/api/advertisments</a> 
+we get two phone backs, but the API also let's us provide a query, so lets say we only want to 
+search for phones with Samsung in the description we would add the following query parameters to 
+our query</p>
+
+<p><a href="http://localhost:3000/api/advertisments?category=Phone&amp;description=Samsung">http://localhost:3000/api/advertisments?category=Phone&amp;description=Samsung</a></p>
+
+<p>We will only get back the Samsung Phone</p>
+
+<h2>
+<a name="additional-resource-methods" class="anchor" href="#additional-resource-methods"><span class="octicon octicon-link"></span></a>Additional Resource Methods</h2>
+
+<h3>
+<a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
+
+<ol>
+<li>
+<p>Delete User</p>
+
+<pre><code>curl -X DELETE -H user-token:_token_ http://localhost:3000/api/users/:id
+</code></pre>
+
+<p>Set the <em>token</em> and the :id to whatever you want to delete</p>
+
+<p>Deleting a user also recursively removes all the advertisements added by the user</p>
+</li>
+<li>
+<p>Update User</p>
+
+<pre><code>curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
+-H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/users/:id 
+</code></pre>
+
+<p>Set the <em>token</em> and the :id of the user you want to update, note that you may only update yourself 
+unless you have the administer role. The content passed is a JSON record all the fields of the user. 
+Please note that a HTTP PUT overwrites the entire record, so all fields must be supplied in the 
+passed record, even the ones you don't change.</p>
+</li>
+</ol><h3>
+<a name="images" class="anchor" href="#images"><span class="octicon octicon-link"></span></a>Images</h3>
+
+<ol>
+<li>
+<p>Delete an Image</p>
+
+<pre><code>curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
+</code></pre>
+
+<p>Set the <em>token</em> and the :id to the image you want to delete, deleting an image also removes the 
+link to the the image from the advertisement.</p>
+</li>
+</ol><h3>
+<a name="advertisements" class="anchor" href="#advertisements"><span class="octicon octicon-link"></span></a>Advertisements</h3>
+
+<ol>
+<li>
+<p>Update an advertisement text</p>
+
+<pre><code>curl - X PUT -d '{"price": "200", "category":"Phone", "description": "Brand new Ericsson Phone"}' \
+-H Content-Type:application/json -H user-token:_token_ http://localhost:3000/api/advertisments/:id
+</code></pre>
+
+<p>Set the <em>token</em> and the :id of the advertisement you want to update, note that the JSON record 
+shall be complete in a put</p>
+</li>
+<li>
+<p>Delete an advertisement</p>
+
+<pre><code>curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
+</code></pre>
+
+<p>Set the <em>token</em> and the :id of the advertisement you want to delete</p>
+</li>
+</ol><h1>
+<a name="client" class="anchor" href="#client"><span class="octicon octicon-link"></span></a>Client</h1>
+
+<p>This section will cover the actual tutorial of creating a rest client using the 
+<a href="http://www.angularjs.org">AngularJS</a> framework</p>
+
+<h2>
+<a name="a-static-client" class="anchor" href="#a-static-client"><span class="octicon octicon-link"></span></a>A Static Client</h2>
+
+<p>To get an idea what we try to accomplish we start out with a mockup, a static HTML client of our demo. 
+It will be much easier to reason what we want to build if we have seen a prototype.</p>
+
+<p><a href="http://htmlpreview.github.io/?https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html">static site</a></p>
+
+<p>In the static client we see that we have a rather simple application to display advertisements, 
+it shall also be possible to login and register, once logged in it shall be possible to add new 
+advertisements, and edit and delete these. 
+We will convert the application to a dynamic Angular JS application step by step, but before we do 
+this just a short intro to the Angular JS framework</p>
+
+<h2>
+<a name="background-on-angular-js" class="anchor" href="#background-on-angular-js"><span class="octicon octicon-link"></span></a>Background on Angular JS</h2>
+
+<p>The <a href="http://angularjs.org">Angular JS</a> was created internally within Google in 2009, an engineer 
+named Miško Hevery, he claimed that he could re-write 17 000 lines of front-end code into pure js 
+within two weeks. He almost made the timeline but the amazing effect was that the application now 
+was down to 1500 lines of code, they then knew that they where on to something.</p>
+
+<p>Since 2009 the Angular JS framework has been stabilized and is used within several thousand web-sites 
+around the world.</p>
+
+<h3>
+<a name="what-is-angular" class="anchor" href="#what-is-angular"><span class="octicon octicon-link"></span></a>What is Angular</h3>
+
+<p>AngularJS is a structural framework for dynamic web apps. It lets you use HTML as your template 
+language and lets you extend HTML's syntax to express your application's components clearly and 
+succinctly. Out of the box, it eliminates much of the code you currently write through data binding 
+and dependency injection. And it all happens in JavaScript within the browser, making it an ideal 
+partner with any server-side technology.</p>
+
+<p>Angular is what HTML would have been had it been designed for applications. </p>
+
+<p>The mismatch between dynamic applications and static documents is often solved with:</p>
+
+<ul>
+<li>A library - Your code is in charge and it calls into the library when it sees fit to assist in altering 
+the dom. E.g., jQuery.</li>
+<li>Frameworks - a particular implementation of a web application, where your code fills in the details. 
+The framework is in charge and it calls into your code when it needs something application specific. 
+E.g., knockout, ember, etc.</li>
+</ul><p>Angular takes another approach. It attempts to minimize the impedance mismatch between document 
+centric HTML and what an application needs by creating new HTML constructs. Angular teaches the 
+browser new syntax through a construct called <a href="http://docs.angularjs.org/guide/directive">directives</a>. </p>
+
+<p>Angular comes with the following out-of-the-box to assist you with creating an MVC style application</p>
+
+<ul>
+<li><a href="http://docs.angularjs.org/guide/databinding">data-binding</a></li>
+<li><a href="http://docs.angularjs.org/guide/templates">basic templating directives</a></li>
+<li><a href="http://www.ng-newsletter.com/posts/validations.html">form validation</a></li>
+<li><a href="http://docs.angularjs.org/api/ngRoute.directive:ngView">routing and deep-linking</a></li>
+<li><a href="http://docs.angularjs.org/guide/di">dependency injection</a></li>
+</ul><p>Testability</p>
+
+<ul>
+<li><a href="http://docs.angularjs.org/guide/dev_guide.unit-testing">unit-testing</a></li>
+<li><a href="http://docs.angularjs.org/guide/dev_guide.e2e-testing">end-to-end testing</a></li>
+<li><a href="http://docs.angularjs.org/api/ngMock">mocks</a></li>
+<li><a href="http://karma-runner.github.io/0.10/index.html">Karma test harnesses</a></li>
+</ul><h3>
+<a name="the-zen-of-angular" class="anchor" href="#the-zen-of-angular"><span class="octicon octicon-link"></span></a>The Zen of Angular</h3>
+
+<p>Angular is built around the belief that declarative code is better than imperative when it comes to 
+building UIs and wiring software components together, while imperative code is excellent for 
+expressing business logic.</p>
+
+<ul>
+<li>It is a very good idea to decouple DOM manipulation from app logic. This dramatically improves 
+the testability of the code.</li>
+<li>It is a really, really good idea to regard app testing as equal in importance to app writing. 
+Testing difficulty is dramatically affected by the way the code is structured.</li>
+<li>It is an excellent idea to decouple the client side of an app from the server side. This allows 
+development work to progress in parallel, and allows for reuse of both sides.</li>
+<li>It is very helpful indeed if the framework guides developers through the entire journey of building an app: 
+
+<ul>
+<li>from designing the UI</li>
+<li>through writing the business logic</li>
+<li>to testing.</li>
+</ul>
+</li>
+<li>It is always good to make common tasks trivial and difficult tasks possible.</li>
+</ul><h3>
+<a name="angular-frees-you-from-the-following-pains" class="anchor" href="#angular-frees-you-from-the-following-pains"><span class="octicon octicon-link"></span></a>Angular frees you from the following pains</h3>
+
+<ul>
+<li>Registering callbacks</li>
+<li>Manipulating HTML DOM programmatically</li>
+<li>Marshaling data to and from the UI- Data Binding</li>
+<li>Writing tons of initialization code just to get started</li>
+</ul><p>for further information please see </p>
+
+<ul>
+<li><a href="http://docs.angularjs.org/guide/introduction">Angular JS Introduction</a></li>
+<li><a href="http://docs.angularjs.org/api">Angular JS API</a></li>
+<li><a href="http://www.sitepoint.com/10-reasons-use-angularjs/">Ten Top Reasons Why to use Angular JS</a></li>
+</ul><h2>
+<a name="developing-the-angular-js-client" class="anchor" href="#developing-the-angular-js-client"><span class="octicon octicon-link"></span></a>Developing the Angular JS Client</h2>
+
+<p>Now that we have a very brief understanding what Angular JS is all about it's time to see it in 
+action. Angular comes with a starter template, I have prepared this template for our demo application. 
+We will utilize git to fetch the latest version of our code</p>
+
+<pre><code>git checkout -f client-angular1
+</code></pre>
+
+<p>Once checked out we need to install bower, which is a dependency manager for javascript</p>
+
+<pre><code>cd $APP_HOME/server/public
+npm install -g bower
+</code></pre>
+
+<p>Where APP_HOME is the root of the application, e.g. the mvc_rest_demo directory. We will now let bower fetch our application dependencies</p>
+
+<pre><code>bower install
+</code></pre>
+
+<p>We know get a new set of files, but most importantly a working skeleton application that is fully 
+testable and prepared for the tasks to come.</p>
+
+<p>If your node server is not running start it with</p>
+
+<pre><code>node express_server.js
+</code></pre>
+
+<p>Once the server has been started it shall be possible to navigate to</p>
+
+<p><a href="http://localhost:3000/app/index.html">app/index.html</a></p>
+
+<p>And you shall see our Angular JS skeleton app with the text Angular JS is working 4-ever at the button. 
+If you view the code of <a href="https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html">index.html</a> 
+we can see that angular js libraries are loaded and the {{2+2}} at the button is evaluated to a 4 
+which indicates that it's up and running.</p>
+
+<p>To run the <a href="https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md">test</a> 
+please follow the linked <a href="https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md">instructions</a>.</p>
+
+<h3>
+<a name="migrating-our-static-client-to-angular-js---model-and-controller" class="anchor" href="#migrating-our-static-client-to-angular-js---model-and-controller"><span class="octicon octicon-link"></span></a>Migrating our Static Client to Angular JS - Model and Controller</h3>
+
+<p>Now when we have been introduced to the starter application, it's time to get useful and migrate our 
+static application to a dynamic angular application. We leave the rest parts behind for now, but 
+create a local mockup repository of our initial data. To do this we first take a look at the JSON 
+format returned by our REST-server</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="nx">_id</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+  <span class="nx">category</span><span class="o">:</span> <span class="s2">"Phone"</span><span class="p">,</span>
+  <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-01-31T09:27:34.825Z"</span><span class="p">,</span>
+  <span class="nx">description</span><span class="o">:</span> <span class="s2">"i Phone5 - Mint Condition"</span><span class="p">,</span>
+  <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/gif"</span><span class="p">,</span>
+      <span class="nx">orgName</span><span class="o">:</span> <span class="s2">"iphone.gif"</span><span class="p">,</span>
+      <span class="nx">imageId</span><span class="o">:</span> <span class="s2">"9279-1vopx7g.gif"</span><span class="p">,</span>
+      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"52eb6c860e5f433f24000003"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/img/9279-1vopx7g.gif"</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">price</span><span class="o">:</span> <span class="s2">"$200"</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p>if we take this as template input, and the data from our 
+<a href="https://github.com/ewernqvi/mvc_rest_demo/blob/master/server/public/static_site.html">static page</a> 
+we could convert the 3 advertisements on the static page to the following JSON</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">[</span>
+ <span class="p">{</span>
+  <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id1"</span><span class="p">,</span>
+  <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+  <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-14T09:27:34.825Z"</span><span class="p">,</span>
+  <span class="nx">description</span><span class="o">:</span> <span class="s2">"Premium Surf Board"</span><span class="p">,</span>
+  <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-id1"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/test-data/img/surfboard.jpg"</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">price</span><span class="o">:</span> <span class="s2">"$110"</span>
+ <span class="p">},</span>
+ <span class="p">{</span>
+  <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id2"</span><span class="p">,</span>
+  <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+  <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-14T09:27:34.825Z"</span><span class="p">,</span>
+  <span class="nx">description</span><span class="o">:</span> <span class="s2">"Premium Long Board"</span><span class="p">,</span>
+  <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-idr2"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/test-data/img/longboard.jpg"</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">price</span><span class="o">:</span> <span class="s2">"$110"</span>
+ <span class="p">},</span>
+ <span class="p">{</span>
+  <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id3"</span><span class="p">,</span>
+  <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+  <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-14T09:27:34.825Z"</span><span class="p">,</span>
+  <span class="nx">description</span><span class="o">:</span> <span class="s2">"Dr Zoggs Sex Wax"</span><span class="p">,</span>
+  <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-id3"</span><span class="p">,</span>
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">"/test-data/img/zoggs.jpg"</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+  <span class="nx">price</span><span class="o">:</span> <span class="s2">"$11"</span>
+ <span class="p">}</span>
+<span class="p">]</span>
+
+</pre></div>
+
+<p>Let us create a new partial for our list of advertisements, the HTML code for this would be</p>
+
+<div class="highlight highlight-HTML"><pre><span class="nt">&lt;h2&gt;</span>This is where our list of advertisements shall be displayed<span class="nt">&lt;/h2&gt;</span>
+</pre></div>
+
+<p>advertisments.html</p>
+
+<p>let us save the file as partials/advertisments.html</p>
+
+<p>Now we must modify the router so it will be aware of our partial</p>
+
+<div class="highlight highlight-javascript"><pre>  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/view1'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/partial1.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyCtrl1'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/view2'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/partial2.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyCtrl2'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/advertisments'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/advertisments.html'</span><span class="p">,</span> 
+      <span class="nx">controller</span><span class="o">:</span> <span class="s1">'AdvertismentsCtrl'</span><span class="p">});</span>
+  <span class="c1">// Default route</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">otherwise</span><span class="p">({</span><span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">'/advertisments'</span><span class="p">});</span>
+</pre></div>
+
+<p><a href="https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/app.js">app.js</a></p>
+
+<p>As you probably spotted, we reference a new controller called advertismentsCtrl, lets open up the 
+controllers.js file and add our controller</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp.controllers'</span><span class="p">,</span> <span class="p">[]).</span>
+  <span class="nx">controller</span><span class="p">(</span><span class="s1">'AdvertismentsCtrl'</span><span class="p">,</span> <span class="p">[</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// We leave this blank for now</span>
+  <span class="p">}])</span>
+  <span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'MyCtrl1'</span><span class="p">,</span> <span class="p">[</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">}])</span>
+  <span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'MyCtrl2'</span><span class="p">,</span> <span class="p">[</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">}]);</span>
+</pre></div>
+
+<p><a href="https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/controllers.js">controllers.js</a></p>
+
+<p>We deliberately added no code in the controller, since we are test-driven we shall now modify our 
+test to include the new controller and in the test we shall state the wanted behavior of our 
+controller, so open up controllersSpec.js to add our new test</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">describe</span><span class="p">(</span><span class="s1">'controllers'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">beforeEach</span><span class="p">(</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp.controllers'</span><span class="p">));</span>
+
+  <span class="nx">it</span><span class="p">(</span><span class="s1">'should create advertisement model with 3 advertisements'</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$controller</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="nx">ctrl</span> <span class="o">=</span> <span class="nx">$controller</span><span class="p">(</span><span class="s1">'AdvertismentsCtrl'</span><span class="p">,</span> <span class="p">{</span><span class="nx">$scope</span><span class="o">:</span><span class="nx">scope</span><span class="p">});</span>
+    <span class="c1">//Check that the controller has a list of three advertisements</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">scope</span><span class="p">.</span><span class="nx">advertisments</span><span class="p">.</span><span class="nx">length</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+  <span class="p">}));</span>
+
+  <span class="nx">it</span><span class="p">(</span><span class="s1">'should ....'</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//spec body</span>
+  <span class="p">}));</span>
+<span class="p">});</span>
+</pre></div>
+
+<p><a href="https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/test/unit/controllersSpec.js">controllersSpec.js</a></p>
+
+<p>Run the unit tests, if it was not started already.</p>
+
+<p>Ensure that the test fails, we have not fixed our controller yet remember!</p>
+
+<p>OK, lets fix the controller</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp.controllers'</span><span class="p">,</span> <span class="p">[]).</span>
+  <span class="nx">controller</span><span class="p">(</span><span class="s1">'AdvertismentsCtrl'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$scope</span><span class="p">.</span><span class="nx">advertisments</span><span class="o">=</span> <span class="p">[</span>
+   <span class="p">{</span>
+     <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id1"</span><span class="p">,</span>
+     <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+     <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-14T09:27:34.825Z"</span><span class="p">,</span>
+     <span class="nx">description</span><span class="o">:</span> <span class="s2">"Premium Surf Board"</span><span class="p">,</span>
+     <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+        <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-id1"</span><span class="p">,</span>
+        <span class="nx">href</span><span class="o">:</span> <span class="s2">"https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/surfboard.jpg"</span>
+      <span class="p">}</span>
+     <span class="p">],</span>
+    <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+    <span class="nx">price</span><span class="o">:</span> <span class="s2">"$110"</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+    <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id2"</span><span class="p">,</span>
+    <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+    <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-14T09:27:34.825Z"</span><span class="p">,</span>
+    <span class="nx">description</span><span class="o">:</span> <span class="s2">"Premium Long Board"</span><span class="p">,</span>
+    <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+        <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-idr2"</span><span class="p">,</span>
+        <span class="nx">href</span><span class="o">:</span> <span class="s2">"https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/longboard.jpg"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+    <span class="nx">price</span><span class="o">:</span> <span class="s2">"$110"</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+    <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id3"</span><span class="p">,</span>
+    <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+    <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-14T09:27:34.825Z"</span><span class="p">,</span>
+    <span class="nx">description</span><span class="o">:</span> <span class="s2">"Dr Zoggs Sex Wax"</span><span class="p">,</span>
+    <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+        <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-id3"</span><span class="p">,</span>
+        <span class="nx">href</span><span class="o">:</span> <span class="s2">"https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/zoggs.jpg"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+    <span class="nx">price</span><span class="o">:</span> <span class="s2">"$11"</span>
+   <span class="p">}</span>
+  <span class="p">];</span>
+
+  <span class="p">}])</span>
+</pre></div>
+
+<p>Note that we use an array to define the function body, this is to ensure that the code can be 
+minified with the angular dependency injection still working, 
+see also <a href="http://docs.angularjs.org/guide/di">angular minification</a></p>
+
+<p>Rerun our tests, it shall pass now, if it doesn't check your code.</p>
+
+<h3>
+<a name="adding-our-presentation-logic" class="anchor" href="#adding-our-presentation-logic"><span class="octicon octicon-link"></span></a>Adding our Presentation Logic</h3>
+
+<p>Before we add the presentation logic, I will try to explain what actually happens within our 
+Angular application, this is probably best done with a picture.</p>
+
+<p><img src="https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/angular-overview.png" alt="alt Angular Image"></p>
+
+<p>Angular applications consist of a Model View and Controller architecture, but what actually happens 
+in our application is that in index.html the ng-app directive is loaded which basically tells Angular 
+to take control.</p>
+
+<p>Within our application, which is a Single Page Application, we have the ability to present partials 
+within the page, these will be swapped in and out depending on our actions.</p>
+
+<p>In our first example we load the partial advertisments.html which will contain a div with a 
+controller, which is responsible for the scope. In our case we loop over the advertisements array 
+with a <a href="http://docs.angularjs.org/api/ng.directive:ngRepeat">ng-repeat</a> directive. This let us create 
+rows in our table.The image has a special <a href="http://docs.angularjs.org/api/ng.directive:ngSrc">ng-src</a> 
+directive since we want data binding later on, e.g. if we switch images it should be automatically 
+reflected in the view through Angular's two-way data binding.</p>
+
+<p>Before we dive into our presentation logic a small refactoring of our application is needed, 
+remember that we put an array of test-data directly into our controller, this is poor design so we 
+will introduce a new angular feature called a 
+<a href="http://docs.angularjs.org/guide/dev_guide.services.understanding_services">service</a> where we will 
+place this logic.</p>
+
+<h4>
+<a name="angular-js-service" class="anchor" href="#angular-js-service"><span class="octicon octicon-link"></span></a>Angular JS Service</h4>
+
+<p>If you managed to get the code working in the previous section, you can continue with that code-base
+if not you can check out a working version from the previous section</p>
+
+<pre><code>git checkout -f client-angular2
+</code></pre>
+
+<p>We start out by modifying our test and then implement a simple stub for our servicer. </p>
+
+<div class="highlight highlight-javascript"><pre>  <span class="c1">// add the following test</span>
+  <span class="nx">describe</span><span class="p">(</span><span class="s1">'advertisment'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s1">'should return the advertisment service'</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">advertisment</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">advertisment</span><span class="p">.</span><span class="nx">list</span><span class="p">().</span><span class="nx">length</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="p">}));</span>
+  <span class="p">});</span>
+</pre></div>
+
+<p>test/unit/servicesSpec.js</p>
+
+<p>Then we must inform Angular DI that we have a new service available for the application</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// Demonstrate how to register services</span>
+<span class="c1">// In this case it is a simple value service.</span>
+<span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp.services'</span><span class="p">,</span> <span class="p">[]).</span>
+  <span class="nx">value</span><span class="p">(</span><span class="s1">'version'</span><span class="p">,</span> <span class="s1">'0.1'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">value</span><span class="p">(</span><span class="s1">'advertisment'</span><span class="p">,</span> <span class="k">new</span> <span class="nx">advertisment</span><span class="p">());</span>
+
+<span class="kd">function</span> <span class="nx">advertisment</span><span class="p">(){</span>
+  <span class="k">return</span><span class="p">{</span>
+    <span class="nx">list</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="k">return</span> <span class="p">[];</span>
+          <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>app/js/services.js</p>
+
+<p>Running the test now shall result in a failure, since we haven't moved the array contents yet.</p>
+
+<p>Now modify our AdvertimentCtrl to call the service, move the array to our advertisement service.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">buyAndSellApp</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp.controllers'</span><span class="p">,</span> <span class="p">[]);</span>
+ <span class="c1">// To ensure that minification works we must declare injection</span>
+ <span class="c1">// in an array like manner, get use to it to avoid minification bugs</span>
+ <span class="nx">buyAndSellApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'AdvertismentsCtrl'</span><span class="p">,[</span><span class="s1">'$scope'</span><span class="p">,</span> <span class="s1">'advertisment'</span><span class="p">,</span>
+                                               <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">advertisment</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">advertisments</span> <span class="o">=</span> <span class="nx">advertisment</span><span class="p">.</span><span class="nx">list</span><span class="p">();</span>
+  <span class="p">}]);</span>
+
+  <span class="nx">buyAndSellApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'MyCtrl1'</span><span class="p">,</span> <span class="p">[</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">}])</span>
+  <span class="nx">buyAndSellApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'MyCtrl2'</span><span class="p">,</span> <span class="p">[</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">}]);</span>
+</pre></div>
+
+<p>app/js/controllers.js</p>
+
+<p>Note that we added our service as an injection parameter, then we simply delegate to the service to
+set our scope variable. Did you remember to move the array into the service?</p>
+
+<p>run the test if it's not started, it shall pass now</p>
+
+<pre><code>karma start config/karma.conf.js --single-run
+</code></pre>
+
+<h4>
+<a name="partial-html-code----advertisements" class="anchor" href="#partial-html-code----advertisements"><span class="octicon octicon-link"></span></a>Partial HTML Code -- Advertisements</h4>
+
+<p>Now lets edit our partial and add the following html-code</p>
+
+<div class="highlight highlight-HTML"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">"table"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;tbody&gt;</span>
+      <span class="c">&lt;!-- dyn content begin --&gt;</span>
+      <span class="nt">&lt;tr</span> <span class="na">ng-repeat=</span><span class="s">"ad in advertisments"</span><span class="nt">&gt;</span>
+         <span class="nt">&lt;td&gt;</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#/advertisment/{{ad._id}}"</span><span class="nt">&gt;&lt;img</span> <span class="na">ng-src=</span><span class="s">"{{ad.images[0].href}}"</span> <span class="na">class=</span><span class="s">"img-thumbnail"</span><span class="nt">&gt;&lt;/a&gt;</span>
+         <span class="nt">&lt;/td&gt;</span>
+         <span class="nt">&lt;td&gt;</span>
+            <span class="nt">&lt;div&gt;</span>{{formatDate(ad.created)}}<span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#/advertisment/{{ad._id}}"</span><span class="nt">&gt;&lt;h2&gt;</span>{{ad.description}}<span class="nt">&lt;/h2&gt;&lt;/a&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;div&gt;&lt;h3&gt;</span>{{ad.price}}<span class="nt">&lt;/h3&gt;&lt;/div&gt;</span>
+         <span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/tbody&gt;</span>
+  <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/div&gt;</span> <span class="c">&lt;!-- /container --&gt;</span>
+</pre></div>
+
+<p>As you may see we create links to render details in a separate view, we will implement this later,
+for now the links will not work. We also added reference to a function</p>
+
+<h4>
+<a name="advertisment-details" class="anchor" href="#advertisment-details"><span class="octicon octicon-link"></span></a>Advertisment Details</h4>
+
+<p>Create a new advertismentDetails partial</p>
+
+<div class="highlight highlight-HTML"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;hr&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>{{advertisment.description}}<span class="nt">&lt;/h1&gt;</span>
+  sold by {{advertisment.owner}}
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"large-image"</span> <span class="nt">&gt;&lt;img</span> <span class="na">ng-src=</span><span class="s">"{{currentImage.href}}"</span> <span class="na">style=</span><span class="s">"max-height: 600px"</span> <span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"background: grey;"</span><span class="nt">&gt;</span>TODO: Thumbnails goes here if several images<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Price: {{advertisment.price}}<span class="nt">&lt;/h2&gt;</span>
+
+  <span class="nt">&lt;div&gt;</span>{{advertisment.longDescription}}<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>partials/advertismentDetails.html</p>
+
+<p>Nothing fancy here, just a simple HTML page displaying all the images for the advertisement and the
+detailed description of the advertisement. We have left the small Thumbnails, if we have several picture as an exercise for you. The simplest way to accomplish this is probably to perform an ng-repeat over the image array and add an <a href="http://docs.angularjs.org/api/ng.directive:ngClick">ng-click</a> handler for each thumbnail which calls the scope and sets $scope.currentImage, which will change the image.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="c1">// Declare app level module which depends on filters, and services</span>
+<span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s1">'ngRoute'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.filters'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.services'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.directives'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.controllers'</span>
+<span class="p">]).</span>
+<span class="nx">config</span><span class="p">([</span><span class="s1">'$routeProvider'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/view1'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/partial1.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyCtrl1'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/view2'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/partial2.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyCtrl2'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/advertisment/:id'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/advertismentDetails.html'</span><span class="p">,</span>
+      <span class="nx">controller</span><span class="o">:</span> <span class="s1">'AdvertismentDetailCtrl'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/advertisments'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/advertisments.html'</span><span class="p">,</span> 
+      <span class="nx">controller</span><span class="o">:</span> <span class="s1">'AdvertismentsCtrl'</span><span class="p">});</span>
+  <span class="c1">// Default route</span>
+
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">otherwise</span><span class="p">({</span><span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">'/advertisments'</span><span class="p">});</span>
+<span class="p">}]);</span>
+</pre></div>
+
+<p>js/app.js</p>
+
+<p>Here we just add the routing logic, the route is triggered by in the adverisments.html partial, which
+we have already completed. The new route refers to a new controller which we must implement.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">TODO</span><span class="o">:</span> <span class="nx">insert</span> <span class="nx">js</span> <span class="nx">code</span>
+</pre></div>
+
+<p>test/unit/controllersSpec.js</p>
+
+<p>Our new advertismentDetail controller test, at this stage the test will fail, since we have not 
+created the controller yet.</p>
+
+<div class="highlight highlight-javascript"><pre> <span class="nx">buyAndSellApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'AdvertismentDetailCtrl'</span><span class="p">,[</span><span class="s1">'$scope'</span><span class="p">,</span> <span class="s1">'$routeParams'</span><span class="p">,</span> <span class="s1">'advertisment'</span><span class="p">,</span>
+                                               <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$routeParams</span><span class="p">,</span> <span class="nx">advertisment</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">adId</span> <span class="o">=</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+                <span class="nx">$scope</span><span class="p">.</span><span class="nx">adId</span> <span class="o">=</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">advertisment</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="c1">// Note that we utilize a promise here, since this will be asyncronous when we later</span>
+        <span class="c1">// will communicate with the server</span>
+        <span class="nx">advertisment</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">adId</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+           <span class="nx">$scope</span><span class="p">.</span><span class="nx">advertisment</span> <span class="o">=</span> <span class="nx">res</span><span class="p">;</span>
+           <span class="nx">$scope</span><span class="p">.</span><span class="nx">currentImage</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">images</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'error: '</span><span class="o">+</span> <span class="nx">err</span><span class="p">)});</span>
+
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">formatDate</span> <span class="o">=</span> <span class="nx">formatDate</span><span class="p">;</span>
+  <span class="p">}]);</span> 
+</pre></div>
+
+<p>js/controllers.js</p>
+
+<p>When adding the controller logic, we realize that we need a new method in our advertisement service 
+to communicate with the advertisement on the server-side. Since we at this instance do not
+have more details when getting a single resource, we simply pick out the correct resource from the
+existing list method. We also introduced a new concept called promises or futures in java. </p>
+
+<p>In an asynchronous word promises are as important as try and catch in the synchronous world. The promise let us manage dependencies between shared resources in a nice way, I found the following <a href="http://andyshora.com/promises-angularjs-explained-as-cartoon.html">blog post</a> about promises really good, please have a look.</p>
+
+<p>In Angular a stripped variant of the Q library is used, is is called <a href="http://docs.angularjs.org/api/ng.%24q">$q</a> and should be injected as a dependency.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// inject service dependencies, while we are at it we inject the $http service</span>
+<span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp.services'</span><span class="p">,</span> <span class="p">[],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$provide</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$provide</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">'version'</span><span class="p">,</span> <span class="p">[</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">'0.1'</span><span class="p">;</span>
+  <span class="p">}]);</span>
+  <span class="nx">$provide</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">'advertisment'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$http'</span><span class="p">,</span> <span class="s1">'$q'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">httpSvc</span><span class="p">,</span> <span class="nx">q</span><span class="p">){</span><span class="k">return</span> <span class="k">new</span> <span class="nx">advertisment</span><span class="p">(</span><span class="nx">httpSvc</span><span class="p">,</span> <span class="nx">q</span><span class="p">);}]);</span>  
+
+<span class="kd">function</span> <span class="nx">advertisment</span><span class="p">(</span><span class="nx">$http</span><span class="p">,</span> <span class="nx">$q</span><span class="p">){</span>
+  <span class="kd">function</span> <span class="nx">list</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="p">[</span>
+                <span class="p">{</span>
+                <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id1"</span><span class="p">,</span>
+                <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+                <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-04T09:27:34.825Z"</span><span class="p">,</span>
+                <span class="nx">description</span><span class="o">:</span> <span class="s2">"Premium Surf Board"</span><span class="p">,</span>
+                <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+                         <span class="p">{</span>
+                      <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+                      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-id1"</span><span class="p">,</span>
+                      <span class="nx">href</span><span class="o">:</span> <span class="s2">"https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/surfboard.jpg"</span>
+                         <span class="p">}</span>
+                         <span class="p">],</span>
+                <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+                <span class="nx">price</span><span class="o">:</span> <span class="s2">"$110"</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id2"</span><span class="p">,</span>
+                <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+                <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-11T09:27:34.825Z"</span><span class="p">,</span>
+                <span class="nx">description</span><span class="o">:</span> <span class="s2">"Premium Long Board"</span><span class="p">,</span>
+                <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+                         <span class="p">{</span>
+                     <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+                      <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-idr2"</span><span class="p">,</span>
+                      <span class="nx">href</span><span class="o">:</span> <span class="s2">"https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/longboard.jpg"</span>
+                         <span class="p">}</span>
+                         <span class="p">],</span>
+                <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+                <span class="nx">price</span><span class="o">:</span> <span class="s2">"$220"</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                <span class="nx">_id</span><span class="o">:</span> <span class="s2">"dummy-client-id3"</span><span class="p">,</span>
+                <span class="nx">category</span><span class="o">:</span> <span class="s2">"Hobbies"</span><span class="p">,</span>
+                <span class="nx">created</span><span class="o">:</span> <span class="s2">"2014-02-10T09:27:34.825Z"</span><span class="p">,</span>
+                <span class="nx">description</span><span class="o">:</span> <span class="s2">"Dr Zoggs Sex Wax"</span><span class="p">,</span>
+                <span class="nx">images</span><span class="o">:</span> <span class="p">[</span>
+                         <span class="p">{</span>
+                         <span class="nx">contentType</span><span class="o">:</span> <span class="s2">"image/jpg"</span><span class="p">,</span>
+                         <span class="nx">advertismentId</span><span class="o">:</span> <span class="s2">"dummy-client-id3"</span><span class="p">,</span>
+                         <span class="nx">href</span><span class="o">:</span> <span class="s2">"https://raw.github.com/ewernqvi/mvc_rest_demo/master/server/test-data/img/zoggs.jpg"</span>
+                         <span class="p">}</span>
+                         <span class="p">],</span>
+                <span class="nx">owner</span><span class="o">:</span> <span class="s2">"mrx@gmail.com"</span><span class="p">,</span>
+                <span class="nx">price</span><span class="o">:</span> <span class="s2">"$11"</span>
+                <span class="p">}</span>
+                <span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span><span class="p">{</span>
+    <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">adId</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">deferred</span> <span class="o">=</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">defer</span><span class="p">();</span>
+      <span class="kd">var</span> <span class="nx">res</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span>
+      <span class="c1">// Dummy implementation for now, we shall call the server</span>
+      <span class="kd">var</span> <span class="nx">l</span><span class="o">=</span><span class="nx">list</span><span class="p">();</span>
+      <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">l</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">_id</span> <span class="o">===</span> <span class="nx">adId</span><span class="p">){</span>
+          <span class="nx">res</span> <span class="o">=</span> <span class="nx">l</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
+        <span class="nx">deferred</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span> 
+      <span class="k">else</span> 
+        <span class="nx">deferred</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="s1">'Advertisment with id: '</span> <span class="o">+</span> <span class="nx">adId</span> <span class="o">+</span> <span class="s1">' not found!'</span><span class="p">);</span> 
+
+      <span class="k">return</span> <span class="nx">deferred</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+
+    <span class="p">},</span>
+    <span class="nx">list</span><span class="o">:</span> <span class="nx">list</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">});</span> 
+</pre></div>
+
+<p>js/services.js</p>
+
+<p>Now we have created a working detail page, and all the tests run it's time to communicate with our back-end server</p>
+
+<h3>
+<a name="hooking-up-angular-js-with-the-rest-backend" class="anchor" href="#hooking-up-angular-js-with-the-rest-backend"><span class="octicon octicon-link"></span></a>Hooking up Angular JS with the REST backend</h3>
+
+<p>Our get service is well prepared for backend communication, since we implemented it using a promise it is now just a matter of </p>
+
+<p>But before we begin, let's check out the latest code</p>
+
+<pre><code>git checkout -f client-angular4
+</code></pre>
+
+<p>Lets start to modify the list service, it will return a promise, since $http does so by default. This means we have to make some small adjustments in the controller following the same pattern as we did for the AdvertismentsDetailCtrl</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// the $http API is based on the deferred/promise APIs exposed by the $q service</span>
+<span class="c1">// so it returns a promise for us by default</span>
+<span class="k">return</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/api/advertisments'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span> <span class="o">===</span> <span class="s1">'object'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// invalid response</span>
+      <span class="k">return</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// something went wrong</span>
+      <span class="k">return</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>app/services.js</p>
+
+<p>The little modification in the controller</p>
+
+<div class="highlight highlight-javascript"><pre> <span class="nx">buyAndSellApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'AdvertismentsCtrl'</span><span class="p">,[</span><span class="s1">'$scope'</span><span class="p">,</span> <span class="s1">'advertisment'</span><span class="p">,</span>
+                                               <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">advertisment</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">advertisment</span><span class="p">.</span><span class="nx">list</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+          <span class="nx">$scope</span><span class="p">.</span><span class="nx">advertisments</span><span class="o">=</span><span class="nx">result</span>
+        <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'error: '</span><span class="o">+</span> <span class="nx">err</span><span class="p">);});</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">formatDate</span> <span class="o">=</span> <span class="nx">formatDate</span><span class="p">;</span>
+  <span class="p">}]);</span>
+</pre></div>
+
+<p>Now we shall be able to see advertisements from the server, that is if we loaded some using CURL earlier. If we click and advertisment loading details will fail now, since we call the list service, which is a promise now, so let's adjust the advertisment.get method so it communicates with the backend.</p>
+
+<div class="highlight highlight-javascript"><pre>  <span class="k">return</span><span class="p">{</span>
+    <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">adId</span><span class="p">){</span>
+     <span class="k">return</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/api/advertisments/'</span> <span class="o">+</span> <span class="nx">adId</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span> <span class="o">===</span> <span class="s1">'object'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+      <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="c1">// invalid response</span>
+        <span class="k">return</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// something went wrong</span>
+      <span class="k">return</span> <span class="nx">$q</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="p">},</span>
+    <span class="nx">list</span><span class="o">:</span> <span class="nx">list</span>
+  <span class="p">}</span>
+</pre></div>
+
+<p>app/services.js</p>
+
+<p>We know have an application that works as expected. We could add some more end-2-end tests, but I will leave that as an exercise for you.</p>
+
+<h3>
+<a name="logging-in" class="anchor" href="#logging-in"><span class="octicon octicon-link"></span></a>Logging In</h3>
+
+<p>Create a new login partial, set a variable in the root scope or local storage holding the user-token</p>
+
+<div class="highlight highlight-HTML"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">ng-hide=</span><span class="s">"login.user"</span> <span class="na">class=</span><span class="s">"col-md-6"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">""</span> <span class="na">ng-submit=</span><span class="s">"login.connect()"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;fieldset&gt;</span>
+        <span class="nt">&lt;legend&gt;</span>Login<span class="nt">&lt;/legend&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;input</span> <span class="na">ng-model=</span><span class="s">"login.login"</span> <span class="na">name=</span><span class="s">"email"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">placeholder=</span><span class="s">"Login"</span> <span class="na">required</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;input</span> <span class="na">ng-model=</span><span class="s">"login.password"</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">placeholder=</span><span class="s">"Password"</span> <span class="na">required</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/button&gt;&lt;/p&gt;</span>
+      <span class="nt">&lt;/fieldset&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">ng-hide=</span><span class="s">"login.user"</span> <span class="na">div</span> <span class="na">class=</span><span class="s">"col-md-6"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">""</span> <span class="na">ng-submit=</span><span class="s">"login.register()"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;fieldset&gt;</span>
+        <span class="nt">&lt;legend&gt;</span>Register new User<span class="nt">&lt;/legend&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;input</span> <span class="na">ng-model=</span><span class="s">"login.new.user"</span> <span class="na">name=</span><span class="s">"email"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">placeholder=</span><span class="s">"your email"</span> <span class="na">required</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;input</span> <span class="na">ng-model=</span><span class="s">"login.new.password"</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">placeholder=</span><span class="s">"Password"</span> <span class="na">required</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;p&gt;&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Register<span class="nt">&lt;/button&gt;&lt;/p&gt;</span>
+      <span class="nt">&lt;/fieldset&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+
+  <span class="nt">&lt;/div&gt;</span>
+
+  <span class="nt">&lt;div</span> <span class="na">ng-show=</span><span class="s">"login.user"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Welcome, {{login.user._id}} : token {{login.user.userToken}}!<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;&lt;button</span> <span class="na">ng-click=</span><span class="s">"login.disconnect()"</span><span class="nt">&gt;</span>Logout<span class="nt">&lt;/button&gt;&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>partials/login.html</p>
+
+<p>Nothing fancy here, just a simple form divided into a login section and a register new user section.
+Submitting the form will trigger a controller and if successful login the user will be transferred
+back to the advertisements overview. When an existing user has checked in, the loaded list of 
+advertisements are checked against the owner-id, if one matches the data is re-loaded.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="c1">// Declare app level module which depends on filters, and services</span>
+<span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'buyAndSellApp'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s1">'ngRoute'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.filters'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.services'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.directives'</span><span class="p">,</span>
+  <span class="s1">'buyAndSellApp.controllers'</span>
+<span class="p">]).</span>
+<span class="nx">config</span><span class="p">([</span><span class="s1">'$routeProvider'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/view1'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/partial1.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyCtrl1'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/view2'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/partial2.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'MyCtrl2'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/loginRegister'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/login.html'</span><span class="p">,</span> <span class="nx">controller</span><span class="o">:</span> <span class="s1">'LoginController'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/advertisment/:id'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/advertismentDetails.html'</span><span class="p">,</span>
+      <span class="nx">controller</span><span class="o">:</span> <span class="s1">'AdvertismentDetailCtrl'</span><span class="p">});</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/advertisments'</span><span class="p">,</span> <span class="p">{</span><span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">'partials/advertisments.html'</span><span class="p">,</span> 
+      <span class="nx">controller</span><span class="o">:</span> <span class="s1">'AdvertismentsCtrl'</span><span class="p">});</span>
+  <span class="c1">// Default route</span>
+
+  <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">otherwise</span><span class="p">({</span><span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">'/advertisments'</span><span class="p">});</span>
+<span class="p">}]);</span>
+</pre></div>
+
+<p>js/app.js</p>
+
+<p>Here we just add the routing logic, the route is triggered by the login button on the index.html page.</p>
+
+<div class="highlight highlight-javascript"><pre> <span class="nx">buyAndSellApp</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'LoginController'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">,</span>
+     <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">user</span><span class="p">){</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">connect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nx">user</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">,</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="nx">alert</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">res</span><span class="p">;</span>
+          <span class="p">});</span>
+        <span class="p">}</span>
+
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">newUser</span> <span class="o">=</span> <span class="p">{</span><span class="nx">email</span><span class="o">:</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="k">new</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span>
+                         <span class="nx">password</span><span class="o">:</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="k">new</span><span class="p">.</span><span class="nx">password</span><span class="p">};</span>
+          <span class="nx">user</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">newUser</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="nx">alert</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">res</span><span class="p">;</span>
+          <span class="p">});</span>
+         <span class="p">};</span>
+
+         <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">disconnect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+           <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+           <span class="nx">user</span><span class="p">.</span><span class="nx">logout</span><span class="p">();</span>
+         <span class="p">};</span>
+     <span class="p">}]);</span>
+</pre></div>
+
+<p>js/controllers.js</p>
+
+<p>When adding the controller logic, we realize that we need a login service to communicate with the 
+user-resource on the server-side. We can mock this service in our test to make it work without depending
+on the backend.</p>
+
+<div class="highlight highlight-javascript"><pre> <span class="nx">$provide</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$http'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">httpSvc</span><span class="p">){</span><span class="k">return</span> <span class="k">new</span> <span class="nx">user</span><span class="p">(</span><span class="nx">httpSvc</span><span class="p">);}]);</span>  
+
+<span class="kd">function</span> <span class="nx">user</span><span class="p">(</span><span class="nx">$http</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">_user</span><span class="o">=</span><span class="p">{};</span>
+  <span class="kd">var</span> <span class="nx">connFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+      <span class="kd">function</span> <span class="nx">utf8_to_b64</span><span class="p">(</span> <span class="nx">str</span> <span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">btoa</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="nb">encodeURIComponent</span><span class="p">(</span> <span class="nx">str</span> <span class="p">)));}</span>
+      <span class="nx">$http</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">common</span><span class="p">[</span><span class="s1">'Authorization'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Basic '</span> <span class="o">+</span> <span class="nx">utf8_to_b64</span><span class="p">(</span><span class="nx">username</span> <span class="o">+</span> <span class="s1">':'</span> <span class="o">+</span> <span class="nx">password</span><span class="p">);</span>
+      <span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/api/users/'</span><span class="o">+</span> <span class="nx">username</span><span class="p">).</span><span class="nx">success</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="o">||</span> <span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="nx">_user</span> <span class="o">=</span> <span class="nx">data</span><span class="p">;</span>
+            <span class="nx">$http</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">common</span><span class="p">[</span><span class="s1">'user-token'</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_user</span><span class="p">.</span><span class="nx">userToken</span><span class="p">;</span>
+            <span class="nx">res</span><span class="p">(</span><span class="nx">_user</span><span class="p">);</span>
+        <span class="p">}).</span><span class="nx">error</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span><span class="p">(</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">418</span><span class="p">){</span>
+            <span class="nx">res</span><span class="p">(</span> <span class="p">{</span><span class="nx">error</span><span class="o">:</span> <span class="nx">err</span><span class="p">});</span>
+          <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="k">delete</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">common</span><span class="p">.</span><span class="nx">Authorization</span><span class="p">;</span>
+
+  <span class="p">};</span>
+  <span class="k">return</span><span class="p">{</span>
+    <span class="nx">register</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newUser</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/api/users/'</span><span class="p">,</span> <span class="nx">newUser</span><span class="p">).</span><span class="nx">success</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">_user</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="c1">// Now we have to call get, to get our token</span>
+            <span class="nx">connFn</span><span class="p">(</span><span class="nx">_user</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span> <span class="nx">_user</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="nx">res</span><span class="p">);</span>
+        <span class="p">}).</span><span class="nx">error</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">{</span><span class="nx">error</span><span class="o">:</span> <span class="nx">err</span><span class="p">};</span>
+        <span class="p">});</span>
+    <span class="p">},</span>
+    <span class="nx">connect</span><span class="o">:</span> <span class="nx">connFn</span><span class="p">,</span>
+    <span class="nx">logout</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="k">delete</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">common</span><span class="p">[</span><span class="s1">'user-token'</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>  
+</pre></div>
+
+<p>js/services.js</p>
+
+<p>When we have added our service we shall be able to login, we still have not handled login-errors
+and registration errors in a good way, we leave this as an exercise for you!.</p>
+
+<h2>
+<a name="client-summary" class="anchor" href="#client-summary"><span class="octicon octicon-link"></span></a>Client Summary</h2>
+
+<p>We have now completed part of our application, now it's just a matter of applying the same technique
+to finish the reminder of the application or start a new project of your own.</p>
+
+<h1>
+<a name="extras" class="anchor" href="#extras"><span class="octicon octicon-link"></span></a>Extras</h1>
+
+<h2>
+<a name="server-1" class="anchor" href="#server-1"><span class="octicon octicon-link"></span></a>Server</h2>
+
+<p>Modify the server to support CORS, this is rather simple just follow the linked 
+<a href="https://npmjs.org/package/cors">instructions</a></p>
+
+<p>Make sure you configures the Access-Control-Allow-Headers CORS property to allow our user-token header.</p>
+
+<p>Modify the port of the  server and start an additional instance, let the first server serve your 
+HTML-pages this way the REST-API is on a different domain from a web-browser perspective.</p>
+
+<p>e.g. access the client on http://localhost:3333/app</p>
+
+<p>and the server-rest-api on http://localhost:3000/api/advertisments</p>
+
+<h2>
+<a name="client-1" class="anchor" href="#client-1"><span class="octicon octicon-link"></span></a>Client</h2>
+
+<h3>
+<a name="adding-images-in-angular-js" class="anchor" href="#adding-images-in-angular-js"><span class="octicon octicon-link"></span></a>Adding Images in Angular JS</h3>
+
+<p>Adding an image to an advertisement is not that hard if we post a form, but in our single page application
+we do not want to do this, so instead we must rely on posting FormData in our advertisement service.</p>
+
+<p>see <a href="http://jsfiddle.net/JeJenny/ZG9re/">Simple Example</a></p>
+
+<p>There are many more advanced plugins available for Angular if you prefer drag and drop, preview etc.</p>
+
+<h3>
+<a name="adding-new-advertisements" class="anchor" href="#adding-new-advertisements"><span class="octicon octicon-link"></span></a>Adding new Advertisements</h3>
+
+<p>If the user is logged in, just:</p>
+
+<ol>
+<li>Add a link at button of the page to trigger this route </li>
+<li>Update js/app.js with the new route and a controller</li>
+<li>Add a test and the new controller</li>
+<li>Add an addAdvertisement.html partial where you display the information in a form, use what you learned
+in the <a href="#Adding%20Images%20in%20Angular%20JS">Adding Images in Angular JS</a> to enable adding images, 
+removing an image is just a matter of calling the DELETE method on the image resource. Note that
+you must add a placeholder advertisement to be able to add an image.</li>
+<li>Add methods in our advertisement service to communicate with
+
+<ul>
+<li>POST /api/images - Add image</li>
+<li>POST /api/advertisments - Add an advertisement</li>
+</ul>
+</li>
+</ol><p>Good Luck!</p>
+
+<h3>
+<a name="edit-advertisement-text" class="anchor" href="#edit-advertisement-text"><span class="octicon octicon-link"></span></a>Edit Advertisement Text</h3>
+
+<p>If the user is logged in, just:</p>
+
+<ol>
+<li>Add an edit icon on the left of an advertisement with an edit link</li>
+<li>Clicking on the icon shall trigger the edit route</li>
+<li>Update js/app.js with the new route and a controller</li>
+<li>Add a test and the new controller</li>
+<li>Add a editAdvertisement.html partial where you display the information in a form
+Removing an image is just a matter of calling the DELETE method on the image resource.</li>
+<li>Add methods in our advertisement service to communicate with
+
+<ul>
+<li>DELETE /api/images:id - Remove an image</li>
+<li>PUT /api/advertisments - Update the text of the advertisement</li>
+</ul>
+</li>
+</ol><p>Good Luck!</p>
+
+<h3>
+<a name="removing-advertisements-from-the-client" class="anchor" href="#removing-advertisements-from-the-client"><span class="octicon octicon-link"></span></a>Removing Advertisements from the Client</h3>
+
+<p>Add a wast-bin right of the advertisement, if a delete link exist for the advertisement. When clicked
+use the verb and href provided in the link to perform a delete on the server-side.</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/ewernqvi">ewernqvi</a> can be found on <a href="https://github.com/ewernqvi/mvc_rest_demo">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
