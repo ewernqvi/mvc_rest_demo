@@ -67,9 +67,10 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
          };
      }]);
 
-  buyAndSellApp.controller('MyCtrl1', [function() {
+  /*buyAndSellApp.controller('MyCtrl1', [function() {
 
   }]);
   buyAndSellApp.controller('MyCtrl2', [function() {
 
   }]);
+  */

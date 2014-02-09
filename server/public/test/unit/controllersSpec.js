@@ -18,6 +18,8 @@ describe('controllers', function(){
     it('should create advertisment model with 3 advertisments', function() {
       httpMock.flush();
       expect(scope.advertisments.length).toBe(3);
+      var res = scope.formatDate(new Date());
+      //expect(res.match(/today/).index).toBe(0);
     });
   });
 
@@ -34,7 +36,8 @@ describe('controllers', function(){
       var d = new Date();
       $routeParams.id = adId;
       httpMock.expectGET("/api/advertisments/testId").respond(
-        {_id:adId, created: d, price: '35',description: 'test-part'});
+        {_id:adId, created: d, price: '35',description: 'test-part', 
+          images: [{a:'a'}]});
       ctrl = $controller('AdvertismentDetailCtrl', {$scope:scope});
     })); 
 
@@ -58,14 +61,13 @@ describe('controllers', function(){
   // Test for LoginCtrl
   describe('LoginCtrl', function(){
     var scope, ctrl, httpMock, createController;
-    var testUser =  {_id: 'testUser', email: 'test@user', password: 'loko'};
-    var newTestUser =  [{_id: 'newTestUser', email: 'testUser', password: 'loko2'}];
+    var testUser =  { email: 'test@user', password: 'loko'};
     beforeEach(module('buyAndSellApp'));
 
     beforeEach(inject(function($controller, $httpBackend) {
       scope = {};
       httpMock = $httpBackend;
-      httpMock.when('GET', "/api/users/testUser").respond(testUser);
+      httpMock.when('GET', "/api/users/test@user").respond(testUser);
       createController = function(){
         return $controller('LoginController', {$scope:scope});
       }
@@ -83,22 +85,22 @@ describe('controllers', function(){
 
     it('should log in user', function() {
       // Simulate that the user entered the information in the GUI
-      httpMock.expectGET('/api/users/testUser');
+      httpMock.expectGET('/api/users/test@user');
       var controller = createController();
-      scope.login.login = testUser._id;
+      scope.login.login = testUser.email;
       scope.login.password = testUser.password;
 
       scope.login.connect();
       httpMock.flush();
       expect(scope.login.user.password).toBe(testUser.password);
-      httpMock
+      //httpMock
     });
 
     it('should logout a logged in user', function() {
       // Simulate that the user entered the information in the GUI
-      httpMock.expectGET('/api/users/testUser');
+      httpMock.expectGET('/api/users/test@user');
       var controller = createController();
-      scope.login.login = testUser._id;
+      scope.login.login = testUser.email;
       scope.login.password = testUser.password;
 
       scope.login.connect();
@@ -109,30 +111,17 @@ describe('controllers', function(){
 
 
   it('should register a user', function() {
-      // Simulate that the user entered the information in the GUI
-      //httpMock.when('POST', '/api/users', newTestUser).respond(200, newTestUser);
-      //httpMock.flush();
-      var newUser = { user: 'newTestUser', password: 'loko2'};
-      var data2 =   { email: 'newTestUser', password: 'loko2'};
-      httpMock.expectPOST('/api/users/', data2).respond(200, newTestUser);
+      httpMock.expectPOST('/api/users/', testUser).respond(200, [testUser]);
       var controller = createController();
-      scope.login.new = newUser;
+      scope.login.new = {user: testUser.email, password: testUser.password};
 
       scope.login.register();
       console.log(JSON.stringify(scope));
       httpMock.flush();
-      //expect(scope.login.user.password).toBe(newTestUser.password);
+      expect(scope.login.user.password).toBe(testUser.password);
       //httpMock
     });
 
   });// END Login CTRL TEST
-
-  it('should ....', inject(function() {
-    //spec body
-  }));
-
-  it('should ....', inject(function() {
-    //spec body
-  }));
 
 });

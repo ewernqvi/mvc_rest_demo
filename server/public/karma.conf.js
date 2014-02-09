@@ -1,6 +1,6 @@
 module.exports = function(config){
     config.set({
-    basePath : '../',
+    basePath : './',
 
     files : [
       'bower_components/angular/angular.js',
@@ -26,12 +26,19 @@ module.exports = function(config){
             'karma-junit-reporter',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
+            'karma-coverage',
             'karma-jasmine'
             ],
+
+    preprocessors : {
+      'app/js/*.js': 'coverage'
+               },
 
     junitReporter : {
       outputFile: 'test_out/unit.xml',
       suite: 'unit'
-    }
+    },
+
+    reporters : ['progress', 'coverage']
 
 })}
