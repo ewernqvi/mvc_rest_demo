@@ -35,7 +35,7 @@ To get the server to run on your local system you must install some dependencies
    Once installed open a terminal to see if node is working
 
    ```
-node -version
+node --version
    ```
 
    When you installed node you also get the node package manager called NPM which we will utlize to 
@@ -45,7 +45,7 @@ node -version
 
 3. git http://git-scm.com/downloads, follow the instructions for your platform, note that windows 
    users shall use a version where curl also is included 
-   [windows installation with curl included](https://msysgit.googlecode.com/files/Git-1.8.5.2-preview20131230.exe)
+   [windows installation with curl included](https://github-windows.s3.amazonaws.com/GitHubSetup.exe)
 
 4. Get the code
    ```
