@@ -1,10 +1,14 @@
 var express = require('express')
 , mongoskin = require('mongoskin')
+, fs = require('fs')
 , routeFactory = require('./routes');
 
+fs.mkdir('/tmp', function(e,r){ 
+  if(!e) fs.mkdir('/tmp/img', function(e,r){});
+});
 
 function log(msg){
-  //console.log(msg);
+  console.log(msg);
 }
 
 var app = express();
@@ -13,7 +17,7 @@ app.use(express.bodyParser({uploadDir:'/tmp/img'}));
 app.use(express.json());
 app.use(express.urlencoded());
 
-var db = mongoskin.db('localhost:27017/test_db2', {safe:true});;
+var db = mongoskin.db('localhost:27017/test_db', {safe:true});
 var routes = routeFactory.routes(db, log);
 
 app.use(function(err, req, res, next) {
