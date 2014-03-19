@@ -8,7 +8,7 @@ fs.mkdir('/tmp', function(e,r){
 });
 
 function log(msg){
-  console.log(msg);
+ // console.log(msg);
 }
 
 var app = express();
