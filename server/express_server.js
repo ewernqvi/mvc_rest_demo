@@ -4,7 +4,7 @@ var express = require('express')
 , routeFactory = require('./routes');
 
 fs.mkdir('/tmp', function(e,r){ 
-  if(!e) fs.mkdir('/tmp/img', function(e,r){});
+  fs.mkdir('/tmp/img', function(e,r){});
 });
 
 function log(msg){
