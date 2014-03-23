@@ -42,6 +42,8 @@ node --version
    get additional node dependencies
 
 2. Mongo DB http://docs.mongodb.org/manual/installation/, follow the instructions for your platform
+   Note that mongo needs a patch to work correctly in windows, an alternative is to create an 
+   account on [mongolad](https://mongolab.com/welcome/) and use the cloud service.
 
 3. git http://git-scm.com/downloads, follow the instructions for your platform, note that windows 
    users shall use a version where curl also is included 
