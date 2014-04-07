@@ -24,8 +24,7 @@ The REST server part of the application has three resources
 I will demonstrate typical flows using CURL, it is then up to the MVC client developer to use this 
 for input for the XHR-requests from the browser.
 
-Please note that windows user need to install a git client with curl built-in, since curl is not 
-natively available in windows.
+Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe).since curl in native windows and json input do not work without escaping all "-signs
 
 ## Installation
 To get the server to run on your local system you must install some dependencies
@@ -37,17 +36,16 @@ To get the server to run on your local system you must install some dependencies
    ```
 node --version
    ```
-
-   When you installed node you also get the node package manager called NPM which we will utlize to 
+   When you installed node you also get the node package manager called NPM which we will utilize to 
    get additional node dependencies
 
 2. Mongo DB http://docs.mongodb.org/manual/installation/, follow the instructions for your platform
    Note that mongo needs a patch to work correctly in windows, an alternative is to create an 
    account on [mongolad](https://mongolab.com/welcome/) and use the cloud service.
+  If you install a cloud version of mongo please note that you must update the url in express_server.js
 
 3. git http://git-scm.com/downloads, follow the instructions for your platform, note that windows 
-   users shall use a version where curl also is included 
-   [windows installation with curl included](https://github-windows.s3.amazonaws.com/GitHubSetup.exe)
+   users shall install git bundled with [cygwin](http://www.cygwin.com/install.html) please ensure that you include both git and curl  
 
 4. Get the code
    ```
