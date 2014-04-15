@@ -17,8 +17,8 @@ app.use(express.bodyParser({uploadDir:'/tmp/img'}));
 app.use(express.json());
 app.use(express.urlencoded());
 
-var mongo_url = 'mongo:secretpassword@ds031947.mongolab.com:31947/mvc_rest_demo';
-// var mongo_url = 'localhost:27017/test_db';
+//var mongo_url = 'mongo:secretpassword@ds031947.mongolab.com:31947/mvc_rest_demo';
+var mongo_url = 'localhost:27017/test_db';
 var db = mongoskin.db(mongo_url, {safe:true});
 var routes = routeFactory.routes(db, log);
 
