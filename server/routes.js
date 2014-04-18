@@ -42,7 +42,8 @@ module.exports.routes = function (pdb, plog){
        user_db.findOne({_id: user}, function(e, result){ 
          if (e) return next(e); 
          var authenticated = ( result && result.password && pass === result.password);
-         callback(null /* error */, authenticated);
+         //callback(null /* error */, authenticated);
+         callback(authenticated);
       });
     },
     /**
@@ -292,22 +293,29 @@ function updateAddWithImageObj(adId, image){
     var collection = db.collection('advertisments');
     collection.findOne({_id: collection.id(adId)}, function(e, result){
                        if (e) return next(e);
-                       log('we got a result or...'+ result + ' with adId' + adId);
-                       if(!result) throw 'no ad found with id ' + adId;
-                       // Now we add a list of images to the ad
-                       if(!result.images) result.images = [];
-                       result.images.push(image);
-                       // Now we must save the updated object
-                       delete result._id; // In order to update the record, the _id field may not exist in mongo
-                       collection.update({_id: collection.id(adId)}, {$set:result},
+                       log('we got a result or... '+ result + ' with adId: ' + adId);
+                       if(!result) {console.log( 'no ad found with id ' + adId);
+					      collection.find({}).toArray(function(e, result){//e
+						     if(!e){console.log('res: ' + result)};
+							 console.log('###EEE' + e + ' res: ' + result)
+						  });
+					   }else{
+                         // Now we add a list of images to the ad
+                         if(!result.images) result.images = [];
+                         result.images.push(image);
+                         // Now we must save the updated object
+                         delete result._id; // In order to update the record, the _id field may not exist in mongo
+                         collection.update({_id: collection.id(adId)}, {$set:result},
                                          {safe:true, multi:false}, function(e, result){
-                                         if (e) return e;
+                                         if (e) console.log('db error ocurred during update: ' + e);
                                          else{
                                          log('advertisment updated..');
                                          }
                                          });
                        
-                       });
+                         }
+					   });
+					   
 }
 
 
