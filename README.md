@@ -366,6 +366,7 @@ This section will cover the actual tutorial of creating a rest client using the
     - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
   - [Client Summary](#client-summary)
 - [Extras](#extras)
+  - [Server](#server-extras)
   - [Client](#client-1)
     - [Adding Images in Angular JS](#adding-images-in-angular-js)
     - [Adding new Advertisements](#adding-new-advertisements)
@@ -1282,7 +1283,7 @@ We have now completed part of our application, now it's just a matter of applyin
 the same technique to finish the reminder of the application or start a new
 project of your own.
 # Extras
-## Server
+## Server Extras
 Modify the server to support CORS, this is rather simple just follow the linked
 [instructions](https://npmjs.org/package/cors)
 
