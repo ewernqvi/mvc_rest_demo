@@ -1,7 +1,3 @@
-
-
-
-
 MVC REST Demo
 =============
 
@@ -27,7 +23,7 @@ The REST server part of the application has three resources
 3. Images
 
 ## Table of Contents Server
-- [Installation](#installation)
+- [Installation](#server-installation)
 - [Typical Flows](#typical-flows)
   - [User Registration](#user-registration)
   - [User Logon](#user-logon)
@@ -40,12 +36,10 @@ The REST server part of the application has three resources
    - [Advertisements](#advertisements)
 
 
-I will demonstrate typical flows using CURL, it is then up to the MVC client
-developer to use this for input for the XHR-requests from the browser.
 
+## Server Installation
 Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe).since curl in native windows and json input do not work without escaping all "-signs
 
-## Installation
 To get the server to run on your local system you must install some dependencies
 
 1. Node JS http://nodejs.org/, click on install
@@ -96,6 +90,9 @@ npm install
 9. You are done
 
 ## Typical Flows
+I will demonstrate typical flows using CURL, it is then up to the MVC client
+developer to use this for input for the XHR-requests from the browser.
+
 ### User Registration
 ```
 curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \
