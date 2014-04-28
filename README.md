@@ -1,51 +1,6 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
-- [MVC REST Demo](#mvc-rest-demo)
-- [Purpose](#purpose)
-  - [Installation](#installation)
-  - [Typical Flows](#typical-flows)
-    - [User Registration](#user-registration)
-    - [User Logon](#user-logon)
-    - [Add a new advertisement](#add-a-new-advertisement)
-    - [Add an image to our advertisement](#add-an-image-to-our-advertisement)
-    - [Browse advertisements in the system](#browse-advertisements-in-the-system)
-  - [Additional Resource Methods](#additional-resource-methods)
-    - [Users](#users)
-    - [Images](#images)
-    - [Advertisements](#advertisements)
-- [Client](#client)
-  - [A Static Client](#a-static-client)
-  - [Background on Angular JS](#background-on-angular-js)
-    - [What is Angular](#what-is-angular)
-    - [The Zen of Angular](#the-zen-of-angular)
-    - [Angular frees you from the following pains](#angular-frees-you-from-the-following-pains)
-  - [Developing the Angular JS Client](#developing-the-angular-js-client)
-    - [Migrating our Static Client to Angular JS - Model and Controller](#migrating-our-static-client-to-angular-js---model-and-controller)
-  - [This is where our list of advertisements shall be displayed](#this-is-where-our-list-of-advertisements-shall-be-displayed)
-    - [Adding our Presentation Logic](#adding-our-presentation-logic)
-      - [Angular JS Service](#angular-js-service)
-      - [Partial HTML Code -- Advertisements](#partial-html-code----advertisements)
-  - [{{ad.description}}](#addescription)
-    - [{{ad.price}}](#adprice)
-      - [Advertisment Details](#advertisment-details)
-- [{{advertisment.description}}](#advertismentdescription)
-  - [Price: {{advertisment.price}}](#price-advertismentprice)
-    - [Hooking up Angular JS with the REST backend](#hooking-up-angular-js-with-the-rest-backend)
-    - [Logging In](#logging-in)
-    - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
-  - [Client Summary](#client-summary)
-- [Extras](#extras)
-  - [Server](#server)
-  - [Client](#client-1)
-    - [Adding Images in Angular JS](#adding-images-in-angular-js)
-    - [Adding new Advertisements](#adding-new-advertisements)
-    - [Edit Advertisement Text](#edit-advertisement-text)
-    - [Removing Advertisements from the Client](#removing-advertisements-from-the-client)
-    - [Add filtering for Advertiments both on text in description and category](#add-filtering-for-advertiments-both-on-text-in-description-and-category)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 MVC REST Demo
 =============
@@ -64,12 +19,26 @@ The application consists of two parts.
 * [REST Server](#server)
 * [MVC Client](#client)
 
- # Server
+# Server
 The REST server part of the application has three resources
 
 1. Users
 2. Advertisements
 3. Images
+
+## Table of Contents Server
+- [Installation](#installation)
+- [Typical Flows](#typical-flows)
+   - [User Registration](#user-registration)
+   - [User Logon](#user-logon)
+   - [Add a new advertisement](#add-a-new-advertisement)
+   - [Add an image to our advertisement](#add-an-image-to-our-advertisement)
+   - [Browse advertisements in the system](#browse-advertisements-in-the-system)
+ - [Additional Resource Methods](#additional-resource-methods)
+    - [Users](#users)
+    - [Images](#images)
+    - [Advertisements](#advertisements)
+
 
 I will demonstrate typical flows using CURL, it is then up to the MVC client
 developer to use this for input for the XHR-requests from the browser.
@@ -382,6 +351,32 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
 # Client
 This section will cover the actual tutorial of creating a rest client using the
 [AngularJS](http://www.angularjs.org) framework
+
+## Table of Contents Client
+- [A Static Client](#a-static-client)
+- [Background on Angular JS](#background-on-angular-js)
+  - [What is Angular](#what-is-angular)
+  - [The Zen of Angular](#the-zen-of-angular)
+  - [Angular frees you from the following pains](#angular-frees-you-from-the-following-pains)
+- [Developing the Angular JS Client](#developing-the-angular-js-client)
+  - [Migrating our Static Client to Angular JS - Model and Controller](#migrating-our-static-client-to-angular-js---model-and-controller)
+  - [Adding our Presentation Logic](#adding-our-presentation-logic)
+     - [Angular JS Service](#angular-js-service)
+     - [Partial HTML Code -- Advertisements](#partial-html-code----advertisements)
+     - [Advertisment Details](#advertisment-details)
+- [Hooking up Angular JS with the REST backend](#hooking-up-angular-js-with-the-rest-backend)
+    - [Logging In](#logging-in)
+    - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
+  - [Client Summary](#client-summary)
+- [Extras](#extras)
+  - [Server](#server)
+  - [Client](#client-1)
+    - [Adding Images in Angular JS](#adding-images-in-angular-js)
+    - [Adding new Advertisements](#adding-new-advertisements)
+    - [Edit Advertisement Text](#edit-advertisement-text)
+    - [Removing Advertisements from the Client](#removing-advertisements-from-the-client)
+    - [Add filtering for Advertiments both on text in description and category](#add-filtering-for-advertiments-both-on-text-in-description-and-category)
+
 
 ## A Static Client
 To get an idea what we try to accomplish we start out with a mockup, a static
