@@ -29,15 +29,15 @@ The REST server part of the application has three resources
 ## Table of Contents Server
 - [Installation](#installation)
 - [Typical Flows](#typical-flows)
-   - [User Registration](#user-registration)
-   - [User Logon](#user-logon)
-   - [Add a new advertisement](#add-a-new-advertisement)
-   - [Add an image to our advertisement](#add-an-image-to-our-advertisement)
-   - [Browse advertisements in the system](#browse-advertisements-in-the-system)
- - [Additional Resource Methods](#additional-resource-methods)
-    - [Users](#users)
-    - [Images](#images)
-    - [Advertisements](#advertisements)
+  - [User Registration](#user-registration)
+  - [User Logon](#user-logon)
+  - [Add a new advertisement](#add-a-new-advertisement)
+  - [Add an image to our advertisement](#add-an-image-to-our-advertisement)
+  - [Browse advertisements in the system](#browse-advertisements-in-the-system)
+- [Additional Resource Methods](#additional-resource-methods)
+   - [Users](#users)
+   - [Images](#images)
+   - [Advertisements](#advertisements)
 
 
 I will demonstrate typical flows using CURL, it is then up to the MVC client
@@ -369,14 +369,12 @@ This section will cover the actual tutorial of creating a rest client using the
     - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
   - [Client Summary](#client-summary)
 - [Extras](#extras)
-  - [Server](#server)
   - [Client](#client-1)
     - [Adding Images in Angular JS](#adding-images-in-angular-js)
     - [Adding new Advertisements](#adding-new-advertisements)
     - [Edit Advertisement Text](#edit-advertisement-text)
     - [Removing Advertisements from the Client](#removing-advertisements-from-the-client)
     - [Add filtering for Advertiments both on text in description and category](#add-filtering-for-advertiments-both-on-text-in-description-and-category)
-
 
 ## A Static Client
 To get an idea what we try to accomplish we start out with a mockup, a static
