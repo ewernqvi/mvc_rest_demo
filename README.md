@@ -15,19 +15,31 @@ The application consists of two parts.
 * [REST Server](#server)
 * [MVC Client](#client)
 
- # Server
+# Server
 The REST server part of the application has three resources
 
 1. Users
 2. Advertisements
 3. Images
 
-I will demonstrate typical flows using CURL, it is then up to the MVC client
-developer to use this for input for the XHR-requests from the browser.
+## Table of Contents Server
+- [Installation](#server-installation)
+- [Typical Flows](#typical-flows)
+  - [User Registration](#user-registration)
+  - [User Logon](#user-logon)
+  - [Add a new advertisement](#add-a-new-advertisement)
+  - [Add an image to our advertisement](#add-an-image-to-our-advertisement)
+  - [Browse advertisements in the system](#browse-advertisements-in-the-system)
+- [Additional Resource Methods](#additional-resource-methods)
+   - [Users](#users)
+   - [Images](#images)
+   - [Advertisements](#advertisements)
 
+
+
+## Server Installation
 Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe).since curl in native windows and json input do not work without escaping all "-signs
 
-## Installation
 To get the server to run on your local system you must install some dependencies
 
 1. Node JS http://nodejs.org/, click on install
@@ -78,6 +90,9 @@ npm install
 9. You are done
 
 ## Typical Flows
+I will demonstrate typical flows using CURL, it is then up to the MVC client
+developer to use this for input for the XHR-requests from the browser.
+
 ### User Registration
 ```
 curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \
@@ -333,6 +348,31 @@ curl -X DELETE -H user-token:_token_ http://localhost:3000/api/advertisments/:id
 # Client
 This section will cover the actual tutorial of creating a rest client using the
 [AngularJS](http://www.angularjs.org) framework
+
+## Table of Contents Client
+- [A Static Client](#a-static-client)
+- [Background on Angular JS](#background-on-angular-js)
+  - [What is Angular](#what-is-angular)
+  - [The Zen of Angular](#the-zen-of-angular)
+  - [Angular frees you from the following pains](#angular-frees-you-from-the-following-pains)
+- [Developing the Angular JS Client](#developing-the-angular-js-client)
+  - [Migrating our Static Client to Angular JS - Model and Controller](#migrating-our-static-client-to-angular-js---model-and-controller)
+  - [Adding our Presentation Logic](#adding-our-presentation-logic)
+     - [Angular JS Service](#angular-js-service)
+     - [Partial HTML Code -- Advertisements](#partial-html-code----advertisements)
+     - [Advertisment Details](#advertisment-details)
+- [Hooking up Angular JS with the REST backend](#hooking-up-angular-js-with-the-rest-backend)
+    - [Logging In](#logging-in)
+    - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
+  - [Client Summary](#client-summary)
+- [Extras](#extras)
+  - [Server](#server-extras)
+  - [Client](#client-1)
+    - [Adding Images in Angular JS](#adding-images-in-angular-js)
+    - [Adding new Advertisements](#adding-new-advertisements)
+    - [Edit Advertisement Text](#edit-advertisement-text)
+    - [Removing Advertisements from the Client](#removing-advertisements-from-the-client)
+    - [Add filtering for Advertiments both on text in description and category](#add-filtering-for-advertiments-both-on-text-in-description-and-category)
 
 ## A Static Client
 To get an idea what we try to accomplish we start out with a mockup, a static
@@ -1243,7 +1283,7 @@ We have now completed part of our application, now it's just a matter of applyin
 the same technique to finish the reminder of the application or start a new
 project of your own.
 # Extras
-## Server
+## Server Extras
 Modify the server to support CORS, this is rather simple just follow the linked
 [instructions](https://npmjs.org/package/cors)
 
