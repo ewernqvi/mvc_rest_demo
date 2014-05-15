@@ -38,7 +38,7 @@ The REST server part of the application has three resources
 
 
 ## Server Installation
-Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe).since curl in native windows and json input do not work without escaping all "-signs
+Please note that windows users shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe).since curl in native windows and json input do not work without escaping all "-signs
 
 To get the server to run on your local system you must install some dependencies
 
@@ -54,7 +54,7 @@ node --version
 
 2. Mongo DB http://docs.mongodb.org/manual/installation/, follow the instructions
    for your platform. Note that mongo needs a patch to work correctly in windows,
-   an alternative is to create an account on [mongolad](https://mongolab.com/welcome/)
+   an alternative is to create an account on [mongolab](https://mongolab.com/welcome/)
    and use the cloud service. If you install a cloud version of mongo please note
    that you must update the url in express_server.js
 
@@ -66,7 +66,7 @@ node --version
 git clone https://github.com/ewernqvi/mvc_rest_demo.git
    ```
 5. Install dependencies
-   Change direcectory to the server of your downloaded
+   Change directory to the server of your downloaded
    ```
 cd mvc_rest_demo/server
 npm install -g mocha
@@ -121,7 +121,7 @@ If we manage to login we get the following JSON back
   userToken: "ovxptw7z8rveipb9eqc04tjsoky5jyvi"
 }
 ```
-The important bit, which we must utilize later is the userToken, which we will
+The important bit, which we must utilize later, is the userToken, which we will
 stick to our http-header to identify ourselves. You may wonder why the server
 doesn't make this stick by putting it in a cookie, the easy answer is because it
 isn't restful and since this training is about REST we shall apply the stateless
@@ -360,7 +360,7 @@ This section will cover the actual tutorial of creating a rest client using the
   - [Adding our Presentation Logic](#adding-our-presentation-logic)
      - [Angular JS Service](#angular-js-service)
      - [Partial HTML Code -- Advertisements](#partial-html-code----advertisements)
-     - [Advertisment Details](#advertisment-details)
+     - [Advertisement Details](#advertisment-details)
 - [Hooking up Angular JS with the REST backend](#hooking-up-angular-js-with-the-rest-backend)
     - [Logging In](#logging-in)
     - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
@@ -372,7 +372,7 @@ This section will cover the actual tutorial of creating a rest client using the
     - [Adding new Advertisements](#adding-new-advertisements)
     - [Edit Advertisement Text](#edit-advertisement-text)
     - [Removing Advertisements from the Client](#removing-advertisements-from-the-client)
-    - [Add filtering for Advertiments both on text in description and category](#add-filtering-for-advertiments-both-on-text-in-description-and-category)
+    - [Add filtering for advertisements both on text in description and category](#add-filtering-for-advertisements-both-on-text-in-description-and-category)
 
 ## A Static Client
 To get an idea what we try to accomplish we start out with a mockup, a static
@@ -490,7 +490,7 @@ We will now let bower fetch our application dependencies
 bower install
 ```
 
-We know get a new set of files, but most importantly a working skeleton
+We now get a new set of files, but most importantly a working skeleton
 application that is fully testable and prepared for the tasks to come.
 
 If your node server is not running start it with
@@ -503,9 +503,9 @@ Once the server has been started it shall be possible to navigate to
 [app/index.html](http://localhost:3000/app/index.html)
 
 And you shall see our Angular JS skeleton app with the text Angular JS is
-working 4-ever at the button. If you view the code of
+working 4-ever at the bottom. If you view the code of
 [index.html](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html)
-we can see that angular js libraries are loaded and the {{2+2}} at the button is
+we can see that angular js libraries are loaded and the {{2+2}} at the bottom is
 evaluated to a 4 which indicates that it's up and running.
 
 To run the [test](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md)
@@ -659,7 +659,7 @@ Run the unit tests, if it was not started already.
 
 Ensure that the test fails, we have not fixed our controller yet remember!
 
-OK, lets fix the controller
+OK, let's fix the controller
 ```javascript
 angular.module('buyAndSellApp.controllers', []).
   controller('AdvertismentsCtrl', ['$scope', function($scope) {
@@ -736,14 +736,14 @@ on our actions.
 In our first example we load the partial advertisments.html which will contain a
 div with a controller, which is responsible for the scope. In our case we loop
 over the advertisements array with a [ng-repeat](http://docs.angularjs.org/api/ng.directive:ngRepeat)
-directive. This let us create rows in our table.The image has a special
+directive. This let us create rows in our table. The image has a special 
 [ng-src](http://docs.angularjs.org/api/ng.directive:ngSrc) directive since we
 want data binding later on, e.g. if we switch images it should be automatically
 reflected in the view through Angular's two-way data binding.
 
 Before we dive into our presentation logic a small refactoring of our
 application is needed, remember that we put an array of test-data directly into
-our controller, this is poor design so we will introduce a new angular feature
+our controller; this is poor design so we will introduce a new angular feature
 called a [service](http://docs.angularjs.org/guide/dev_guide.services.understanding_services)
 where we will place this logic.
 
@@ -761,8 +761,8 @@ service.
 
 ```javascript
   // add the following test
-  describe('advertisment', function() {
-    it('should return the advertisment service', inject(function(advertisment) {
+  describe('advertisement', function() {
+    it('should return the advertisement service', inject(function(advertisment) {
       expect(advertisment.list().length).toEqual(3);
     }));
   });
@@ -915,9 +915,9 @@ describe('controllers', function(){
       ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
     }));.
 
-    it('should create advertisment model with 3 advertisments',
+    it('should create advertisement model with 3 advertisements',
     function($controller){
-      //Check that the controller has a list of three advertisments
+      //Check that the controller has a list of three advertisements
       expect(scope.advertisments.length).toBe(3);   
     })
   });
@@ -957,7 +957,7 @@ synchronous world. The promise let us manage dependencies between shared
 resources in a nice way, I found the following [blog post](http://andyshora.com/promises-angularjs-explained-as-cartoon.html)
 about promises really good, please have a look.
 
-In Angular a stripped variant of the Q library is used, is is called [$q](http://docs.angularjs.org/api/ng.$q)
+In Angular a stripped variant of the Q library is used, it is called [$q](http://docs.angularjs.org/api/ng.$q)
 and should be injected as a dependency.
 
 ```javascript
@@ -1058,7 +1058,7 @@ But before we begin, let's check out the latest code
 ```
 git checkout -f client-angular4
 ```
-Lets start to modify the list service, it will return a promise, since $http
+Let's start to modify the list service, it will return a promise, since $http
 does so by default. This means we have to make some small adjustments in the
 controller following the same pattern as we did for the AdvertismentsDetailCtrl
 
@@ -1091,7 +1091,7 @@ The little modification in the controller
   }]);
 ```
 Now we shall be able to see advertisements from the server, that is if we loaded
-some using CURL earlier. If we click and advertisment loading details will fail
+some using CURL earlier. If we click and advertisement loading details will fail
 now, since we call the list service, which is a promise now, so let's adjust the
 advertisment.get method so it communicates with the backend.
 
@@ -1275,7 +1275,7 @@ When we have added our service we shall be able to login, we still have not
 handled login-errors and registration errors in a good way, we leave this as an
 exercise for you!.
 
-### Ordering our displayed advertisments
+### Ordering our displayed advertisements
 [Order By](http://docs.angularjs.org/api/ng.filter:orderBy)
 
 ## Client Summary
@@ -1312,7 +1312,7 @@ and drop, preview etc.
 ### Adding new Advertisements
 If the user is logged in, just:
 
-1. Add a link at button of the page to trigger this route
+1. Add a link at the bottom of the page to trigger this route
 2. Update js/app.js with the new route and a controller
 3. Add a test and the new controller
 4. Add an addAdvertisement.html partial where you display the information in a
@@ -1341,12 +1341,12 @@ If the user is logged in, just:
 
 Good Luck!
 ### Removing Advertisements from the Client
-Add a wast-bin right of the advertisement, if a delete link exist for the advertisement. When clicked
+Add a wast-bin right of the advertisement, if a delete link exists for the advertisement. When clicked
 use the verb and href provided in the link to perform a delete on the server-side.
 
-### Add filtering for Advertiments both on text in description and category
+### Add filtering for Advertisements both on text in description and category
 You can do this in two ways, either on the client-side only, then angular does this for you, but this
-requires that you have a site with a limited number of advertisments, for show you may try it out it
+requires that you have a site with a limited number of advertisements, for show you may try it out it
 is barely no coding required
 
 [Angular Search Filter](http://docs.angularjs.org/api/ng.filter:filter)
