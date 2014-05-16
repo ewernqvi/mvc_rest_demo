@@ -7,5 +7,4 @@ angular.module('buyAndSellApp.controllers', []).
 
   }])
   .controller('MyCtrl2', [function() {
-
   }]);
