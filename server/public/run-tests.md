@@ -7,20 +7,20 @@ npm install -g karma
 npm install
 ```
 
-If you run this application without the port 3000 for the express server you will have to
-change config/karma-e2e.conf.js to the new port
+For end-2-end test we will utilize [protracor](protractor node_modules/protractor/example/conf.js),
+follow the instructions in the linked page on how to set-up protractor for your platform.
 
 The unit tests are configured to be run as soon as you change a file, this way you do not forget to
 run a test, to start the continous unit tests just run the following command from this directory
 
 ```
-karma start config/karma.conf.js
+karma start 
 ```
 
 if you like to run the tests just once issue the following command instead
 
 ```
-karma start congig/karma.conf.js --single-run
+karma start  --single-run
 ```
 
 To start the end2end test just run the following command, the e2e tests are run against the web-server
@@ -33,9 +33,8 @@ node express_server.js
 
 To start the test run the following command
 ```
-karma start config/karma-e2e.conf.js
+protractor your-protactor-conf-dir/conf.js
 ```
 
-The results are saved in an xml-file in
+The karma results are saved in an xml-file in
 ./node_modules/karma/test-results.xml
-
