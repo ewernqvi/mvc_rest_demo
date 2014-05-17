@@ -11,10 +11,6 @@ describe('service', function() {
     }));
   });
 
-  describe('advertisment', function() {
-    it('should return the advertisment service', inject(function(advertisment) {
-      expect(advertisment.list().length).toEqual(3);
-    }));
-  });
+  
 
 });
