@@ -16,9 +16,14 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
  // in an array like manner, get use to it to avoid minification bugs
  buyAndSellApp.controller('AdvertismentsCtrl',['$scope', 'advertisment',
                                                function($scope, advertisment) {
+        //console.log('apa:'+advertisment.list);
+        
+        $scope.advertisments=[];
         advertisment.list().then(function(result){
-          $scope.advertisments=result
+          $scope.advertisments=result;
+          
         }, function(err){console.log('error: '+ err);});
+        
         $scope.formatDate = formatDate;
   }]);
   
@@ -40,32 +45,7 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
         $scope.formatDate = formatDate;
   }]); 
   
-  buyAndSellApp.controller('LoginController', ['$scope', 'user',
-     function($scope, user){
-        $scope.login = {};
-        $scope.login.user = null;
-         
-        $scope.login.connect = function() {
-          user.connect($scope.login.login, $scope.login.password, function(res){
-            if(res.error) alert(err);
-            $scope.login.user = res;
-          });
-        }
-         
-        $scope.login.register = function() {
-          var newUser = {email: $scope.login.new.user,
-                         password: $scope.login.new.password};
-          user.register(newUser, function(res) {
-            if(res.error) alert(err);
-            $scope.login.user = res;
-          });
-         };
-    
-         $scope.login.disconnect = function() {
-           $scope.login.user = null;
-           user.logout();
-         };
-     }]);
+  
 
   buyAndSellApp.controller('MyCtrl1', [function() {
 
