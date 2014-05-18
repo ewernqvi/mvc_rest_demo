@@ -1,0 +1,8 @@
+curl -X POST -d {"email" : "mrx@gmail.com", "password" : "loko"} -H Content-Type: application/json http://localhost:3000/api/users
+
+
+
+
+TOKEN=
+
+curl -X POST -H user-token:$TOKEN -H Content-Type:application/json -d {"category": "Phone", "description": "iPhone 5 - Mint Condition", "price": "$200"} http://localhost:3000/api/advertisments
