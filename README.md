@@ -972,7 +972,8 @@ angular.module('buyAndSellApp.services', [], function($provide) {
 
 function advertisment($http, $q){
   function list(){
-        return [
+        var deferred = $q.defer();
+        var list= [
                 {
                 _id: "dummy-client-id1",
                 category: "Hobbies",
@@ -1019,6 +1020,8 @@ function advertisment($http, $q){
                 price: "$11"
                 }
                 ];
+                deferred.resolve(list);
+                return deferred.promise;
   }
   return{
     get: function(adId){
@@ -1036,9 +1039,7 @@ function advertisment($http, $q){
         deferred.resolve(res);
       else
         deferred.reject('Advertisment with id: ' + adId + ' not found!');
-
-      return deferred.promise;
-
+     return deferred.promise;
     },
     list: list
   }
