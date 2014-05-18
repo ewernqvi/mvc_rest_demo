@@ -361,6 +361,7 @@ This section will cover the actual tutorial of creating a rest client using the
      - [Angular JS Service](#angular-js-service)
      - [Partial HTML Code -- Advertisements](#partial-html-code----advertisements)
      - [Advertisement Details](#advertisment-details)
+-[Adding Promises to our Client](#adding-promises)
 - [Hooking up Angular JS with the REST backend](#hooking-up-angular-js-with-the-rest-backend)
     - [Logging In](#logging-in)
     - [Ordering our displayed advertisments](#ordering-our-displayed-advertisments)
@@ -927,6 +928,8 @@ test/unit/controllersSpec.js
 
 Our new advertismentDetail controller test, at this stage the test will fail,
 since we have not created the controller yet.
+
+### Adding Promises
 
 ```javascript
  buyAndSellApp.controller('AdvertismentDetailCtrl',['$scope', '$routeParams', 'advertisment',
