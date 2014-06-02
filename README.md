@@ -673,7 +673,7 @@ angular.module('buyAndSellApp.controllers', []).
 
   }])
 ```
-[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/test/unit/controllersSpec.js)
+[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/controllers.js)
 
 Note that we use an array to define the function body, this is to ensure that
 the code can be minified with the angular dependency injection still working,
