@@ -17,6 +17,11 @@ run a test, to start the continous unit tests just run the following command fro
 karma start 
 ```
 
+On windows you might get the error `Command not found` when running `karma`. If this is the case you will need to install the comand line interface package for karma:
+```
+npm install -g karma-cli
+```
+
 if you like to run the tests just once issue the following command instead
 
 ```
