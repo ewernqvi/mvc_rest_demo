@@ -15,7 +15,7 @@ The application consists of two parts.
 * [REST Server](#server)
 * [MVC Client](#client)
 
- # Server
+# Server
 The REST server part of the application has three resources
 
 1. Users
