@@ -465,7 +465,7 @@ Once the server has been started it shall be possible to navigate to
 And you shall see our Angular JS skeleton app with the text Angular JS is
 working 4-ever at the button. If you view the code of
 [index.html](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/index.html)
-we can see that angular js libraries are loaded and the {{2+2}} at the button is
+we can see that angular js libraries are loaded and the {{1+3}} at the button is
 evaluated to a 4 which indicates that it's up and running.
 
 To run the [test](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/run-tests.md)
