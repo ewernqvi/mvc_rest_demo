@@ -25,7 +25,7 @@ The REST server part of the application has three resources
 I will demonstrate typical flows using CURL, it is then up to the MVC client
 developer to use this for input for the XHR-requests from the browser.
 
-Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe).since curl in native windows and json input do not work without escaping all "-signs
+Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe) since curl in native windows and json input do not work without escaping all "-signs
 
 ## Installation
 To get the server to run on your local system you must install some dependencies
