@@ -561,7 +561,7 @@ this would be
 ```
 advertisments.html
 
-let us save the file as partials/advertisments.html
+let us save the file as `app/partials/advertisments.html`
 
 Now we must modify the router so it will be aware of our partial
 ```javascript
@@ -572,7 +572,7 @@ Now we must modify the router so it will be aware of our partial
   // Default route
   $routeProvider.otherwise({redirectTo: '/advertisments'});
 ```
-[app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/app.js)
+[app/js/app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/app.js)
 
 As you probably spotted, we reference a new controller called advertismentsCtrl,
 lets open up the controllers.js file and add our controller
@@ -589,7 +589,7 @@ angular.module('buyAndSellApp.controllers', []).
 
   }]);
 ```
-[controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/controllers.js)
+[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/app/js/controllers.js)
 
 We deliberately added no code in the controller, since we are test-driven we
 shall now modify our test to include the new controller and in the test we shall
@@ -613,7 +613,7 @@ describe('controllers', function(){
   }));
 });
 ```
-[controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/test/unit/controllersSpec.js)
+[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/test/unit/controllersSpec.js)
 
 Run the unit tests, if it was not started already.
 
@@ -673,6 +673,8 @@ angular.module('buyAndSellApp.controllers', []).
 
   }])
 ```
+[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular1/server/public/test/unit/controllersSpec.js)
+
 Note that we use an array to define the function body, this is to ensure that
 the code can be minified with the angular dependency injection still working,
 see also [angular minification](http://docs.angularjs.org/guide/di)
@@ -727,7 +729,7 @@ service.
     }));
   });
 ```
-test/unit/servicesSpec.js
+[test/unit/servicesSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/test/unit/servicesSpec.js)
 
 Then we must inform Angular DI that we have a new service available for the
 application
@@ -747,7 +749,7 @@ function advertisment(){
   }
 }
 ```
-app/js/services.js
+[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/services.js)
 
 Running the test now shall result in a failure, since we haven't moved the array
 contents yet.
@@ -771,7 +773,7 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
 
   }]);
 ```
-app/js/controllers.js
+[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/controllers.js)
 
 Note that we added our service as an injection parameter, then we simply delegate
 to the service to set our scope variable. Did you remember to move the array into
@@ -826,7 +828,7 @@ Create a new advertismentDetails partial
   <div>{{advertisment.longDescription}}</div>
 </div>
 ```
-partials/advertismentDetails.html
+app/partials/advertismentDetails.html
 
 Nothing fancy here, just a simple HTML page displaying all the images for the
 advertisement and the detailed description of the advertisement. We have left
@@ -857,7 +859,7 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/advertisments'});
 }]);
 ```
-js/app.js
+[app/js/app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/app.js)
 
 Here we just add the routing logic, the route is triggered by in the
 adverisments.html partial, which we have already completed. The new route refers
@@ -883,7 +885,7 @@ describe('controllers', function(){
   });
 });
 ```
-test/unit/controllersSpec.js
+[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/test/unit/controllersSpec.js)
 
 Our new advertismentDetail controller test, at this stage the test will fail,
 since we have not created the controller yet.
@@ -904,7 +906,7 @@ since we have not created the controller yet.
         $scope.formatDate = formatDate;
   }]);
 ```
-js/controllers.js
+[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/controllers.js)
 
 When adding the controller logic, we realize that we need a new method in our
 advertisement service to communicate with the advertisement on the server-side.
@@ -1005,7 +1007,7 @@ function advertisment($http, $q){
 }
 });
 ```
-js/services.js
+[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/services.js)
 
 Now we have created a working detail page, and all the tests run it's time to
 communicate with our back-end server
@@ -1038,7 +1040,7 @@ return $http.get('/api/advertisments')
       return $q.reject(err.data);
 });
 ```
-app/services.js
+[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/services.js)
 
 The little modification in the controller
 ```javascript
@@ -1074,7 +1076,7 @@ advertisment.get method so it communicates with the backend.
     list: list
   }
 ```
-app/services.js
+[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/services.js)
 
 We know have an application that works as expected. We could add some more
 end-2-end tests, but I will leave that as an exercise for you.
@@ -1116,7 +1118,7 @@ holding the user-token
   </div>
 </div>
 ```
-partials/login.html
+app/partials/login.html
 
 Nothing fancy here, just a simple form divided into a login section and a
 register new user section. Submitting the form will trigger a controller and
@@ -1148,7 +1150,7 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/advertisments'});
 }]);
 ```
-js/app.js
+[app/js/app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/app.js)
 
 Here we just add the routing logic, the route is triggered by the login button
 on the index.html page.
@@ -1181,7 +1183,7 @@ on the index.html page.
          };
      }]);
 ```
-js/controllers.js
+[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/controllers.js)
 
 When adding the controller logic, we realize that we need a login service to
 communicate with the user-resource on the server-side. We can mock this service
@@ -1229,7 +1231,7 @@ function user($http){
   };
 }  
 ```
-js/services.js
+[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/services.js)
 
 When we have added our service we shall be able to login, we still have not
 handled login-errors and registration errors in a good way, we leave this as an
