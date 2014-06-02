@@ -17,8 +17,6 @@ run a test, to start the continous unit tests just run the following command fro
 karma start 
 ```
 
-Code coverage is placed in a coverage directory, just open it and browse for an index.html file and open it in the browser to get a result.
-
 if you like to run the tests just once issue the following command instead
 
 ```
@@ -40,3 +38,4 @@ protractor your-protactor-conf-dir/conf.js
 
 The karma results are saved in an xml-file in
 ./node_modules/karma/test-results.xml
+
