@@ -597,17 +597,28 @@ state the wanted behavior of our controller, so open up controllersSpec.js to
 add our new test
 
 ```javascript
+'use strict';
+
+/* jasmine specs for controllers go here */
+
 describe('controllers', function(){
-  beforeEach(module('buyAndSellApp.controllers'));
+  // our controller
+  describe('AdvertismentsCtrl', function(){
+    var scope, ctrl;
+    beforeEach(module('buyAndSellApp'));
 
-  it('should create advertisement model with 3 advertisements',
-     inject(function($controller) {
-    var scope = {},
-        ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
-    //Check that the controller has a list of three advertisements
-    expect(scope.advertisments.length).toBe(3);
+    beforeEach(inject(function($controller) {
+      scope = {};
+      ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
+    })); 
+    it('should create advertisment model with 3 advertisments', function($controller) {
+      //Check that the controller has a list of three advertisments
+      expect(scope.advertisments.length).toBe(3);
+    })
+  });
+  it('should ....', inject(function() {
+    //spec body
   }));
-
   it('should ....', inject(function() {
     //spec body
   }));
