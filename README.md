@@ -894,6 +894,41 @@ describe('controllers', function(){
       expect(scope.advertisments.length).toBe(3);   
     })
   });
+  
+   // Test for AdvertismentDetailCtrl
+  describe('AdvertismentDetailCtrl', function(){
+    var scope, ctrl, httpMock;
+    var adId = 'testId';
+    beforeEach(module('buyAndSellApp'));
+
+    beforeEach(inject(function($controller, $httpBackend, $routeParams) {
+      scope = {};
+      var route = {};
+      httpMock = $httpBackend;
+      var d = new Date();
+      $routeParams.id = adId;
+      httpMock.expectGET("/api/advertisments/testId").respond(
+        {_id:adId, created: d, price: '35',description: 'test-part', 
+          images: [{a:'a'}]});
+      ctrl = $controller('AdvertismentDetailCtrl', {$scope:scope});
+    })); 
+
+    it('should return an advertisment', function() {
+      httpMock.flush();
+      expect(scope.advertisment.description).toBe('test-part');
+    });
+
+    it('should set advertisment id', function() {
+      httpMock.flush();
+      expect(scope.adId).toBe(adId);
+    });
+
+    it('should contain function formatDate', function(){
+      httpMock.flush();
+      expect(typeof scope.formatDate).toBe('function');
+    });
+
+  });
 });
 ```
 [test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/test/unit/controllersSpec.js)
