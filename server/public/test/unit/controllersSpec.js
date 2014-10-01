@@ -42,21 +42,17 @@ describe('controllers', function(){
     })); 
 
     it('should return an advertisment', function() {
-      if(httpMock && httpMock.flush) {
-        console.log('**' + httpMock.flush);
-        httpMock.flush();
-      }
-      else console.log('what the fuck..');
+      httpMock.flush();
       expect(scope.advertisment.description).toBe('test-part');
     });
 
     it('should set advertisment id', function() {
-      //httpMock.flush();
+      httpMock.flush();
       expect(scope.adId).toBe(adId);
     });
 
     it('should contain function formatDate', function(){
-      //httpMock.flush();
+      httpMock.flush();
       expect(typeof scope.formatDate).toBe('function');
     });
 

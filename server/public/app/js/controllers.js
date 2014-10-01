@@ -16,7 +16,6 @@ var buyAndSellApp = angular.module('buyAndSellApp.controllers', []);
  // in an array like manner, get use to it to avoid minification bugs
  buyAndSellApp.controller('AdvertismentsCtrl',['$scope', 'advertisment',
                                                function($scope, advertisment) {
-        //console.log('apa:'+advertisment.list);
         
         $scope.advertisments=[];
         advertisment.list().then(function(result){
