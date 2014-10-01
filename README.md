@@ -940,7 +940,7 @@ Since we at this instance do not have more details when getting a single resourc
 we simply pick out the correct resource from the existing list method. We also
 introduced a new concept called promises or futures in java.
 
-In an asynchronous word promises are as important as try and catch in the
+In an asynchronous world promises are as important as try and catch in the
 synchronous world. The promise let us manage dependencies between shared
 resources in a nice way, I found the following [blog post](http://andyshora.com/promises-angularjs-explained-as-cartoon.html)
 about promises really good, please have a look.
