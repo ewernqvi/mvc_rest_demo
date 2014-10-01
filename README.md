@@ -870,7 +870,7 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/advertisments'});
 }]);
 ```
-[app/js/app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/app.js)
+[app/js/app.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular3/server/public/app/js/app.js)
 
 Here we just add the routing logic, the route is triggered by in the
 adverisments.html partial, which we have already completed. The new route refers
@@ -911,7 +911,7 @@ Before we start, we begin with a new set of tests for the controller
 
   });
 ```
-[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/test/unit/controllersSpec.js)
+[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular3/server/public/test/unit/controllersSpec.js)
 
 Our new advertismentDetail controller test, at this stage the test will fail,
 since we have not created the controller yet.
@@ -932,7 +932,7 @@ since we have not created the controller yet.
         $scope.formatDate = function(d){/*format the date*/};
   }]);
 ```
-[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/controllers.js)
+[app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular3/server/public/app/js/controllers.js)
 
 When adding the controller logic, we realize that we need a new method in our
 advertisement service to communicate with the advertisement on the server-side.
@@ -1033,29 +1033,22 @@ function advertisment($http, $q){
 }
 });
 ```
-[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/services.js)
+[app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular3/server/public/app/js/services.js)
 
 Now we have created a working detail page, and all the tests run it's time to
 communicate with our back-end server
 
-if you don't get the code running you can check out a working branch by
+### Hooking up Angular JS with the REST backend
+Our get service is well prepared for backend communication, since we implemented
+it using a promise it is now just a matter of adding the http library
 
+But before we begin, let's check out the latest working code
 ```
 git checkout -f client-angular3
 ```
-
-
-### Hooking up Angular JS with the REST backend
-Our get service is well prepared for backend communication, since we implemented
-it using a promise it is now just a matter of
-
-But before we begin, let's check out the latest code
-```
-git checkout -f client-angular4
-```
 Lets start to modify the list service, it will return a promise, since $http
 does so by default. This means we have to make some small adjustments in the
-controller following the same pattern as we did for the AdvertismentsDetailCtrl
+service following the same pattern as we did for the AdvertismentsDetailCtrl
 
 ```javascript
 // the $http API is based on the deferred/promise APIs exposed by the $q service
@@ -1082,7 +1075,7 @@ The little modification in the controller
         advertisment.list().then(function(result){
           $scope.advertisments=result
         }, function(err){console.log('error: '+ err);});
-        $scope.formatDate = formatDate;
+        $scope.formatDate = new function(d){/*format the date..*/};
   }]);
 ```
 Now we shall be able to see advertisements from the server, that is if we loaded
@@ -1111,7 +1104,12 @@ advertisment.get method so it communicates with the backend.
 ```
 [app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/services.js)
 
-We know have an application that works as expected. We could add some more
+We know have an application that works as expected from an end-user perspective, however our test failes, since we now fetch data from the server. To get around this, angular provides us with a http backend mock, where we can simulate the server.
+
+```javascript
+
+```
+We could add some more
 end-2-end tests, but I will leave that as an exercise for you.
 
 ### Logging In
