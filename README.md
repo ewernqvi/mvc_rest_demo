@@ -1104,16 +1104,78 @@ advertisment.get method so it communicates with the backend.
 ```
 [app/js/services.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/app/js/services.js)
 
-We know have an application that works as expected from an end-user perspective, however our test failes, since we now fetch data from the server. To get around this, angular provides us with a http backend mock, where we can simulate the server.
+We know have an application that works as expected from an end-user perspective, however our test fails, since we now fetch data from the server. To get around this, angular provides us with a [http backend mock](https://docs.angularjs.org/api/ngMock/service/$httpBackend), where we can simulate the server.
 
 ```javascript
+'use strict';
 
+/* jasmine specs for controllers go here */
+
+describe('controllers', function(){ 
+// Test for AdvertismentsCtrl
+  describe('AdvertismentsCtrl', function(){
+    var scope, ctrl, httpMock;
+    beforeEach(module('buyAndSellApp'));
+
+    beforeEach(inject(function($controller, $injector) {
+      scope = {};
+      httpMock = $injector.get('$httpBackend');
+      httpMock.expectGET("/api/advertisments").respond([1,3,4]);
+      ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
+    })); 
+
+    it('should create advertisment model with 3 advertisments', function() {
+      httpMock.flush();
+      expect(scope.advertisments.length).toBe(3);
+      var res = scope.formatDate(new Date());
+      //expect(res.match(/today/).index).toBe(0);
+    });
+  });
+
+  // Test for AdvertismentDetailCtrl
+  describe('AdvertismentDetailCtrl', function(){
+    var scope, ctrl, httpMock;
+    var adId = 'testId';
+    beforeEach(module('buyAndSellApp'));
+
+    beforeEach(inject(function($controller, $httpBackend, $routeParams) {
+      scope = {};
+      var route = {};
+      httpMock = $httpBackend;
+      var d = new Date();
+      $routeParams.id = adId;
+      httpMock.expectGET("/api/advertisments/testId").respond(
+        {_id:adId, created: d, price: '35',description: 'test-part', 
+          images: [{a:'a'}]});
+      ctrl = $controller('AdvertismentDetailCtrl', {$scope:scope});
+    })); 
+
+    it('should return an advertisment', function() {
+      httpMock.flush();
+      expect(scope.advertisment.description).toBe('test-part');
+    });
+
+    it('should set advertisment id', function() {
+      httpMock.flush();
+      expect(scope.adId).toBe(adId);
+    });
+
+    it('should contain function formatDate', function(){
+      httpMock.flush();
+      expect(typeof scope.formatDate).toBe('function');
+    });
+  });
+});
 ```
+[test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular4/server/public/test/unit/controllersSpec.js)
 We could add some more
 end-2-end tests, but I will leave that as an exercise for you.
 
 ### Logging In
-
+But before we begin, let's check out the latest working code
+```
+git checkout -f client-angular4
+```
 Create a new login partial, set a variable in the root scope or local storage
 holding the user-token
 
