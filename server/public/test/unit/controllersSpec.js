@@ -19,6 +19,38 @@ describe('controllers', function(){
     })
   });
 
+   // Test for AdvertismentDetailCtrl
+  describe('AdvertismentDetailCtrl', function(){
+    var scope, ctrl, httpMock;
+    var adId = 'dummy-client-id3';
+    beforeEach(module('buyAndSellApp'));
+
+    beforeEach(inject(function($controller, $httpBackend, $routeParams) {
+      scope = {};
+      var route = {};
+      httpMock = $httpBackend;
+      var d = new Date();
+      $routeParams.id = adId;
+      ctrl = $controller('AdvertismentDetailCtrl', {$scope:scope});
+    })); 
+
+    it('should return an advertisment', inject(function($q, $rootScope) {
+      // make angular resolve the promise
+      $rootScope.$apply();
+      console.log(JSON.stringify(scope.advertisment));
+      expect(scope.advertisment.description).toBe('Dr Zoggs Sex Wax');
+    }));
+
+    it('should set advertisment id', function() {
+      expect(scope.adId).toBe(adId);
+    });
+
+    it('should contain function formatDate', function(){
+      expect(typeof scope.formatDate).toBe('function');
+    });
+
+  });
+
   it('should ....', inject(function() {
     //spec body
   }));

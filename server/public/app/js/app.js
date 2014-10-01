@@ -13,6 +13,8 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
   $routeProvider.when('/advertisments', {templateUrl: 'partials/advertisments.html', 
       controller: 'AdvertismentsCtrl'});
+  $routeProvider.when('/advertisment/:id', {templateUrl: 'partials/advertismentDetails.html',
+          controller: 'AdvertismentDetailCtrl'});
   // Default route
 
   $routeProvider.otherwise({redirectTo: '/advertisments'});
