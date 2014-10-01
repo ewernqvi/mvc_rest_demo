@@ -876,29 +876,13 @@ Here we just add the routing logic, the route is triggered by in the
 adverisments.html partial, which we have already completed. The new route refers
 to a new controller which we must implement.
 
+Before we start, we begin with a new set of tests for the controller
+
 ```javascript
-describe('controllers', function(){
-  // our controller
-  describe('AdvertismentsCtrl', function(){
-    var scope, ctrl;
-    beforeEach(module('buyAndSellApp'));
-
-    beforeEach(inject(function($controller) {
-      scope = {};
-      ctrl = $controller('AdvertismentsCtrl', {$scope:scope});
-    }));.
-
-    it('should create advertisment model with 3 advertisments',
-    function($controller){
-      //Check that the controller has a list of three advertisments
-      expect(scope.advertisments.length).toBe(3);   
-    })
-  });
-  
-   // Test for AdvertismentDetailCtrl
+ // Test for AdvertismentDetailCtrl
   describe('AdvertismentDetailCtrl', function(){
     var scope, ctrl, httpMock;
-    var adId = 'testId';
+    var adId = 'dummy-client-id3';
     beforeEach(module('buyAndSellApp'));
 
     beforeEach(inject(function($controller, $httpBackend, $routeParams) {
@@ -907,29 +891,25 @@ describe('controllers', function(){
       httpMock = $httpBackend;
       var d = new Date();
       $routeParams.id = adId;
-      httpMock.expectGET("/api/advertisments/testId").respond(
-        {_id:adId, created: d, price: '35',description: 'test-part', 
-          images: [{a:'a'}]});
       ctrl = $controller('AdvertismentDetailCtrl', {$scope:scope});
     })); 
 
-    it('should return an advertisment', function() {
-      httpMock.flush();
-      expect(scope.advertisment.description).toBe('test-part');
-    });
+    it('should return an advertisment', inject(function($q, $rootScope) {
+      // make angular resolve the promise, we discuss promises shortly
+      $rootScope.$apply();
+      console.log(JSON.stringify(scope.advertisment));
+      expect(scope.advertisment.description).toBe('Dr Zoggs Sex Wax');
+    }));
 
     it('should set advertisment id', function() {
-      httpMock.flush();
       expect(scope.adId).toBe(adId);
     });
 
     it('should contain function formatDate', function(){
-      httpMock.flush();
       expect(typeof scope.formatDate).toBe('function');
     });
 
   });
-});
 ```
 [test/unit/controllersSpec.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/test/unit/controllersSpec.js)
 
@@ -949,7 +929,7 @@ since we have not created the controller yet.
            $scope.currentImage = res.images[0];
         }, function(err){console.log('error: '+ err)});
 
-        $scope.formatDate = formatDate;
+        $scope.formatDate = function(d){/*format the date*/};
   }]);
 ```
 [app/js/controllers.js](https://github.com/ewernqvi/mvc_rest_demo/blob/client-angular2/server/public/app/js/controllers.js)
@@ -1057,6 +1037,13 @@ function advertisment($http, $q){
 
 Now we have created a working detail page, and all the tests run it's time to
 communicate with our back-end server
+
+if you don't get the code running you can check out a working branch by
+
+```
+git checkout -f client-angular3
+```
+
 
 ### Hooking up Angular JS with the REST backend
 Our get service is well prepared for backend communication, since we implemented
