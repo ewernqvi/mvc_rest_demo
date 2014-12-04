@@ -18,16 +18,23 @@ describe('express rest api server for demo', function(){
     phone: '0761-284285', _id: 'erik@wernqvist.eu', 
 password: 'password', userToken: ''};
 
+function deleteTestUser(userId){
+  superagent.del(user_resource +'/'+test_user.email)
+    .set('user-token', 'apa')
+    .send(userId).end(function(e, res){console.log('del: '+ e);});
+}
+
 //
 // Verify that it is possible to create a new user in the system
 //
 it('user registration', function(done){
   console.log('testing user registration against ' + user_resource  + ' : ' + 
     JSON.stringify(test_user));
+  deleteTestUser('erik@wernqvist.eu');
   superagent.post(user_resource )
   .send(test_user)
   .end(function(e, res){
-    //console.log('apa: '+res.text);
+    console.log('apa: '+res.text);
     expect(e).to.eql(null);
     done();
   });
@@ -43,7 +50,7 @@ it('user login', function(done){
   superagent.get(login_resource + test_user.email).send()
   .auth(test_user.email, test_user.password)
   .end(function(e, res){
-    console.log('auth result: ' + e);
+    console.log('auth result: ' + e + ' : ' + res.text);
     expect(e).to.eql(null);
     expect(res.body._id).to.eql(test_user._id);
     test_user.userToken = res.body.userToken;
@@ -76,39 +83,6 @@ it('ensure that a  user object can not be updated without a token', function(don
   });
 });
 
-
-//
-// Update our test user, by updating the password, verify that it's possible to login with the
-// new password
-//
-it('ensure that a  user object can be updated with a valid token', function(done){
-  test_user.password='password1';
-  console.log('update using: ' + login_resource + test_user.email);
-  superagent.put(login_resource + test_user.email)
-  .set('user-token', user_token)
-  .send(test_user)
-  .end(function(e, res){
-    console.log('**update..');
-    console.log(res.statusCode);
-    expect(e).to.eql(null);
-    expect(res.statusCode).to.eql(200);
-    // ensure that we can login using the new password
-
-    superagent.get(login_resource + test_user.email).send()
-    .auth(test_user.email, test_user.password)
-    .end(function(e, res){
-      console.log('auth result: ' + e);
-      expect(e).to.eql(null);
-      // Since we switched password we have a new token
-      user_token = res.body.userToken;
-      test_user.userToken = user_token;
-      delete res.body.created;
-      delete res.body.modified;
-      expect(res.body).to.eql(test_user);
-    });
-  done();
-  });
-});
 
 var test_add = {price: '100', description: 'Dr Zoggs Sex Wax', category: 'surfing stuff'};
 
@@ -250,10 +224,44 @@ it('removes an advertisment object', function(done){
   });
 });      
 
+//
+// Update our test user, by updating the password, verify that it's possible to login with the
+// new password, on windows we get a timing problem with this test, since the callback fires
+// before the next test is run best thing is to run this last
+//
+it('ensure that a  user object can be updated with a valid token', function(done){
+  test_user.password='password1';
+  console.log('update using: ' + login_resource + test_user.email);
+  superagent.put(login_resource + test_user.email)
+  .set('user-token', user_token)
+  .send(test_user)
+  .end(function(e, res){
+    console.log('**update..');
+    console.log(res.statusCode);
+    expect(e).to.eql(null);
+    expect(res.statusCode).to.eql(200);
+    // ensure that we can login using the new password
+
+    superagent.get(login_resource + test_user.email).send()
+    .auth(test_user.email, test_user.password)
+    .end(function(e, res){
+      console.log('auth result: ' + e);
+      expect(e).to.eql(null);
+      // Since we switched password we have a new token
+      user_token = res.body.userToken;
+      test_user.userToken = user_token;
+      delete res.body.created;
+      delete res.body.modified;
+      expect(res.body).to.eql(test_user);
+    });
+  done();
+  });
+});
+
 // Verify that it's possible to remove a user  
 it('removes a user object', function(done){
   superagent.del(user_resource +'/'+test_user.email)
-  .set('user-token', user_token)
+  .set('user-token', 'apa')
   .end(function(e, res){
     console.log(res.body);
     expect(e).to.eql(null);
