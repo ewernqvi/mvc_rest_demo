@@ -27,6 +27,8 @@ developer to use this for input for the XHR-requests from the browser.
 
 Please note that windows user shall install the [cygwin package](http://www.cygwin.com/setup-x86_64.exe) since curl in native windows and json input do not work without escaping all "-signs
 
+As an alternative to installing cygwin you can skip curl and utilize the [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) Chrome plugin.
+
 ## Installation
 To get the server to run on your local system you must install some dependencies
 
@@ -47,14 +49,14 @@ node --version
    that you must update the url in express_server.js
 
 3. git http://git-scm.com/downloads, follow the instructions for your platform,
-   note that windows users shall install git bundled with [cygwin](http://www.cygwin.com/install.html) please ensure that you include both git and curl  
+   note that windows users shall install git bundled with [cygwin](http://www.cygwin.com/install.html) please ensure that you include both git and curl. As an alternative for any user with Google Chrome you may utilize the [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) Chrome plugin
 
 4. Get the code
    ```
 git clone https://github.com/ewernqvi/mvc_rest_demo.git
    ```
 5. Install dependencies
-   Change direcectory to the server of your downloaded
+   Change directory to the server of your downloaded
    ```
 cd mvc_rest_demo/server
 npm install -g mocha
@@ -83,6 +85,10 @@ npm install
 curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \
   -H "Content-Type: application/json" http://localhost:3000/api/users
 ```
+If you utilize [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) instead of curl, the -X specifies the method and the JSON specified within -d '', please ensure that you also specify the application/json as a header parameter in Postman.
+
+![alt Postman Image](https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/postman-sample.png)
+
 If successful, this will return a new user in JSON format, note that depending
 on where and how you installed your server the URL may differ
 
