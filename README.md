@@ -87,7 +87,7 @@ curl -X POST -d '{"email" : "mrx@gmail.com", "password" : "loko"}' \
 ```
 If you utilize [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) instead of curl, the -X specifies the method and the JSON specified within -d '', please ensure that you also specify the application/json as a header parameter in Postman.
 
-![alt Postman Image](https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/postman-sample.png)
+![alt Postman Image](https://raw.github.com/ewernqvi/mvc_rest_demo/master/pres/postman.png)
 
 If successful, this will return a new user in JSON format, note that depending
 on where and how you installed your server the URL may differ
