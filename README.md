@@ -311,7 +311,7 @@ curl -X PUT -d '{"email": "email@somewhere.com", "password":"newPwd"}' \
 1. Delete an Image
 
    ```
-curl -X DELETE -H user-token:_token_ http://localhost:3000/api/image/:id
+curl -X DELETE -H user-token:_token_ http://localhost:3000/api/images/:id
    ```
 
    Set the _token_ and the :id to the image you want to delete, deleting an
