@@ -1,4 +1,5 @@
-{{{
+-- javascript
+{
 // Do our booking                                                                                   
 bookFlight(function (value1) {                                                                      
   bookHotell(value1, function(value2) {                                                             
@@ -34,4 +35,4 @@ promisedFlight
 .catch(function(err){                                                                               
   // Handle any error thrown by flight, car or hotell!                                              
 }); 
-}}}
+}
