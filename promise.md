@@ -1,4 +1,4 @@
--- javascript
+```javascript
 {
 // Do our booking                                                                                   
 bookFlight(function (value1) {                                                                      
@@ -36,3 +36,4 @@ promisedFlight
   // Handle any error thrown by flight, car or hotell!                                              
 }); 
 }
+```
