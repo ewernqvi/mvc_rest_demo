@@ -1,6 +1,6 @@
 ```javascript
-{
-// Do our booking                                                                                   
+
+// Do our booking without promises..                                                                                   
 bookFlight(function (value1) {                                                                      
   bookHotell(value1, function(value2) {                                                             
     bookCar(value2, function(value3) {                                                              
@@ -35,5 +35,5 @@ promisedFlight
 .catch(function(err){                                                                               
   // Handle any error thrown by flight, car or hotell!                                              
 }); 
-}
+
 ```
